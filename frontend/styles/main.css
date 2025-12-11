@@ -1,0 +1,14 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8fdf8;
+  margin: 0;
+  padding: 20px;
+}
+
+container {
+  display: grid;
+  gap: 20px;
+  max-width: auto;
+  margin: 0 auto;
+}

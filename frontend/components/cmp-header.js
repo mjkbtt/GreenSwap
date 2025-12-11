@@ -9,7 +9,6 @@ class CmpHeader extends HTMLElement {
         this.addEvents();
     }
     addEvents() {
-        // Хайх товчлуур дээр дарахад ажиллах логик
         const searchBtn = this.shadowRoot.querySelector(".search-btn");
         searchBtn.addEventListener("click", () => {
             alert("Хайх үйлдэл эхэллээ!");
@@ -17,10 +16,32 @@ class CmpHeader extends HTMLElement {
         });
     }
     render() {  
-
-        this.shadowRoot.innerHTML = /*html*/ `
+        this.shadowRoot.innerHTML = /*html*/`
         <style>
-            .header {
+        :root {
+            --green1: #3ca054;         /* logo, nav hover, profile bg, action btn text */
+            --green-light: #c9e6cb;    /* action btn border */
+            --green-lightest: #e6f7e8; /* hero bg */
+            /* Yellow */
+            --yellow1: rgba(255, 251, 234, 1);
+            --gray-dark: #333;          /* text */
+            --gray: #555;               /* nav links */
+            --gray-light: #888;         /* search icon */
+            --gray-lighter: #eee;       /* header border */
+
+            /* Backgrounds */
+            --bg-light: #f9fff9;        /* body bg */
+            --white: #ffffff;           /* header, action btn bg, profile text */
+            --black: #000000;           /* optional */
+
+            /* Font sizes */
+            --font-size-1: 1em;
+            --font-size-2: 1.5em;
+            --font-size-3: 2em;
+            --font-size-4: 2.5em;
+            --font-size-5: 3em;
+        }            
+        .header {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,7 +132,7 @@ class CmpHeader extends HTMLElement {
         <header class="header">
             <div class="container nav-bar">
                 <div class="logo">
-                    <img src="logo.png" alt="Green Swap Logo">            
+                    <img src="images/logo.png" alt="Green Swap Logo">            
                 </div>
                 <nav class="nav-links">
                     <a href="#/home">Нүүр</a>
@@ -120,13 +141,12 @@ class CmpHeader extends HTMLElement {
                 </nav>
                 <div class="search-bar">
                     <button class="search-btn">
-                        <img src="search.png" alt="Search">
+                        <img src="images/search.png" alt="Search">
                         <input type="text" placeholder="Хайх">
                     </button>
                 </div>
                 </div>
-                    <img src="profile.png" class="profile-img" alt="" >
-
+                    <img src="images/profile.png" class="profile-img" alt="" >
                 </div>
             </div>
         </header>
