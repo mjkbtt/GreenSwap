@@ -1,0 +1,73 @@
+[
+    {
+        "name": "Дахивар 1",
+        "type": "plastic", 
+        "location": "Баянзүрх, 1-р хороо",
+        "district": "Баянзүрх",
+        "lat": 47.9217,
+        "lng": 106.9232,
+        "price_per_kg": 500,
+        "total_collected_kg": 1500,
+        "rating": 4.2,
+        "active_users": 120,
+        "phone": "+976-99123456",
+        "working_hours": "09:00 - 18:00"
+    
+    },
+    {
+        "name": "Дахивар 2",
+        "type": ["paper", "metal"],
+        "location": "Хан-Уул, 3-р хороо",
+        "district": "Хан-Уул",
+        "lat": 47.9123,
+        "lng": 106.9278,
+        "price_per_kg": 300,
+        "total_collected_kg": 5000,
+        "rating": 3,
+        "active_users": 250,
+        "phone": "+976-99123456",
+        "working_hours": "10:00 - 20:00"
+    },
+    {
+        "name": "Дахивар 3",
+        "type": ["metal","plastic"],
+        "location": "Сонгинохайрхан, 5-р хороо",
+        "district": "Сонгинохайрхан",
+        "lat": 47.9340,
+        "lng": 106.8890,
+        "price_per_kg": 800,
+        "total_collected_kg": 1500,
+        "rating": 3.2,
+        "active_users": 20,
+        "phone": "+976-99123456",
+        "working_hours": "08:00 - 17:00"
+    },
+    {
+        "name": "Дахивар 4",
+        "type": ["plastic",  "paper"],
+        "location": "Хан-Уул, 2-р хороо",
+        "district": "Хан-Уул",
+        "lat": 47.9105,
+        "lng": 106.9200,
+        "price_per_kg": 450,
+        "total_collected_kg": 1500,
+        "rating": 1.2,
+        "active_users": 100,
+        "phone": "+976-99123456",
+        "working_hours": "09:00 - 18:00"
+    },
+    {
+        "name": "Дахивар 5",
+        "type": ["plastic",  "paper"],
+        "location": "Хан-Уул, 5-р хороо",
+        "district": "Хан-Уул",
+        "lat": 47.8905,
+        "lng": 106.9350,
+        "price_per_kg": 450,
+        "total_collected_kg": 1500,
+        "rating": 1.2,
+        "active_users": 100,
+        "phone": "+976-99123456",
+        "working_hours": "09:00 - 18:00"
+    }
+]
