@@ -132,7 +132,7 @@ class CmpHeader extends HTMLElement {
         <header class="header">
             <div class="container nav-bar">
                 <div class="logo">
-                    <img src="images/logo.png" alt="Green Swap Logo">            
+                    <img src="zurags/logo.png" alt="Green Swap Logo">            
                 </div>
                 <nav class="nav-links">
                     <a href="#/home">Нүүр</a>
@@ -141,12 +141,12 @@ class CmpHeader extends HTMLElement {
                 </nav>
                 <div class="search-bar">
                     <button class="search-btn">
-                        <img src="images/search.png" alt="Search">
+                        <img src="zurags/search.png" alt="Search">
                         <input type="text" placeholder="Хайх">
                     </button>
                 </div>
                 </div>
-                    <img src="images/profile.png" class="profile-img" alt="" >
+                    <img src="zurags/profile.png" class="profile-img" alt="" >
                 </div>
             </div>
         </header>
