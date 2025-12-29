@@ -135,7 +135,7 @@ class CmpHeader extends HTMLElement {
                     <img src="zurags/logo.png" alt="Green Swap Logo">            
                 </div>
                 <nav class="nav-links">
-                    <a href="#/home">Нүүр</a>
+                    <a href="#/">Нүүр</a>
                     <a href="#/about">Бидний тухай</a>
                     <a href="#/contact">Холбоо барих</a>
                 </nav>

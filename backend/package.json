@@ -1,21 +1,18 @@
 {
   "name": "greenswap",
   "version": "1.0.0",
-  "description": "**GreenSwap** нь хэрэглэгчдэд хаягдал дахин боловсруулах дадлыг урамшуулан дэмжих зорилготой веб платформ юм.",
+  "description": "GreenSwap нь хэрэглэгчдэд хаягдал дахин боловсруулах дадлыг урамшуулан дэмжих зорилготой веб платформ юм.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mjkbtt/GreenSwap.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/mjkbtt/GreenSwap/issues"
-  },
-  "homepage": "https://github.com/mjkbtt/GreenSwap#readme"
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.5.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
+  }
 }

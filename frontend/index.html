@@ -1,27 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GreenSwap - Дахин боловсруулалт</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="icon" href="images/logo.png" type="image/png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenSwap</title>
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/GS_landingPage.css" />
+  <link rel="icon" href="zurags/logo.png" type="image/png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Georama:wght@400;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <cmp-header></cmp-header>
+
+  <section class="action-buttons container">
+    <a href="#/tseguud" class="action-btn" data-link>
+      <img src="zurags/map.png" alt="">
+      <span>Цэгүүд</span>
+    </a>
+    <a href="#/tushaah" class="action-btn" data-link>
+      <img src="zurags/recycle-2.png" alt="">
+      <span>Тушаах</span>
+    </a>
+    <a href="#/angilah" class="action-btn" data-link>
+      <img src="zurags/waste.png" alt="">
+      <span>Хаягдлыг ангилах</span>
+    </a>
+  </section>
+
   <main id="app-content">
     <div class="loading-screen">
       <div class="loader">♻️</div>
       <p>Ачааллаж байна...</p>
     </div>
   </main>
+
   <footer-h></footer-h>
-  <script type="module" src="components/cmp-header.js"></script>
-  <script type="module" src="components/footer-h.js"></script>
-  <script type="module" src="components/co-product.js"></script>
-  <script type="module" src="components/trash-filter.js"></script>
-  <script type="module" src="components/h-cart.js"></script>
-  <script type="module" src="app.js"></script>
+
   <style>
     .loading-screen {
       display: flex;
@@ -48,5 +65,20 @@
       color: #666;
     }
   </style>
+
+  <script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-ae0kBluKeSGEXDqiXqlfaC3BVHXwAiY">
+  </script>
+
+  <script type="module" src="App.js"></script>
+
+  <script type="module" src="components/cmp-header.js"></script>
+  <script type="module" src="components/footer-h.js"></script>
+  <script type="module" src="components/tseg-cmp.js"></script>
+  <script type="module" src="components/search-waste.js"></script>
+  <script type="module" src="components/gs-ad-card.js"></script>
+  <script type="module" src="components/gs-impact-card.js"></script>
 </body>
 </html>

@@ -15,7 +15,6 @@ class footer extends HTMLElement {
           background: #065f46;
           color: white;
           padding: 25px;
-          border-radius: 12px;
           text-align: center;
         }
 

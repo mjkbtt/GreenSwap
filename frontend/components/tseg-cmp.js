@@ -218,7 +218,7 @@ class TsegCmp extends HTMLElement {
     async loadData() {
         try {
             // data/tseguud.json
-            const res = await fetch('http://127.0.0.1:3000');
+            const res = await fetch('http://127.0.0.1:3000/api/tseguud');
             this.data = await res.json();
             console.log('Өгөгдөл татагдлаа:', this.data);
 
@@ -271,18 +271,18 @@ class TsegCmp extends HTMLElement {
             return;
         }
 
-        console.log("Initializing map...", mapElement);
+        this.map = new google.maps.Map(mapElement, {
+            center: { lat: 47.9184, lng: 106.9177 },
+            zoom: 12,
+        });
 
-        try {
-            this.map = new google.maps.Map(mapElement, {
-                center: { lat: 47.918, lng: 106.917 },
-                zoom: 12,
-            });
-            console.log("Map initialized successfully!", this.map);
-        } catch (error) {
-            console.error("Error initializing map:", error);
-        }
+        // 🔥 SPA fix (VERY IMPORTANT)
+        setTimeout(() => {
+            google.maps.event.trigger(this.map, "resize");
+            this.map.setCenter({ lat: 47.9184, lng: 106.9177 });
+        }, 0);
     }
+
 
     addMarkers() {
         if (!this.map) {
@@ -293,6 +293,14 @@ class TsegCmp extends HTMLElement {
         console.log("Adding", this.data.length, "markers to map");
 
         this.data.forEach((tseg) => {
+            if (
+                typeof tseg.lat !== 'number' ||
+                typeof tseg.lng !== 'number'
+            ) {
+                console.warn("Invalid coordinates:", tseg);
+                return;
+            }
+
             const marker = new google.maps.Marker({
                 position: { lat: tseg.lat, lng: tseg.lng },
                 map: this.map,
@@ -389,6 +397,13 @@ class TsegCmp extends HTMLElement {
             </div>
         `;
     }
+    disconnectedCallback() {
+        this.markers.forEach(marker => marker.setMap(null));
+        this.markers = [];
+        this.map = null;
+    }
 }
+
+
 
 customElements.define('tseg-cmp', TsegCmp);
