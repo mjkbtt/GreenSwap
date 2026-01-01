@@ -13,7 +13,7 @@ export class AngilahPage {
       <div class="guide-page">
         <div class="guide-hero">
           <h1>Хаягдлыг зөв ангилах заавар</h1>
-          <p>Хаягдлыг зөв ангилснаар дахин боловсруулах уу даатгал байна</p>
+          <img src="zurags/haygdal.jpg" alt="waste sorting bg">
         </div>
 
         <div class="category-grid">
@@ -39,18 +39,40 @@ export class AngilahPage {
         }
 
         .guide-hero {
+          display: flex;
+          position: relative;
+          height: 300px;
+          overflow: hidden;
           text-align: center;
           padding: 40px 20px;
           background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
           border-radius: 24px;
           margin-bottom: 40px;
+          justify-content: center; 
+          align-items: center;
         }
 
         .guide-hero h1 {
-          font-size: 32px;
+          position: absolute;
+          margin: 0;
+          top: 5px;
+          font-size: 40px;
           font-weight: 700;
-          color: #1b5e20;
-          margin-bottom: 12px;
+          color: white;
+          z-index: 2;
+          text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .guide-hero img{
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          object-fit: cover;
+          z-index: 1;
+          max-width: 100%;
+          height: auto;
+          border-radius: 12px;
         }
 
         .category-grid {

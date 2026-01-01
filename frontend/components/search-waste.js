@@ -27,7 +27,7 @@ class SearchWaste extends HTMLElement {
             this.hasSearched = true;
         }
 
-        // ✅ WAIT FOR GOOGLE MAPS (SAFE)
+        //  GOOGLE MAPS хүлээх
         await this.waitForGoogleMaps();
         this.initMap();
 

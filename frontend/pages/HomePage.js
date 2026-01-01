@@ -16,29 +16,29 @@ export class HomePage {
 
       <div class="cards-container">
         <gs-ad-card 
-          img="Crumpled Paper Bag Character.png"
-          ttl="Таны халаасанд арай базсан цаас байгаа юм биш биз?">
-        </gs-ad-card>
-
-        <gs-ad-card 
-          class="selCard" 
-          img="Crumpled Paper Bag Character.png"
+          img="ad-pic2.png"
           ttl="Хоосон шил саваа яахаа мэдэхгүй байна уу?">
         </gs-ad-card>
 
         <gs-ad-card 
           img="Crumpled Paper Bag Character.png"
+          ttl="Таны халаасанд арай базсан цаас байгаа юм биш биз?">
+        </gs-ad-card>
+
+        <gs-ad-card 
+          img="ad-pics.png"
           ttl="Энд тэндгүй л хуванцар...">
         </gs-ad-card>
       </div>
 
       <article class="eco-card">
         <div class="eco-icon">
-          <img src="zurags/Crumpled Paper Bag Character.png" alt="">
+          <img src="zurags/delguur-ad.png" alt="">
         </div>
         <div class="eco-text">
-          <h3>Хаягдлаа өг - Оноогоо цуглуул - Эко бүтээгдэхүүн ав</h3>
-          <p>Та дахин боловсруулагдах хаягдлаа тушааснаар манай эко дэлгүүрээс бүтээгдэхүүн авах боломжтой</p>
+          <h3>Хаягдлаа өг - Оноогоо цуглуул - Эко бүтээгдэхүүнээ ав</h3>
+          <p>Та дахин боловсруулагдах хаягдлаа тушааснаар оноо цуглуулах боломжтой бөгөөд 
+              түүнийгээ ашиглан манай эко дэлгүүрээс бүтээгдэхүүн авах боломжтой</p>
           <button class="eco-btn" onclick="alert('Дэлгүүр удахгүй нээгдэнэ!')">
             Дэлгүүр <img src="zurags/store.png" alt="eco delguur icon">
           </button>
@@ -53,7 +53,40 @@ export class HomePage {
         </section>
       </div>
     `;
+    this.initCarousel();
   }
+
+  initCarousel() {
+  customElements.whenDefined('gs-ad-card').then(() => {
+
+    const cards = Array.from(
+      document.querySelectorAll('.cards-container gs-ad-card .card')
+    );
+
+    let index = 0;
+
+    const update = () => {
+      cards.forEach(c => c.classList.remove('left', 'center', 'right'));
+
+      const left = (index + cards.length - 1) % cards.length;
+      const center = index;
+      const right = (index + 1) % cards.length;
+
+      cards[left].classList.add('left');
+      cards[center].classList.add('center');
+      cards[right].classList.add('right');
+    };
+
+    update();
+
+    this.carouselInterval = setInterval(() => {
+      index = (index + 1) % cards.length;
+      update();
+    }, 4000);
+  });
+}
+
+
 
   async fetchImpactData() {
     try {
@@ -69,7 +102,7 @@ export class HomePage {
     } catch (error) {
       console.error('Error fetching impact data:', error);
       this.impactData = {
-        waste: '2000',
+        waste: '7000',
         water: '5000',
         users: '250',
         co2: '50'
@@ -86,25 +119,25 @@ export class HomePage {
       <gs-impact-card 
         ttl="+${this.impactData.waste}кг" 
         inf="Хаягдал цуглуулсан" 
-        img="zurags/recycle.png">
+        img="zurags/recycling-truck.png">
       </gs-impact-card>
       
       <gs-impact-card 
         ttl="+${this.impactData.water}л" 
         inf="Ус хэмнэсэн" 
-        img="zurags/recycle.png">
+        img="zurags/recycling-water.png">
       </gs-impact-card>
       
       <gs-impact-card 
         ttl="+${this.impactData.users}" 
         inf="Идэвхитэй хэрэглэгчид" 
-        img="zurags/recycle.png">
+        img="zurags/group.png">
       </gs-impact-card>
       
       <gs-impact-card 
         ttl="+${this.impactData.co2}кг" 
-        inf="CO₂ ялгарлыг бууруулсан" 
-        img="zurags/recycle.png">
+        inf="Ялгарлыг бууруулсан" 
+        img="zurags/co2-2.png">
       </gs-impact-card>
     `;
   }

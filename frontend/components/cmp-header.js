@@ -32,7 +32,6 @@ class CmpHeader extends HTMLElement {
             /* Backgrounds */
             --bg-light: #f9fff9;        /* body bg */
             --white: #ffffff;           /* header, action btn bg, profile text */
-            --black: #000000;           /* optional */
 
             /* Font sizes */
             --font-size-1: 1em;
@@ -49,13 +48,15 @@ class CmpHeader extends HTMLElement {
             border-bottom: 1px solid var(--gray-lighter);
             padding: 10px 0; 
             height: 50px;
+            flex-shrink: 0;
+            min-width: 800px;
         }
         .nav-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 10px;
             
         }
@@ -66,7 +67,7 @@ class CmpHeader extends HTMLElement {
         }   
         .nav-links {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 15px;
         }
         .nav-links a {
@@ -74,10 +75,12 @@ class CmpHeader extends HTMLElement {
             color: var(--gray);
             margin: 0 50px;  
             font-size: var(--font-size-1);
+            white-space: nowrap; /* Текстийг хоёр мөр болохоос сэргийлнэ */
         }
 
         .nav-links a:hover {
             color: var(--green1);
+            font-weight: 500;
         }
 
         .profile-img {
