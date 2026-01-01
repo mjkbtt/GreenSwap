@@ -1,6 +1,3 @@
-// frontend/pages/CenterRegisterPage.js
-// Waste Collection Center Registration
-
 export class CenterRegisterPage {
   async render(container) {
     container.innerHTML = /*html*/`
