@@ -7,7 +7,7 @@ export class BidniiTuhai {
       <div class="about-page">
         <div class="about-hero">
           <h1>Бидний тухай</h1>
-          <p class="subtitle">Байгаль орчноо хамгаалах нь Бидний хамтын үүрэг</p>
+          <img src="zurags/about-us.png">
         </div>
         <div class="about-content">
           <section class="mission-section">
@@ -101,7 +101,12 @@ export class BidniiTuhai {
         .about-hero {
           text-align: center;
           padding: 60px 20px 40px 20px;
-          background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+        }
+        .about-hero img {
+          width:50em;
+          height:auto;
+          border-radius: 12px;
+          margin-top: 20px;
         }
 
         .about-hero h1 {
