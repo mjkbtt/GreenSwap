@@ -1,173 +1,174 @@
 class CmpHeader extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-    }
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
 
-    connectedCallback() {
-        this.render();
-        this.addEvents();
-    }
-    addEvents() {
-        const searchBtn = this.shadowRoot.querySelector(".search-btn");
-        searchBtn.addEventListener("click", () => {
-            alert("Хайх үйлдэл эхэллээ!");
+  connectedCallback() {
+    this.render();
+    this.addEvents();
+  }
 
-        });
-    }
-    render() {  
-        this.shadowRoot.innerHTML = /*html*/`
-        <style>
+  addEvents() {
+    const menuBtn = this.shadowRoot.querySelector(".menu-btn");
+    const header = this.shadowRoot.querySelector(".header");
+
+    menuBtn.addEventListener("click", () => {
+      header.classList.toggle("open");
+    });
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = /*html*/`
+      <style>
         :root {
-            --green1: #3ca054;         /* logo, nav hover, profile bg, action btn text */
-            --green-light: #c9e6cb;    /* action btn border */
-            --green-lightest: #e6f7e8; /* hero bg */
-            /* Yellow */
-            --yellow1: rgba(255, 251, 234, 1);
-            --gray-dark: #333;          /* text */
-            --gray: #555;               /* nav links */
-            --gray-light: #888;         /* search icon */
-            --gray-lighter: #eee;       /* header border */
+          --green1: #3ca054;
+          --gray: #555;
+          --gray-light: #888;
+          --gray-lighter: #eee;
+          --white: #fff;
+        }
 
-            /* Backgrounds */
-            --bg-light: #f9fff9;        /* body bg */
-            --white: #ffffff;           /* header, action btn bg, profile text */
-
-            /* Font sizes */
-            --font-size-1: 1em;
-            --font-size-2: 1.5em;
-            --font-size-3: 2em;
-            --font-size-4: 2.5em;
-            --font-size-5: 3em;
-        }            
+        /* ================= DESKTOP (DEFAULT) ================= */
         .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--white); 
-            border-bottom: 1px solid var(--gray-lighter);
-            padding: 10px 0; 
-            height: 50px;
-            flex-shrink: 0;
-            min-width: 800px;
+          background: var(--white);
+          border-bottom: 1px solid var(--gray-lighter);
         }
+
         .nav-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            flex-wrap: nowrap;
-            gap: 10px;
-            
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 60px;
+          padding: 0 16px;
+          max-width: 1200px;
+          margin: 0 auto;
         }
+
         .logo img {
-            margin-left: 15px;
-            width: 80px;
-            height: 60px;
-        }   
-        .nav-links {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 15px;
+          width: 80px;
+          height: auto;
         }
+
+        .nav-links {
+          display: flex;
+          gap: 40px;
+        }
+
         .nav-links a {
-            text-decoration: none;
-            color: var(--gray);
-            margin: 0 50px;  
-            font-size: var(--font-size-1);
-            white-space: nowrap; /* Текстийг хоёр мөр болохоос сэргийлнэ */
+          text-decoration: none;
+          color: var(--gray);
+          font-size: 1em;
         }
 
         .nav-links a:hover {
-            color: var(--green1);
-            font-weight: 500;
-        }
-
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            cursor:pointer;
-            margin: 15px;
-            flex-shrink: 0;
-
+          color: var(--green1);
         }
 
         .search-bar {
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            padding: 5px 10px; 
-            background-color: #f0f0f0; 
-            height: 30px;
-            flex:1; /*allow stretchig between nav and profile*/
-            min-width: 120px;
-            max-width: 300px;
-            gap: 5px;
-            margin: 30px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          border: 1px solid #ccc;
+          border-radius: 20px;
+          padding: 4px 10px;
         }
 
-        .search-btn {
+        .search-bar input {
+          border: none;
+          outline: none;
+          background: transparent;
+        }
+
+        .profile-img {
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+        }
+
+        .menu-btn {
+          display: none;
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width: 768px) {
+
+          /* header өөрөө доош сунана */
+          .header {
             display: flex;
-            justify-content: flex-start;
+            flex-direction: column;
+          }
+
+          /* top row */
+          .nav-bar {
+            width: 100%;
+            height: 56px;
+          }
+
+          /* search mobile дээр байхгүй */
+          .search-bar {
+            display: none;
+          }
+
+          .right {
+            display: flex;
             align-items: center;
-            gap: 8px;
-            width: 40px;
-            height: 30px;
+            gap: 10px;
+          }
+
+          .menu-btn {
+            display: inline-block;
+            font-size: 26px;
             background: none;
             border: none;
             cursor: pointer;
-            color: var(--gray-light);
+          }
+
+          /* nav-links ганц удаа, header-ийн доор */
+          .nav-links {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 12px 16px;
+            border-top: 1px solid var(--gray-lighter);
+            background: var(--white);
+          }
+
+          .header.open .nav-links {
+            display: flex;
+          }
         }
-        .search-btn img{
-            width: 20px;
-            height: 20px;
-        }
-        .search-bar input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            outline: none;
-            font-size: 16px;
-        }
+      </style>
 
+      <header class="header">
+        <!-- TOP ROW -->
+        <div class="nav-bar">
+          <div class="logo">
+            <img src="zurags/logo.png" alt="Logo">
+          </div>
 
-        </style>
-        <header class="header">
-            <div class="container nav-bar">
-                <div class="logo">
-                    <img src="zurags/logo.png" alt="Green Swap Logo">            
-                </div>
-                <nav class="nav-links">
-                    <a href="#/">Нүүр</a>
-                    <a href="#/about">Бидний тухай</a>
-                    <a href="#/contact">Холбоо барих</a>
-                </nav>
-                <div class="search-bar">
-                    <button class="search-btn">
-                        <img src="zurags/search.png" alt="Search">
-                        <input type="text" placeholder="Хайх">
-                    </button>
-                </div>
-                </div>
-                    <img src="zurags/profile.png" class="profile-img" alt="" >
-                </div>
-            </div>
-        </header>
-        `;
-    }
+          <!-- DESKTOP NAV -->
+          <nav class="nav-links">
+            <a href="#/">Нүүр</a>
+            <a href="#/about">Бидний тухай</a>
+            <a href="#/contact">Холбоо барих</a>
+          </nav>
 
-    disconnectedCallback() {
-    
-    }
+          <!-- DESKTOP SEARCH -->
+          <div class="search-bar">
+            <img src="zurags/search.png" width="18">
+            <input type="text" placeholder="Хайх">
+          </div>
 
-    attributeChangedCallback(name, oldVal, newVal) {
-    
-    }
-
-    adoptedCallback() {
-    
-    }
-
+          <!-- RIGHT SIDE -->
+          <div class="right">
+            <img src="zurags/profile.png" class="profile-img" alt="Profile">
+            <button class="menu-btn">☰</button>
+          </div>
+        </div>
+      </header>
+    `;
+  }
 }
 
-window.customElements.define('cmp-header', CmpHeader);
+customElements.define("cmp-header", CmpHeader);

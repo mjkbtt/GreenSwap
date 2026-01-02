@@ -11,25 +11,43 @@ export class AngilahPage {
     
     container.innerHTML = /*html*/`
       <div class="guide-page">
-        <div class="guide-hero">
-          <h1>Хаягдлыг зөв ангилах заавар</h1>
-          <img src="zurags/haygdal.jpg" alt="waste sorting bg">
-        </div>
+          <div class="action-btns">
+                    <section class="action-buttons ">
+                        <a href="#/tseguud" class="action-btn" data-link>
+                            <img src="zurags/map.png" alt="">
+                            <span>Цэгүүд</span>
+                        </a>
+                        <a href="#/tushaah" class="action-btn" data-link>
+                            <img src="zurags/recycle-2.png" alt="">
+                            <span>Тушаах</span>
+                        </a>
+                        <a href="#/angilah" class="action-btn" data-link>
+                            <img src="zurags/waste.png" alt="">
+                            <span>Хаягдлыг ангилах</span>
+                        </a>
+                    </section>
+          </div>
+          <div class="angilah-info">
+            <div class="guide-hero">
+              <h1>Хаягдлыг зөв ангилах заавар</h1>
+              <img src="zurags/haygdal.jpg" alt="waste sorting bg">
+            </div>
 
-        <div class="category-grid">
-          ${this.renderCategoryCards()}
-        </div>
+            <div class="category-grid">
+              ${this.renderCategoryCards()}
+            </div>
 
-        <div class="expandable-sections">
-          <h2 class="section-title">Дэлгэрэнгүй мэдээлэл</h2>
-          ${this.renderExpandableSections()}
-        </div>
+            <div class="expandable-sections">
+              <h2 class="section-title">Дэлгэрэнгүй мэдээлэл</h2>
+              ${this.renderExpandableSections()}
+            </div>
 
-        <div class="bottom-message">
-          <div class="bottom-icon">🌍</div>
-          <h3>Хамтдаар байгаль орчноо хамгаалъя!</h3>
+            <div class="bottom-message">
+              <div class="bottom-icon">🌍</div>
+              <h3>Хамтдаар байгаль орчноо хамгаалъя!</h3>
+            </div>
+          </div>
         </div>
-      </div>
 
       <style>
         .guide-page {
@@ -37,7 +55,9 @@ export class AngilahPage {
           margin: 0 auto;
           padding: 20px;
         }
-
+        .action-btns{
+          margin-top:10px;
+        }
         .guide-hero {
           display: flex;
           position: relative;
@@ -81,7 +101,9 @@ export class AngilahPage {
           gap: 16px;
           margin-bottom: 60px;
         }
-
+        .angilah-info {
+          margin-top: 30px;
+        }
         .category-card {
           background: white;
           padding: 24px;

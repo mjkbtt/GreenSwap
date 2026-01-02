@@ -1,8 +1,10 @@
 :root {
     /* Greens */
-    --green1: #3ca054;         /* logo, nav hover, profile bg, action btn text */
+    --green1: #3ca054;        /* logo, nav hover, profile bg, action btn text */
+    --green2: #22c55e;
     --green-light: #c9e6cb;    /* action btn border */
     --green-lightest: #e6f7e8; /* hero bg */
+    --green-dark: #1b5e20;     /* text */
     /* Yellow */
     --yellow: #FDC700;
     --yellow-light: rgba(255, 251, 234, 1);
@@ -21,7 +23,9 @@
     --font-size-4: 2.5em;
     --font-size-5: 3em;
 }
-
+* {
+    box-sizing: border-box;
+}
 /* Base body */
 body {
     font-family: 'Nunito'; 
@@ -29,7 +33,8 @@ body {
     padding: 0;
     background-color: var(--bg-light);
     color: var(--gray-dark);
-    min-width: 800px;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .container {
@@ -42,16 +47,31 @@ body {
 
 /* Main Content */
 .hero-section {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;    
+    width: 100%;
+    gap: 20px;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     background-image: url('backPic.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 100px 0; 
-    text-align: center;
-    align-content: center;
-    margin-top: 20px; 
-    height: 300px;
+    min-height: 500px;
+    width: 100%;
+    justify-content: center;
 }
+
 .hero-content h1 {
     font-size: var(--font-size-5);
     color: white;
@@ -62,17 +82,17 @@ body {
 .hero-content h2 {
     font-size: var(--font-size-5);
     color: white;
-    margin-top: 10px; /* 10px ~ size-2 */
+    margin-top: 10px; 
 }
 
 /* Main 3 buttons */
 .action-buttons {
     display: flex;
-    justify-content: space-evenly;
-    padding: 0px 0;
-    margin-top: 20px;
+    justify-content: center;
     width: 100%;
     gap: 50px;
+    margin-top:0;
+    margin-bottom: 10px;;
 }
 
 .action-btn {
@@ -81,7 +101,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 250px; 
-    height: 30px;
+    height: 50px;
     padding: 20px 0; 
     gap:10px;
     border: 1px solid var(--green-light); 
@@ -91,6 +111,7 @@ body {
     color: var(--green1);
     font-weight: 500;
     transition: box-shadow 0.3s;
+    
 }
 .action-btn img{
     width: 25px;
@@ -290,26 +311,81 @@ body {
     padding: 20px 0;
     margin-top: 40px;       
 }
-/* Mobile landscape and smaller tablets */
-@media (max-width: 1024px) {
+/* Mobile */
+@media (max-width: 768px) {
+      /* ===== HERO ===== */
+    .hero-section {
+        gap: 16px;
+        margin-top: 10px;
+    }
+
+    .hero-content {
+        min-height: 360px;
+        padding: 20px 10px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8em;  
+        line-height: 1.3;
+    }
+
+    .hero-content h2 {
+        font-size: 1.6em;
+    }
+
+    /* ===== ACTION BUTTONS ===== */
+    .action-buttons {
+        flex-wrap: wrap;        
+        gap: 12px;
+        padding: 0 10px;
+    }
+
+    .action-btn {
+        width: 100%;
+        max-width: 320px;       /* iPhone дэлгэц */
+        height: 48px;
+        padding: 10px 0;
+        font-size: 0.95em;
+    }
+
+    .action-btn img {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* ===== CAROUSEL ===== */
     .cards-container {
-        gap: 15px;
-        padding: 30px 10px;
+        height: 380px;
+        padding: 10px;
     }
-    
+
     .card {
-        width: 150px;
-        height: 220px;
-    }
-    
-    .card.selCard {
         width: 220px;
-        height: 320px;
+        height: 300px;
+    }
+
+    .card.left {
+        transform: translate(-50%, -50%) translateX(-180px) scale(0.7);
+    }
+
+    .card.center {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    .card.right {
+        transform: translate(-50%, -50%) translateX(180px) scale(0.7);
+    }
+
+    .card h3 {
+        font-size: 1.1em;
     }
     .eco-card {
         flex-direction: column;
-        width: 80%;
+        width: 95%;
         min-height: auto;
+        transform: scale(0.9);
+        padding: 10px;
+        margin:12px auto;
     }
     
     .eco-icon img {
@@ -327,9 +403,7 @@ body {
         text-align: center;
     }
     
-    .eco-text p {
-        margin-left: 0;
-    }
+    
     
     .eco-btn {
         display: block;
@@ -351,19 +425,45 @@ body {
         left: 15px; 
         transform: translateY(-50%);
     }
+    .impact-section{
+        margin-top: 0;
+        padding-top: 8px;
+    }
+    .impact-section h2 {
+        font-size: 1.3em;
+        margin:0;
+        padding:0;
+    }
     .impact-cards {
         display: flex;
         flex-direction: row; 
         overflow-x: scroll;   
         scroll-snap-type: x mandatory; /* Гүйлгэхэд картууд яг голлон зогсоно */
-        gap: 20px;           /* Картууд хоорондын зай */
-        padding: 20px;       /* Хажуу талын сүүдэр таслагдахгүй байх зай */
+        gap: 14px;           /* Картууд хоорондын зай */
+        padding: 12px;       /* Хажуу талын сүүдэр таслагдахгүй байх зай */
         -webkit-overflow-scrolling: touch; /* iOS дээр илүү зөөлөн гүйлгэнэ */
     }
 
     .impact-card {
-        flex: 0 0 200px;     /* Картыг шахагдахаас хамгаалж, тогтмол 200px өргөнтэй байлгана */
+        flex: 0 0 150px;     /* Картыг шахагдахаас хамгаалж, тогтмол 200px өргөнтэй байлгана */
         scroll-snap-align: center; /* Гүйлгэхэд энэ карт дэлгэцийн голд зогсоно */
+        height: 150px;
+        width: 150px;
+        
+    }
+    .impact-card img {
+        width: 64px;     
+        height: 64px;
+    }
+
+    .impact-card h3 {
+        font-size: 1.3em; 
+        margin: 1px 0 1px;
+    }
+
+    .impact-card p {
+        font-size: 0.85em; 
+        margin: 0;
     }
 
 }

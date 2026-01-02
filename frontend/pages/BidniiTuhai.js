@@ -6,8 +6,7 @@ export class BidniiTuhai {
     container.innerHTML = /*html*/`
       <div class="about-page">
         <div class="about-hero">
-          <h1>Бидний тухай</h1>
-          <img src="zurags/about-us.png">
+          <img src="zurags/about-us2.png">
         </div>
         <div class="about-content">
           <section class="mission-section">
@@ -27,8 +26,8 @@ export class BidniiTuhai {
           <div class="features-grid">
             <div class="features-column">
               <div class="feature-section green">
-                <div class="feature-icon">✓</div>
-                <h3>Бидний яғаам зорилго</h3>
+                <img src="zurags/target.png">
+                <h3>Бидний эрхэм зорилго</h3>
                 <ul class="feature-list">
                   <li>Дахин боловсруулалтын мэдлэг, соёлыг түгээх</li>
                   <li>Хог хаягдлын зөв ангилалтыг нэмэгдүүлэх</li>
@@ -38,19 +37,19 @@ export class BidniiTuhai {
               </div>
 
               <div class="feature-section">
-                <h4>Бидний баг</h4>
+                <img src="zurags/community.png">
+                <h4>Бидний хамт олон</h4>
                 <p class="team-description">
                   Эко Монгол төслийг байгаль орчны мэргэжилтнүүд, програм хангамжийн инженерүүд, 
                   дизайнеруудаас бүрдсэн залуу, идэвхтэй баг хэрэгжүүлж байна. Бид Монгол улсад 
                   цэвэр орон болтой хослуудыг хэрэгжүүлж хэрэгсэжүүлэр.
                 </p>
-                <a href="#" class="team-link">✓ Хамтаар бид илүү хүч үргэлүүх бүхэнд нээгээдэй! Бүхэнээ!</a>
               </div>
             </div>
 
             <div class="features-column">
               <div class="feature-section blue">
-                <div class="feature-icon">💙</div>
+                <img src="zurags/unet.png">
                 <h3>Бидний үнэт зүйлс</h3>
                 <ul class="feature-list">
                   <li>Байгаль орчны эрэмлэх</li>
@@ -61,8 +60,8 @@ export class BidniiTuhai {
               </div>
 
               <div class="feature-section yellow">
-                <div class="feature-icon">⭐</div>
-                <h3>Бололөстол, мэдлэг</h3>
+                <img src="zurags/star.png">
+                <h3>Бидний мөрөөдөл</h3>
                 <p>Манай зорилго бол Монгол улсыг цэвэр, ногоон орон болгоод цаашид төслө орголсон орны 
                 жишиг байх явдал.</p>
               </div>
@@ -71,24 +70,15 @@ export class BidniiTuhai {
 
           <section class="impact-banner">
             <div class="impact-content">
-              <h2>Бидний нөлөө</h2>
+              <img src="zurags/ecological.png">
+              <h2>Та бидэнтэй нэгдээрэй</h2>
               <p>
-                Эко Монгол төслийг байгаль орчны мэргэжлүүд, програм хангамжын инженерүүд, 
-                дизайнеруудаас бүрдсэн залуу, цэвэр орон болтой төслийү нч эргэхгүйлэхэд нөгөөд, цаашид ор 
-                болгох болтоой хослуудыг төслө эргэхгүйлэр.
+                Дахин боловсруулалтыг дэмжиж, байгаль орчныг хамгаалахад хувь нэмрээ оруулцгаая.
               </p>
             </div>
           </section>
 
-          <section class="cta-section">
-            <div class="cta-content">
-              <div class="cta-icon">♻️</div>
-              <div class="cta-text">
-                <h3>Танд бид байгаль орчны танилцуулагч хүснэгт!</h3>
-                <p>Байгаль орчноо хамгаалаарай!</p>
-              </div>
-            </div>
-          </section>
+          
         </div>
       </div>
 
@@ -99,22 +89,25 @@ export class BidniiTuhai {
         }
 
         .about-hero {
+          position: relative;
           text-align: center;
           padding: 60px 20px 40px 20px;
-        }
-        .about-hero img {
-          width:50em;
-          height:auto;
-          border-radius: 12px;
-          margin-top: 20px;
+          height: 20em;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden; /* Зураг хүрээнээс гарахгүй байх */
+          margin-right: 20px;
+          margin-left: 20px;
         }
 
-        .about-hero h1 {
-          font-size: 36px;
-          font-weight: 700;
-          color: #1b5e20;
-          margin-bottom: 12px;
+        .about-hero img {
+          width: 600px ;
+          height: auto;
+          object-fit: contain; /* contain - зураг бүтэн харагдана */
+          border-radius: 12px;
         }
+
 
         .subtitle {
           font-size: 18px;
@@ -167,6 +160,12 @@ export class BidniiTuhai {
           padding: 32px;
           border-radius: 16px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .feature-section img {
+          width: 32px;
+          height: 32px;
+          margin-right: 12px;
         }
 
         .feature-section.green {
@@ -181,9 +180,8 @@ export class BidniiTuhai {
           background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
         }
 
-        .feature-icon {
-          font-size: 32px;
-          margin-bottom: 16px;
+        .feature-section:hover {
+          transform: scale(1.05);
         }
 
         .feature-section h3 {
@@ -256,6 +254,7 @@ export class BidniiTuhai {
           font-size: 28px;
           font-weight: 700;
           margin-bottom: 16px;
+          text-align: center;
         }
 
         .impact-content p {
@@ -263,6 +262,14 @@ export class BidniiTuhai {
           font-size: 15px;
           line-height: 1.8;
           opacity: 0.95;
+          text-align: center;
+        }
+        .impact-content img {
+          height: 80px;
+          width: 80px;
+          display: block;   /* Зургийг блок болгох, доош нь*/
+          margin-left: auto; 
+          margin-right: auto;
         }
 
         .cta-section {

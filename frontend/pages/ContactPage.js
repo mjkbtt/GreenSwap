@@ -2,27 +2,21 @@
 
 export class ContactPage {
   async render(container) {
-    container.innerHTML = `
-      <div class="contact-page">
-        <!-- Hero Section -->
-        <div class="contact-hero">
-          <h1>Холбоо барих</h1>
-          <p>Бидэнтэй холбогдохдоо таатай байна уу</p>
-        </div>
-
+    container.innerHTML = /*html*/`
+      <div class="contact-page"> 
         <!-- Contact Content -->
         <div class="contact-content">
           <!-- Contact Form -->
           <div class="contact-form-section">
-            <h2>Мессеж илгээх</h2>
+            <h2>Санал хүсэлт илгээх</h2>
             <form class="contact-form" id="contactForm">
               <div class="form-group">
-                <label for="name">Нэр *</label>
+                <label for="name">Нэр </label>
                 <input type="text" id="name" name="name" required placeholder="Таны нэр">
               </div>
 
               <div class="form-group">
-                <label for="email">Имэйл *</label>
+                <label for="email">Имэйл хаяг</label>
                 <input type="email" id="email" name="email" required placeholder="example@email.com">
               </div>
 
@@ -32,7 +26,7 @@ export class ContactPage {
               </div>
 
               <div class="form-group">
-                <label for="subject">Сэдэв *</label>
+                <label for="subject">Сэдэв </label>
                 <select id="subject" name="subject" required>
                   <option value="">Сонгоно уу</option>
                   <option value="general">Ерөнхий асуулт</option>
@@ -44,12 +38,12 @@ export class ContactPage {
               </div>
 
               <div class="form-group">
-                <label for="message">Мессеж *</label>
+                <label for="message">Мессеж </label>
                 <textarea id="message" name="message" rows="5" required placeholder="Таны мессеж..."></textarea>
               </div>
 
               <button type="submit" class="submit-button">
-                Илгээх ➜
+                Илгээх 
               </button>
             </form>
 
@@ -58,37 +52,45 @@ export class ContactPage {
 
           <!-- Contact Information -->
           <div class="contact-info-section">
-            <h2>Холбоо барих мэдээлэл</h2>
+            <h2>Бидэнтэй холбоо барих мэдээлэл</h2>
             
             <div class="info-cards">
               <div class="info-card">
-                <div class="info-icon">📍</div>
+              <div class="info-icon">
+                  <img src="zurags/location.png" alt="Location">
+                </div>
                 <div class="info-content">
-                  <h3>Хаяг</h3>
+                  <h3>Хаяг:</h3>
                   <p>Улаанбаатар хот, Сүхбаатар дүүрэг<br>Барилгачдын талбай, GreenHub 3 давхар</p>
                 </div>
               </div>
 
               <div class="info-card">
-                <div class="info-icon">📞</div>
+                <div class="info-icon">
+                  <img src="zurags/telephone.png" alt="Phone">
+                </div>
                 <div class="info-content">
-                  <h3>Утас</h3>
+                  <h3>Утас:</h3>
                   <p>+976 7000-1234<br>+976 8000-5678</p>
                 </div>
               </div>
 
               <div class="info-card">
-                <div class="info-icon">✉️</div>
+                <div class="info-icon">
+                  <img src="zurags/email.png" alt="Email">
+                </div>
                 <div class="info-content">
-                  <h3>Имэйл</h3>
+                  <h3>Имэйл:</h3>
                   <p>info@greenswap.mn<br>support@greenswap.mn</p>
                 </div>
               </div>
 
               <div class="info-card">
-                <div class="info-icon">🕐</div>
+                <div class="info-icon">
+                  <img src="zurags/time.png" alt="Clock">
+                </div>
                 <div class="info-content">
-                  <h3>Ажлын цаг</h3>
+                  <h3>Ажлын цаг:</h3>
                   <p>Даваа - Баасан: 9:00 - 18:00<br>Бямба: 10:00 - 14:00<br>Ням: Амарна</p>
                 </div>
               </div>
@@ -138,7 +140,7 @@ export class ContactPage {
         .contact-hero h1 {
           font-size: 36px;
           font-weight: 700;
-          color: #1b5e20;
+          color: --green-dark;
           margin-bottom: 12px;
         }
 
@@ -160,7 +162,7 @@ export class ContactPage {
         .contact-info-section h2 {
           font-size: 24px;
           font-weight: 700;
-          color: #1b5e20;
+          color: var(--green-dark);
           margin-bottom: 24px;
         }
 
@@ -173,6 +175,7 @@ export class ContactPage {
 
         .form-group {
           margin-bottom: 20px;
+          margin-right: 20px;
         }
 
         .form-group label {
@@ -210,7 +213,7 @@ export class ContactPage {
         .submit-button {
           width: 100%;
           padding: 14px;
-          background: #4CAF50;
+          background: var(--yellow);
           color: white;
           border: none;
           border-radius: 8px;
@@ -221,7 +224,6 @@ export class ContactPage {
         }
 
         .submit-button:hover {
-          background: #45a049;
           transform: translateY(-2px);
         }
 
@@ -263,11 +265,20 @@ export class ContactPage {
           display: flex;
           gap: 16px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .info-card:hover {
+          transform: scale(1.05);
         }
 
         .info-icon {
           font-size: 32px;
           flex-shrink: 0;
+        }
+        .info-icon img{
+          margin-top: 10px;
+          height: 30px;
+          width: 30px;
         }
 
         .info-content h3 {
@@ -322,7 +333,7 @@ export class ContactPage {
         }
 
         .social-link:hover {
-          background: #4CAF50;
+          background: var(--green1);
           color: white;
           transform: translateX(4px);
         }
@@ -336,7 +347,7 @@ export class ContactPage {
         .map-section h2 {
           font-size: 28px;
           font-weight: 700;
-          color: #1b5e20;
+          color: --green-dark;
           margin-bottom: 24px;
           text-align: center;
         }

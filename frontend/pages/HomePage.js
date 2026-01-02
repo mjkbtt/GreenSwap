@@ -8,10 +8,25 @@ export class HomePage {
     
     container.innerHTML = /*html*/`
       <main class="hero-section">
+        <section class="action-buttons ">
+          <a href="#/tseguud" class="action-btn" data-link>
+            <img src="zurags/map.png" alt="">
+            <span>Цэгүүд</span>
+          </a>
+          <a href="#/tushaah" class="action-btn" data-link>
+            <img src="zurags/recycle-2.png" alt="">
+            <span>Тушаах</span>
+          </a>
+          <a href="#/angilah" class="action-btn" data-link>
+            <img src="zurags/waste.png" alt="">
+            <span>Хаягдлыг ангилах</span>
+          </a>
+        </section>
         <div class="hero-content">
           <h1>Өнөөдрийн дахин боловсруулалт</h1>
           <h2>Маргаашийн ирээдүй</h2>
         </div>
+
       </main>
 
       <div class="cards-container">
@@ -82,7 +97,7 @@ export class HomePage {
     this.carouselInterval = setInterval(() => {
       index = (index + 1) % cards.length;
       update();
-    }, 4000);
+    }, 3000);
   });
 }
 
