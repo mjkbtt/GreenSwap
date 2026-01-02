@@ -85,7 +85,7 @@ export class BidniiTuhai {
       <style>
         .about-page {
           min-height: 100vh;
-          background: linear-gradient(180deg, #e8f5e9 0%, #f1f8f4 100%);
+          background: var(--background);
         }
 
         .about-hero {
@@ -108,13 +108,6 @@ export class BidniiTuhai {
           border-radius: 12px;
         }
 
-
-        .subtitle {
-          font-size: 18px;
-          color: #2e7d32;
-          font-weight: 500;
-        }
-
         .about-content {
           max-width: 1000px;
           margin: 0 auto;
@@ -122,24 +115,25 @@ export class BidniiTuhai {
         }
 
         .mission-section {
-          background: white;
+          background: var(--white);
           padding: 40px;
           border-radius: 16px;
           margin-bottom: 32px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid var(--gray-lighter);
         }
 
         .intro-text {
           font-size: 16px;
           line-height: 1.8;
-          color: #333;
+          color: var(--black);
           margin-bottom: 20px;
         }
 
         .description-text {
           font-size: 14px;
           line-height: 1.8;
-          color: #666;
+          color: var(--gray);
         }
 
         .features-grid {

@@ -44,7 +44,7 @@ export class AngilahPage {
 
             <div class="bottom-message">
               <div class="bottom-icon">🌍</div>
-              <h3>Хамтдаар байгаль орчноо хамгаалъя!</h3>
+              <h3>Хамтдаа байгаль орчноо хамгаалъя!</h3>
             </div>
           </div>
         </div>
@@ -105,12 +105,14 @@ export class AngilahPage {
           margin-top: 30px;
         }
         .category-card {
-          background: white;
+          background: var(--white);
           padding: 24px;
           border-radius: 16px;
           cursor: pointer;
           transition: all 0.3s ease;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid var(--gray-lighter);
+          color: var(--black);
         }
 
         .category-card:hover {
@@ -122,13 +124,18 @@ export class AngilahPage {
           font-size: 40px;
           margin-bottom: 12px;
         }
+        .expandable-sections {
+          color: var(--black);
+        }
 
         .expandable-item {
-          background: white;
+          background: var(--white);
           border-radius: 12px;
           margin-bottom: 12px;
           overflow: hidden;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid var(--gray-lighter);
+          color: var(--black);
         }
 
         .expandable-header {
@@ -139,7 +146,7 @@ export class AngilahPage {
         }
 
         .expandable-header:hover {
-          background: #f9f9f9;
+          background: var(--white);
         }
 
         .expandable-content {
@@ -157,10 +164,16 @@ export class AngilahPage {
         .bottom-message {
           text-align: center;
           padding: 60px 20px;
+          color: var(--black);
         }
 
         .bottom-icon {
           font-size: 64px;
+        }
+        @media (max-width: 768px) {
+          .guide-hero {
+            height: 150px;
+          }
         }
       </style>
     `;

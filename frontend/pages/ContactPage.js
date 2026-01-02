@@ -52,7 +52,6 @@ export class ContactPage {
 
           <!-- Contact Information -->
           <div class="contact-info-section">
-            <h2>Бидэнтэй холбоо барих мэдээлэл</h2>
             
             <div class="info-cards">
               <div class="info-card">
@@ -128,25 +127,7 @@ export class ContactPage {
       <style>
         .contact-page {
           min-height: 100vh;
-          background: linear-gradient(180deg, #e8f5e9 0%, #f1f8f4 100%);
-        }
-
-        .contact-hero {
-          text-align: center;
-          padding: 60px 20px 40px 20px;
-          background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
-        }
-
-        .contact-hero h1 {
-          font-size: 36px;
-          font-weight: 700;
-          color: --green-dark;
-          margin-bottom: 12px;
-        }
-
-        .contact-hero p {
-          font-size: 18px;
-          color: #2e7d32;
+          background: var(--background);
         }
 
         .contact-content {
@@ -164,13 +145,15 @@ export class ContactPage {
           font-weight: 700;
           color: var(--green-dark);
           margin-bottom: 24px;
+          color: var(--black);
         }
 
         .contact-form-section {
-          background: white;
+          background: var(--white);
           padding: 40px;
           border-radius: 16px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid var(--gray-lighter);
         }
 
         .form-group {
@@ -182,27 +165,42 @@ export class ContactPage {
           display: block;
           font-size: 14px;
           font-weight: 600;
-          color: #333;
+          color: var(--black);
           margin-bottom: 8px;
         }
 
         .form-group input,
-        .form-group select,
         .form-group textarea {
           width: 100%;
           padding: 12px 16px;
-          border: 2px solid #e5e7eb;
+          border: 1px solid #e5e7eb;
           border-radius: 8px;
           font-size: 14px;
           font-family: inherit;
           transition: border-color 0.2s;
+          background: var(--white);
+        }
+        .form-group select{
+          height: 50px;
+          width: 100%;
+          padding: 12px 16px;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          font-size: 14px;
+          font-family: inherit;
+          transition: border-color 0.2s;
+          background: var(--white);
+          color: var(--gray-dark);
+        }
+        [data-theme="dark"] .form-group select {
+          color: var(--black);
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
           outline: none;
-          border-color: #4CAF50;
+          border-color: var(--green2);
         }
 
         .form-group textarea {
@@ -214,7 +212,7 @@ export class ContactPage {
           width: 100%;
           padding: 14px;
           background: var(--yellow);
-          color: white;
+          color: var(--white);
           border: none;
           border-radius: 8px;
           font-size: 16px;
@@ -236,9 +234,9 @@ export class ContactPage {
         }
 
         .form-message.success {
-          background: #d4edda;
-          color: #155724;
-          border: 1px solid #c3e6cb;
+          background: var(--background);
+          color: var(--green-dark);
+          border: 1px solid var(--green-light);
         }
 
         .form-message.error {
@@ -259,13 +257,14 @@ export class ContactPage {
         }
 
         .info-card {
-          background: white;
+          background: var(--white);
           padding: 20px;
           border-radius: 12px;
           display: flex;
           gap: 16px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
           transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          border: 1px solid var(--gray-lighter);
         }
         .info-card:hover {
           transform: scale(1.05);
@@ -284,27 +283,28 @@ export class ContactPage {
         .info-content h3 {
           font-size: 16px;
           font-weight: 600;
-          color: #333;
+          color: var(--black);
           margin-bottom: 8px;
         }
 
         .info-content p {
           font-size: 14px;
-          color: #666;
+          color: var(--gray);
           line-height: 1.6;
         }
 
         .social-section {
-          background: white;
+          background: var(--white);
           padding: 24px;
           border-radius: 12px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid var(--gray-lighter);
         }
 
         .social-section h3 {
           font-size: 18px;
           font-weight: 600;
-          color: #333;
+          color: var(--black);
           margin-bottom: 16px;
         }
 
@@ -319,13 +319,14 @@ export class ContactPage {
           align-items: center;
           gap: 12px;
           padding: 12px 16px;
-          background: #f5f5f5;
+          background: var(--white);
           border-radius: 8px;
           text-decoration: none;
-          color: #333;
+          color: var(--black);
           font-size: 14px;
           font-weight: 500;
           transition: all 0.2s ease;
+          border: 1px solid var(--gray-lighter);
         }
 
         .social-link span {

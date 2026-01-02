@@ -214,7 +214,7 @@ class SearchWaste extends HTMLElement {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
-                background: #f9fdf9;
+                background: var(--background);
                 padding: 20px;
                 border-radius: 12px;
             }
@@ -260,30 +260,37 @@ class SearchWaste extends HTMLElement {
                 gap: 20px;
             }
             .search-container {
-                background: white;
+                background: var(--white);
                 padding: 20px;
                 border-radius: 12px;
-                border: 1px solid #ddd;
+                border: 1px solid var(--gray-lighter);
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
+                color: var(--black);
             }
             label { font-weight: 600; font-size: 13px; }
-            select, input, button {
+            select, button {
                 padding: 10px;
                 border-radius: 6px;
-                border: 1px solid #c9e6cb;
+                border: 1px solid var(--green-light);
                 height: 40px;
             }
+            input{
+                padding: 10px;
+                border-radius: 6px;
+                border: 1px solid var(--green-light);
+                height: 20px;
+            }
             button {
-                background: #4CAF50;
+                background: var(--green2);
                 color: white;
                 cursor: pointer;
             }
             #map {
                 height: 500px;
                 border-radius: 12px;
-                border: 1px solid #ccc;
+                border: 1px solid var(--gray-lighter);
             }
             .item {
                 background: #e8fbe8;
@@ -292,6 +299,34 @@ class SearchWaste extends HTMLElement {
                 border-radius: 6px;
                 margin-bottom: 8px;
             }
+         
+            @media (max-width: 768px) {
+                .body-container {
+                    padding: 10px;
+                }
+                .action-buttons {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 15px;
+                }
+                .action-btn {
+                    width: 100%;
+                    max-width: 300px;
+                }
+
+                .tushaah-map {
+                    grid-template-columns: 1fr;
+                }
+
+                .search-container {
+                    padding: 15px;
+                }
+
+                #map {
+                    height: 400px;
+                }
+        }
+            
         </style>
 
         <div class="body-container">
