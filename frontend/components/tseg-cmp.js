@@ -71,7 +71,7 @@ class TsegCmp extends HTMLElement {
 
   async loadData() {
     try {
-      const res = await fetch('http://127.0.0.1:3000/api/tseguud');
+      const res = await fetch('/api/tseguud');
       this.data = await res.json();
       const countElement = this.querySelector('#tseg-count');
       if (countElement) countElement.textContent = this.data.length;
@@ -80,18 +80,21 @@ class TsegCmp extends HTMLElement {
     }
   }
 
-  waitForGoogleMaps() {
+waitForGoogleMaps() {
     return new Promise((resolve, reject) => {
-      if (window.google?.maps) return resolve();
-      let waited = 0;
+      if (window.google && window.google.maps) {
+        resolve();
+        return;
+      }
+      let attempts = 0;
       const interval = setInterval(() => {
-        waited += 100;
-        if (window.google?.maps) {
+        attempts++;
+        if (window.google && window.google.maps) {
           clearInterval(interval);
           resolve();
-        } else if (waited >= 10000) {
+        } else if (attempts > 50) { // 5 секунд хүлээнэ
           clearInterval(interval);
-          reject(new Error("Google Maps timeout"));
+          reject(new Error("Google Maps API ачаалсангүй."));
         }
       }, 100);
     });
