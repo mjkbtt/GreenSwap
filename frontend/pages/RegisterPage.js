@@ -103,7 +103,6 @@ export class RegisterPage {
       <style>
         .auth-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -134,17 +133,18 @@ export class RegisterPage {
         .auth-header h1 {
           font-size: 28px;
           font-weight: 700;
-          color: #1b5e20;
+          color: var(--green-dark);
           margin-bottom: 8px;
         }
 
         .auth-header p {
-          color: #666;
+          color: var(--gray);
           font-size: 14px;
         }
 
         .form-group {
           margin-bottom: 20px;
+          margin-right: 30px;
         }
 
         .form-group label {
@@ -158,7 +158,7 @@ export class RegisterPage {
         .form-group input {
           width: 100%;
           padding: 12px 16px;
-          border: 2px solid #e5e7eb;
+          border: 2px solid var(--gray-lighter);
           border-radius: 8px;
           font-size: 14px;
           transition: border-color 0.2s;
@@ -166,7 +166,7 @@ export class RegisterPage {
 
         .form-group input:focus {
           outline: none;
-          border-color: #4CAF50;
+          border-color: var(--yellow);
         }
 
         .hint {
@@ -182,20 +182,21 @@ export class RegisterPage {
 
         .checkbox-label {
           display: flex;
-          align-items: flex-start;
-          gap: 8px;
+          align-items: center;
+          gap: 10px;
           cursor: pointer;
           font-size: 14px;
-          color: #666;
+          color: var(--gray-light);
         }
 
         .checkbox-label input {
+          width: 16px;
           margin-top: 2px;
           cursor: pointer;
         }
 
         .checkbox-label a {
-          color: #4CAF50;
+          color: var(--green1);
           text-decoration: none;
         }
 
@@ -217,7 +218,7 @@ export class RegisterPage {
         }
 
         .auth-button:hover {
-          background: #45a049;
+          background: var(--green1);
           transform: translateY(-2px);
         }
 
@@ -231,11 +232,11 @@ export class RegisterPage {
           margin-top: 24px;
           text-align: center;
           font-size: 14px;
-          color: #666;
+          color: var(--gray);
         }
 
         .auth-footer a {
-          color: #4CAF50;
+          color: var(--green1);
           text-decoration: none;
           font-weight: 600;
         }
@@ -253,8 +254,8 @@ export class RegisterPage {
         }
 
         .message.success {
-          background: #d4edda;
-          color: #155724;
+          background: var(--green-light);
+          color: var(--green-dark);
         }
 
         .message.error {

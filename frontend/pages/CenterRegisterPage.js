@@ -7,7 +7,7 @@ export class CenterRegisterPage {
       <div class="auth-page center">
         <div class="auth-container">
           <div class="auth-header">
-            <div class="logo">🏭</div>
+            <img src="zurags/industry.png">
             <h1>Хог цэгийн бүртгэл</h1>
             <p>Дахин боловсруулах цэгээ бүртгүүлнэ үү</p>
           </div>
@@ -175,9 +175,8 @@ export class CenterRegisterPage {
   }
 
   sharedStyles() {
-    return `
+    return  /*css*/`
       .auth-page.center {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         display: grid;
         grid-template-columns: 450px 1fr;
         gap: 40px;
@@ -190,31 +189,76 @@ export class CenterRegisterPage {
         box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       }
       .auth-header { text-align: center; margin-bottom: 32px; }
-      .logo { font-size: 64px; margin-bottom: 16px; }
-      .auth-header h1 { color: #c62828; }
-      .form-group { margin-bottom: 18px; }
-      label { font-weight: 600; font-size: 14px; margin-bottom: 6px; display:block; }
-      input, select {
-        width:100%;
-        padding:12px;
-        border-radius:8px;
-        border:2px solid #e5e7eb;
+      .auth-header img{
+        width: 100px;
+        height: 100px;
       }
+      .auth-header h1 { color: var(--green-dark); }
+      .form-group { 
+        margin-bottom: 18px; 
+        margin-right: 20px;
+      }
+      label { 
+          font-weight: 600; 
+          font-size: 14px; 
+          margin-bottom: 6px; 
+          display:block; 
+        }
+      input, select {
+          width: 100%;
+          padding: 12px;
+          border-radius: 8px;
+          border: 2px solid #e5e7eb;
+          font-size: 16px; 
+          outline: none;
+          transition: border-color 0.2s;
+          background-color: white; 
+          box-sizing: border-box; /* Padding болон Border-ийг элементийн нийт өндөр, өргөн дотор багтааж тооцно. */
+      }
+
+      select {
+          appearance: none; /* Браузерын өөрийнх нь cумыг арилгана */
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          
+          /* Шинэ сум нэмэх (SVG ашиглан) */
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          background-size: 16px;
+          padding-right: 40px; 
+          cursor: pointer;
+      }
+
+      input:focus, select:focus {
+          border-color: var(--yellow);
+          box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
       .center-button {
-        width:100%;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        padding:14px;
+        width: calc(100% - 20px);
+        height: 48px;
+        background: var(--yellow);
+        padding:0 14px;
         color:white;
         border:none;
         border-radius:8px;
         font-weight:600;
+        box-sizing: border-box; 
+        margin: 0 auto;
+    
+    cursor: pointer;
+      }
+      .center-button:hover {
+        color: var(--green-dark);
+        background: var(--green-light);
       }
       .auth-footer { text-align:center; margin-top:20px; }
-      .auth-footer a { color:#f5576c; font-weight:600; text-decoration:none; }
+      .auth-footer a { color: var(--green-dark); font-weight:600; text-decoration:none; }
       .info-panel {
-        background: rgba(255,255,255,0.95);
         border-radius:24px;
         padding:48px;
+        background: var(--green-light);
+        height: 40%;
       }
       .benefits-list { list-style:none; padding:0; display:flex; flex-direction:column; gap:24px; }
       .benefits-list li { display:flex; gap:16px; }

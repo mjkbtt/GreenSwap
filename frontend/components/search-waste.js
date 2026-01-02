@@ -211,12 +211,53 @@ class SearchWaste extends HTMLElement {
         this.shadowRoot.innerHTML = /*html*/`
         <style>
             .body-container {
-                display: grid;
-                grid-template-columns: 0.4fr 0.6fr;
-                gap: 40px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
                 background: #f9fdf9;
                 padding: 20px;
                 border-radius: 12px;
+            }
+            .action-buttons {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                gap: 50px;
+                margin-top:10px;
+            }
+
+            .action-btn {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 250px; 
+                height: 10px;
+                padding: 20px 0; 
+                gap:10px;
+                border: 1px solid var(--green-light); 
+                border-radius: 8px; 
+                background-color: var(--white);
+                text-decoration: none;
+                color: var(--green1);
+                font-weight: 500;
+                transition: box-shadow 0.3s;
+                
+            }
+            .action-btn img{
+                width: 25px;
+                height: 25px;
+
+            }
+            .action-btn:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .tushaah-map{
+                display: grid;
+                grid-template-columns: 0.4fr 0.6fr;
+                padding: 20px;
+                border-radius: 12px;
+                gap: 20px;
             }
             .search-container {
                 background: white;
@@ -254,32 +295,50 @@ class SearchWaste extends HTMLElement {
         </style>
 
         <div class="body-container">
-            <div class="search-container">
-                <label>Хаягдлын төрөл</label>
-                <select id="type">
-                    <option value="all">Бүгд</option>
-                    <option value="Plastic">Plastic</option>
-                    <option value="Paper">Paper</option>
-                    <option value="Metal">Metal</option>
-                </select>
+            <div class="action-btns">
+                    <section class="action-buttons ">
+                        <a href="#/tseguud" class="action-btn" data-link>
+                            <img src="zurags/map.png" alt="">
+                            <span>Цэгүүд</span>
+                        </a>
+                        <a href="#/tushaah" class="action-btn" data-link>
+                            <img src="zurags/recycle-2.png" alt="">
+                            <span>Тушаах</span>
+                        </a>
+                        <a href="#/angilah" class="action-btn" data-link>
+                            <img src="zurags/waste.png" alt="">
+                            <span>Хаягдлыг ангилах</span>
+                        </a>
+                    </section>
+                </div>
+            <div class="tushaah-map">
+                <div class="search-container">
+                    <label>Хаягдлын төрөл</label>
+                    <select id="type">
+                        <option value="all">Бүгд</option>
+                        <option value="Plastic">Plastic</option>
+                        <option value="Paper">Paper</option>
+                        <option value="Metal">Metal</option>
+                    </select>
 
-                <label>Жин (кг)</label>
-                <input id="weight" type="number" value="0" min="0">
+                    <label>Жин (кг)</label>
+                    <input id="weight" type="number" value="0" min="0">
 
-                <label>Дүүрэг</label>
-                <select id="location">
-                    <option value="all">Бүгд</option>
-                    <option value="СБД">СБД</option>
-                    <option value="БГД">БГД</option>
-                </select>
+                    <label>Дүүрэг</label>
+                    <select id="location">
+                        <option value="all">Бүгд</option>
+                        <option value="СБД">СБД</option>
+                        <option value="БГД">БГД</option>
+                    </select>
 
-                <button id="search-btn">Хайх</button>
+                    <button id="search-btn">Хайх</button>
 
-                <div>Үнийн дүн: <strong id="price">0₮</strong></div>
-                <div id="results"></div>
+                    <div>Үнийн дүн: <strong id="price">0₮</strong></div>
+                    <div id="results"></div>
+                </div>
+
+                <div id="map"></div>
             </div>
-
-            <div id="map"></div>
         </div>
         `;
     }

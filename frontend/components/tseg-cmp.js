@@ -17,15 +17,21 @@ class TsegCmp extends HTMLElement {
     render() {
         this.innerHTML = /*html*/`
             <style>
+                * {
+                    box-sizing: border-box;
+                }
+
                 body {
-                    background-color: #f9fff9;
-                    font-family: 'Inter', sans-serif;
+                    background-color: var(--bg-light);
                     margin: 0;
                     padding: 0;
+                    max-width: 100%;
+                    overflow-x: hidden;
                 }
                 .main-body {
                     display: flex;
-                    gap: 100px;
+                    flex-direction: column;
+                    gap: 30px;
                     padding: 20px;
                     max-width: 100%;
                     min-height: calc(100vh - 100px);
@@ -35,10 +41,22 @@ class TsegCmp extends HTMLElement {
                     flex: 0 0 60%;
                     width: 60%;
                 }
+                .action-btns{
+                    margin-left: 10px;
+                    margin-top:10px;
+                }
+                
+                .tseguud-container{
+                    display: flex;
+                    gap: 20px;
+                }
+                .action-btns{
+                    width: 100%;
+                }
                 .tseg-stats { 
                     flex: 0 0 40%;
-                    width: 40%;
-                    margin-right: 20px;
+                    width: 30%;
+                    margin-right: 40px;
                 }
                 article {
                     background-color: white;
@@ -85,7 +103,7 @@ class TsegCmp extends HTMLElement {
                     margin: 0;
                 }
                 .status-badge {
-                    background: #22c55e;
+                    background: var(--green2);
                     color: white;
                     padding: 6px 16px;
                     border-radius: 20px;
@@ -101,7 +119,7 @@ class TsegCmp extends HTMLElement {
                 .info-icon {
                     width: 24px;
                     height: 24px;
-                    color: #22c55e;
+                    color: var(--green2);
                     flex-shrink: 0;
                 }
                 .info-content h3 {
@@ -112,7 +130,7 @@ class TsegCmp extends HTMLElement {
                 .info-content p {
                     font-size: 16px;
                     margin: 0;
-                    color: #333;
+                    color: var(--gray);
                 }
                 .types-section {
                     margin-top: 30px;
@@ -149,7 +167,7 @@ class TsegCmp extends HTMLElement {
                 .stats-header svg {
                     width: 24px;
                     height: 24px;
-                    color: #22c55e;
+                    color: var(--green2);
                 }
                 .stats-header h2 {
                     font-size: 20px;
@@ -198,18 +216,36 @@ class TsegCmp extends HTMLElement {
             </style>
 
             <div class="main-body">
-                <div class="body-container">
-                    <article>
-                        <h1>Дахивар авах цэгүүд</h1>
-                        <p>Газрын зураг дээр цэг сонгоод дэлгэрэнгүй мэдээлэл аваарай.</p>
-                        <div id="map" class="map"></div>
-                        <p class="tseg-count">Нийт цэг: <span id="tseg-count">0</span></p>
-                    </article>
+                <div class="action-btns">
+                    <section class="action-buttons ">
+                        <a href="#/tseguud" class="action-btn" data-link>
+                            <img src="zurags/map.png" alt="">
+                            <span>Цэгүүд</span>
+                        </a>
+                        <a href="#/tushaah" class="action-btn" data-link>
+                            <img src="zurags/recycle-2.png" alt="">
+                            <span>Тушаах</span>
+                        </a>
+                        <a href="#/angilah" class="action-btn" data-link>
+                            <img src="zurags/waste.png" alt="">
+                            <span>Хаягдлыг ангилах</span>
+                        </a>
+                    </section>
                 </div>
-                <div class="tseg-stats" id="stats-container">
-                    <p style="color:#777; font-size:1.1em; text-align:center;">
-                        Газрын зураг дээрх цэг дээр дарж мэдээллийг үзнэ үү.
-                    </p>
+                <div class="tseguud-container">
+                    <div class="body-container">
+                        <article>
+                            <h1>Дахивар авах цэгүүд</h1>
+                            <p>Газрын зураг дээр цэг сонгоод дэлгэрэнгүй мэдээлэл аваарай.</p>
+                            <div id="map" class="map"></div>
+                            <p class="tseg-count">Нийт цэг: <span id="tseg-count">0</span></p>
+                        </article>
+                    </div>
+                    <div class="tseg-stats" id="stats-container">
+                        <p style="color:#777; font-size:1.1em; text-align:center;">
+                            Газрын зураг дээрх цэг дээр дарж мэдээллийг үзнэ үү.
+                        </p>
+                    </div>
                 </div>
             </div>
         `;

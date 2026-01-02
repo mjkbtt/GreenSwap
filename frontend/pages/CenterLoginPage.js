@@ -1,5 +1,5 @@
 // frontend/pages/CenterLoginPage.js
-// Waste Collection Center Login
+// Цэг нэвтрэх
 
 export class CenterLoginPage {
   async render(container) {
@@ -7,8 +7,8 @@ export class CenterLoginPage {
       <div class="auth-page center">
         <div class="auth-container">
           <div class="auth-header">
-            <div class="logo">🏢</div>
-            <h1>Хог цэгийн нэвтрэх</h1>
+            <img src="zurags/industry.png">
+            <h1>Хогийн цэг нэвтрэх</h1>
             <p>Цэгийн бүртгэлээр нэвтэрнэ үү</p>
           </div>
 
@@ -95,7 +95,6 @@ export class CenterLoginPage {
 
       <style>
         .auth-page.center {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
           display: grid;
           grid-template-columns: 450px 1fr;
           gap: 40px;
@@ -113,16 +112,15 @@ export class CenterLoginPage {
           text-align: center;
           margin-bottom: 32px;
         }
-
-        .logo {
-          font-size: 64px;
-          margin-bottom: 16px;
+        .auth-header img {
+          width: 100px;
+          height: 100px;
         }
 
         .auth-header h1 {
           font-size: 28px;
           font-weight: 700;
-          color: #c62828;
+          color: var(--green-dark);
           margin-bottom: 8px;
         }
 
@@ -133,6 +131,7 @@ export class CenterLoginPage {
 
         .form-group {
           margin-bottom: 20px;
+          margin-right: 30px;
         }
 
         .form-group label {
@@ -153,7 +152,7 @@ export class CenterLoginPage {
 
         .form-group input:focus {
           outline: none;
-          border-color: #f5576c;
+          border-color: var(--yellow);
         }
 
         .form-options {
@@ -169,7 +168,7 @@ export class CenterLoginPage {
         }
 
         .center-button {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+          background: var(--yellow);
           width: 100%;
           padding: 14px;
           color: white;
@@ -181,8 +180,8 @@ export class CenterLoginPage {
         }
 
         .center-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+          background: var(--green-light);
+          color: var(--green-dark);
         }
 
         .auth-footer {
@@ -196,7 +195,7 @@ export class CenterLoginPage {
         }
 
         .auth-footer a {
-          color: #f5576c;
+          color: var(--green-dark);
           text-decoration: none;
           font-weight: 600;
         }
@@ -204,20 +203,27 @@ export class CenterLoginPage {
         .center-link {
           margin-top: 16px;
           padding-top: 16px;
-          border-top: 1px solid #e5e7eb;
+          border-top: 1px solid var(--gray-lighter);
         }
 
-        .info-panel {
-          background: rgba(255, 255, 255, 0.95);
+       .info-panel {
           border-radius: 24px;
-          padding: 48px;
+          padding-left: 32px;
+          padding-bottom: 10px;
+          padding-top: 10px;
           backdrop-filter: blur(10px);
-        }
+          background: var(--green-light);
+          height: 500px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between; 
+          box-sizing: border-box;
+        } 
 
         .info-panel h2 {
           font-size: 24px;
           font-weight: 700;
-          color: #c62828;
+          color: var(--green-dark);
           margin-bottom: 32px;
         }
 
@@ -242,13 +248,14 @@ export class CenterLoginPage {
         .benefits-list strong {
           display: block;
           font-size: 16px;
-          color: #333;
+          font-weight: 700;
+          color: var(--gray);
           margin-bottom: 4px;
         }
 
         .benefits-list p {
           font-size: 14px;
-          color: #666;
+          color: var(--gray);
           line-height: 1.6;
         }
 
@@ -261,8 +268,8 @@ export class CenterLoginPage {
         }
 
         .message.success {
-          background: #d4edda;
-          color: #155724;
+          background: var(--gray-lighter);
+          color: var(--green1);
         }
 
         .message.error {
