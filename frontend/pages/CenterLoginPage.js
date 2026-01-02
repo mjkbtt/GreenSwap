@@ -299,7 +299,7 @@ export class CenterLoginPage {
       };
 
       try {
-        const response = await fetch('http://localhost:3000/api/auth/center-login', {
+        const response = await fetch('http://localhost:3000/api/center-login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(credentials)

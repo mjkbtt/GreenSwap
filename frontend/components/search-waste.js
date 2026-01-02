@@ -62,7 +62,7 @@ class SearchWaste extends HTMLElement {
 
     async loadData() {
         try {
-            const res = await fetch(this.link);
+            const res = await fetch('api/tseguud');
             const raw = await res.json();
 
             this.data = raw.map(item => ({

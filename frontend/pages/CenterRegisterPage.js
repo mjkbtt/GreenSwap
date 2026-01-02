@@ -142,7 +142,7 @@ export class CenterRegisterPage {
       };
 
       try {
-        const response = await fetch('http://localhost:3000/api/auth/center-register', {
+        const response = await fetch('http://localhost:3000/api/center-register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
