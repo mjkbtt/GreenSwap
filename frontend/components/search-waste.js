@@ -275,12 +275,16 @@ class SearchWaste extends HTMLElement {
                 border-radius: 6px;
                 border: 1px solid var(--green-light);
                 height: 40px;
+                background: var(--white);
+                color: var(--black);
             }
             input{
                 padding: 10px;
                 border-radius: 6px;
                 border: 1px solid var(--green-light);
                 height: 20px;
+                background: var(--white);
+                color: var(--black);
             }
             button {
                 background: var(--green2);

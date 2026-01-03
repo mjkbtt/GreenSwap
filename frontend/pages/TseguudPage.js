@@ -13,6 +13,7 @@ export class TseguudPage {
           flex-direction: column;
           gap: 20px;
           padding: 20px;
+          
         }
 
         .tseguud-container {
@@ -29,19 +30,24 @@ export class TseguudPage {
         }
 
         article {
-          background: #fff;
           border-radius: 16px;
           padding: 20px;
+          background: var(--white);
+          border: 1px solid var(--gray-lighter);
+          color: var(--black);
         }
+        
+
 
         .map {
           width: 100%;
           height: 500px;
           border-radius: 16px;
+          
         }
 
         .tseg-detail-card {
-          background: #fff;
+          background: var(--white);
           border-radius: 16px;
           padding: 20px;
         }

@@ -14,17 +14,17 @@ class TsegInfo extends HTMLElement {
     const styles = /*html*/`
       <style>
         .tseg-detail-card, .stats-card {
-          background: white; border-radius: 20px; padding: 30px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;
+          background: var(--white); border-radius: 20px; padding: 30px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--gray-lighter); color: var(--black);
         }
         .tseg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
         .tseg-title { font-size: 24px; font-weight: 600; margin: 0 0 5px 0; }
-        .tseg-subtitle { color: #999; font-size: 16px; margin: 0; }
-        .status-badge { background: #22c55e; color: white; padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; }
+        .tseg-subtitle { color: var(--black); font-size: 16px; margin: 0; }
+        .status-badge { background: #22c55e; color: var(--white); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; }
         .info-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 25px; }
         .info-icon { width: 24px; height: 24px; color: #22c55e; flex-shrink: 0; }
         .info-content h3 { font-size: 14px; font-weight: 600; margin: 0 0 5px 0; }
-        .info-content p { font-size: 16px; margin: 0; color: #333; }
+        .info-content p { font-size: 16px; margin: 0; color: var(--black); }
         .types-section { margin-top: 30px; }
         .types-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .type-badge { background: #f3f4f6; padding: 8px 16px; border-radius: 20px; font-size: 14px; color: #333; }

@@ -2,9 +2,12 @@ class WasteSearch extends HTMLElement {
   connectedCallback() {
     this.innerHTML = /*html*/`
       <style>
-        .filter-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .filter-card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .filter-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .filter-item input, .filter-item select { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 10px; outline: none; }
+        .filter-item input { width: 100%; padding: 10px; border: 1px solid var(--gray-lighter); 
+          border-radius: 10px; outline: none; background: var(--white); color: var(--black); }
+        .filter-item select { width: 100%; padding: 10px; border: 1px solid var(--gray-lighter); 
+          border-radius: 10px; outline: none; background: var(--white); color: var(--black); }
       </style>
       <div class="filter-card">
         <h2 style="margin:0">Дахивар тушаах цэг хайх</h2>

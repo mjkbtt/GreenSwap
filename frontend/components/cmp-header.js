@@ -46,6 +46,9 @@ class CmpHeader extends HTMLElement {
     const menuBtn = this.shadowRoot.querySelector(".menu-btn");
     const navLinks = this.shadowRoot.querySelector(".nav-links");
     const themeToggle = this.shadowRoot.querySelector(".theme-toggle");
+    const trophyImg = this.shadowRoot.querySelector(".trophy-img");
+    const popup = this.shadowRoot.querySelector(".trophy-popup");
+    const closeBtn = this.shadowRoot.querySelector(".close-popup");
     
     menuBtn.addEventListener("click", () => {
       navLinks.classList.toggle("active");
@@ -54,6 +57,20 @@ class CmpHeader extends HTMLElement {
 
     themeToggle.addEventListener("click", () => {
       this.toggleTheme();
+    });
+
+    trophyImg.addEventListener("click", () => {
+      popup.classList.add("active");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      popup.classList.remove("active");
+    });
+
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) {
+        popup.classList.remove("active");
+      }
     });
 
     const links = this.shadowRoot.querySelectorAll(".nav-links a");
@@ -213,7 +230,7 @@ class CmpHeader extends HTMLElement {
           border: 1px solid var(--gray-lighter);
           border-radius: 20px;
           padding: 8px 16px;
-          background: #f8f8f8;
+          background: var(--gray-lighter);
           flex-shrink: 0;
           transition: all 0.3s ease;
         }
@@ -243,10 +260,19 @@ class CmpHeader extends HTMLElement {
         .header.dark-mode .search-bar input::placeholder {
           color: #b0b0b0;
         }
-
+        .trophy-img{
+          width: 35px;
+          height: 35px;
+          cursor: pointer;
+          transition: transform 0.3s;
+          flex-shrink: 0;
+        }
+        .trophy-img:hover {
+          transform: scale(1.1);
+        }
         .profile-img {
-          width: 45px;
-          height: 45px;
+          width: 35px;
+          height: 35px;
           border-radius: 50%;
           cursor: pointer;
           transition: transform 0.3s;
@@ -390,6 +416,261 @@ class CmpHeader extends HTMLElement {
             height: 35px;
           }
         }
+
+        /* Trophy Popup Styles */
+        .trophy-popup {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 2000;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .trophy-popup.active {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .popup-content {
+          background: white;
+          border-radius: 20px;
+          padding: 40px;
+          max-width: 500px;
+          width: 90%;
+          position: relative;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          transform: scale(0.8);
+          transition: transform 0.3s ease;
+        }
+
+        .trophy-popup.active .popup-content {
+          transform: scale(1);
+        }
+
+        .header.dark-mode .popup-content {
+          background: #2a2a2a;
+          color: #ffffff;
+        }
+
+        .close-popup {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          width: 35px;
+          height: 35px;
+          border: none;
+          background: #f0f0f0;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          color: #666;
+          transition: all 0.3s ease;
+        }
+
+        .header.dark-mode .close-popup {
+          background: #3a3a3a;
+          color: #ffffff;
+        }
+
+        .close-popup:hover {
+          background: var(--green1);
+          color: white;
+          transform: rotate(90deg);
+        }
+
+        .popup-header {
+          text-align: left;
+          margin-bottom: 25px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .popup-header img {
+          width: 50px;
+          height: 50px;
+        }
+
+        .popup-header-text h2 {
+          color: #333;
+          font-size: 24px;
+          margin-bottom: 5px;
+          font-weight: 600;
+        }
+
+        .header.dark-mode .popup-header-text h2 {
+          color: #ffffff;
+        }
+
+        .popup-header-text p {
+          color: #666;
+          font-size: 14px;
+        }
+
+        .header.dark-mode .popup-header-text p {
+          color: #b0b0b0;
+        }
+
+        .achievements-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-bottom: 20px;
+        }
+
+        .achievement-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 18px 20px;
+          background: #f8f8f8;
+          border-radius: 12px;
+          transition: all 0.3s ease;
+          border: 2px solid transparent;
+        }
+
+        .achievement-item.gold {
+          background: #fff9e6;
+          border-color: #ffd700;
+        }
+        .achievement-item.silver {
+          background: var(--gray-lighter);
+          border-color: #c0c0c0;
+        }
+
+        .achievement-item.bronze {
+          background: #fff4e6;
+          border-color: #cd7f32;
+        }
+
+        .header.dark-mode .achievement-item {
+          background: #3a3a3a;
+        }
+
+        .header.dark-mode .achievement-item.gold {
+          background: #3a3520;
+          border-color: #ffd700;
+        }
+
+        .header.dark-mode .achievement-item.bronze {
+          background: #3a2f20;
+          border-color: #cd7f32;
+        }
+
+        .achievement-left {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          flex: 1;
+        }
+
+        .achievement-icon {
+          font-size: 40px;
+          flex-shrink: 0;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .achievement-rank {
+          font-size: 28px;
+          color: #999;
+          font-weight: 600;
+          width: 50px;
+          text-align: center;
+          flex-shrink: 0;
+        }
+
+        .achievement-info h3 {
+          font-size: 18px;
+          margin-bottom: 3px;
+          color: var(--black);
+          font-weight: 600;
+        }
+
+        .header.dark-mode .achievement-info h3 {
+          color: #ffffff;
+        }
+
+        .achievement-info p {
+          font-size: 13px;
+          color: #999;
+        }
+
+        .header.dark-mode .achievement-info p {
+          color: #b0b0b0;
+        }
+
+        .achievement-score {
+          text-align: right;
+          flex-shrink: 0;
+        }
+
+        .achievement-score .points {
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--green2);
+          margin-bottom: 3px;
+        }
+
+        .achievement-score .label {
+          font-size: 12px;
+          color: var(--green2);
+        }
+
+        .popup-footer {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 15px 20px;
+          background: #f0f7ff;
+          border-radius: 12px;
+          margin-top: 20px;
+        }
+
+        .header.dark-mode .popup-footer {
+          background: #2a3540;
+        }
+
+        .popup-footer-icon {
+          font-size: 24px;
+        }
+
+        .popup-footer-text {
+          font-size: 14px;
+          color: #666;
+        }
+
+        .header.dark-mode .popup-footer-text {
+          color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+          .popup-content {
+            padding: 30px 20px;
+          }
+
+          .popup-header h2 {
+            font-size: 24px;
+          }
+
+          .achievement-item {
+            padding: 12px;
+          }
+        }
       </style>
 
       <header class="header">
@@ -410,6 +691,7 @@ class CmpHeader extends HTMLElement {
               <img src="zurags/search.png" width="18" alt="Search">
               <input type="text" placeholder="Хайх">
             </div>
+            <img src="zurags/trophy2.png" class="trophy-img" alt="Trophy">
             <img src="zurags/profile.png" class="profile-img" alt="Profile">
             <button class="menu-btn">
               <span></span>
@@ -419,6 +701,98 @@ class CmpHeader extends HTMLElement {
           </div>
         </div>
       </header>
+
+      <!-- Trophy Popup -->
+      <div class="trophy-popup">
+        <div class="popup-content">
+          <button class="close-popup">×</button>
+          
+          <div class="popup-header">
+            <img src="zurags/trophy2.png" alt="Trophy">
+            <div class="popup-header-text">
+              <h2>Тэргүүлэгчдийн самбар</h2>
+              <p>Дахин боловсруулалтад хамгийн их хувь нэмэр оруулсан хэрэглэгчид</p>
+            </div>
+          </div>
+
+          <div class="achievements-list">
+            <div class="achievement-item gold">
+              <div class="achievement-left">
+                <div class="achievement-icon">🥇</div>
+                <div class="achievement-info">
+                  <h3>Болд</h3>
+                  <p>47 хаягдал тушаасан</p>
+                </div>
+              </div>
+              <div class="achievement-score">
+                <div class="points">2,850</div>
+                <div class="label">оноо</div>
+              </div>
+            </div>
+
+            <div class="achievement-item silver">
+              <div class="achievement-left">
+                <div class="achievement-icon">🥈</div>
+                <div class="achievement-info">
+                  <h3>Сарантуяа</h3>
+                  <p>42 хаягдал тушаасан</p>
+                </div>
+              </div>
+              <div class="achievement-score">
+                <div class="points">2,640</div>
+                <div class="label">оноо</div>
+              </div>
+            </div>
+
+            <div class="achievement-item bronze">
+              <div class="achievement-left">
+                <div class="achievement-icon">🥉</div>
+                <div class="achievement-info">
+                  <h3>Ганболд</h3>
+                  <p>39 хаягдал тушаасан</p>
+                </div>
+              </div>
+              <div class="achievement-score">
+                <div class="points">2,420</div>
+                <div class="label">оноо</div>
+              </div>
+            </div>
+
+            <div class="achievement-item">
+              <div class="achievement-left">
+                <div class="achievement-rank">4</div>
+                <div class="achievement-info">
+                  <h3>Үүганбаяр</h3>
+                  <p>35 хаягдал тушаасан</p>
+                </div>
+              </div>
+              <div class="achievement-score">
+                <div class="points">2,180</div>
+                <div class="label">оноо</div>
+              </div>
+            </div>
+
+            <div class="achievement-item">
+              <div class="achievement-left">
+                <div class="achievement-rank">5</div>
+                <div class="achievement-info">
+                  <h3>Нарантуяа</h3>
+                  <p>32 хаягдал тушаасан</p>
+                </div>
+              </div>
+              <div class="achievement-score">
+                <div class="points">1,950</div>
+                <div class="label">оноо</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="popup-footer">
+            <div class="popup-footer-icon">💡</div>
+            <div class="popup-footer-text">Санамж: Хаягдал тушаах бүрт та оноо цуглуулна</div>
+          </div>
+        </div>
+      </div>
     `;
   }
 }

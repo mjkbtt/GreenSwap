@@ -128,16 +128,23 @@ class TushaahSearchMap extends HTMLElement {
           padding: 20px;
           border: 1px solid var(--gray-lighter);
         }
-        select, button {
+        select, input {
           width: 100%;
           padding: 10px;
           margin-bottom: 10px;
+          background: var(--white);
+          border: 1px solid red;
         }
         button {
           background: var(--green2);
           color: white;
           border: none;
           cursor: pointer;
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 10px;
+          background: var(--white);
+          border: 1px solid var(--gray-lighter);
         }
         #map {
           height: 500px;

@@ -36,7 +36,7 @@ class TsegCmp extends HTMLElement {
         this.innerHTML = /*html*/`
             <style>
                 body {
-                    background-color: #f9fff9;
+                    background: var(--white);
                     font-family: 'Inter', sans-serif;
                     margin: 0;
                     padding: 0;
@@ -48,10 +48,12 @@ class TsegCmp extends HTMLElement {
                     max-width: 100%;
                     min-height: calc(100vh - 100px);
                     margin-right: 20px;
+                    background: var(--white);
                 }
                 .body-container { 
                     flex: 0 0 60%;
                     width: 60%;
+                    background: var(--white);
                 }
                 .tseg-stats { 
                     flex: 0 0 40%;
@@ -71,6 +73,7 @@ class TsegCmp extends HTMLElement {
                     border: 2px solid #c9e6cb;
                     border-radius: 20px;
                     margin-top: 10px;
+                    background: red;
                 }
                 .tseg-count {
                     margin-top: 10px;

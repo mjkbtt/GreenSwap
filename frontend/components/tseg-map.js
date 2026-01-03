@@ -27,7 +27,7 @@ class TsegMap extends HTMLElement {
   }
 
   render() {
-    this.innerHTML = `
+    this.innerHTML = /*html*/`
       <style>
         .map {
           width: 100%;
@@ -35,6 +35,7 @@ class TsegMap extends HTMLElement {
           border: 2px solid #c9e6cb;
           border-radius: 20px;
           margin-top: 10px;
+          background: var(--white);
         }
       </style>
       <div id="map" class="map"></div>
