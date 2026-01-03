@@ -2,7 +2,6 @@ class SearchWaste extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
-
         this.map = null;
         this.markers = [];
         this.data = [];
@@ -62,7 +61,7 @@ class SearchWaste extends HTMLElement {
 
     async loadData() {
         try {
-            const res = await fetch('api/tseguud');
+            const res = await fetch('/api/tseguud');
             const raw = await res.json();
 
             this.data = raw.map(item => ({
@@ -105,6 +104,7 @@ class SearchWaste extends HTMLElement {
         const bounds = new google.maps.LatLngBounds();
 
         points.forEach(p => {
+            if (isNaN(p.lat) || isNaN(p.lng)) return;
             const typeMatch =
                 this.filterVal.type === "all" ||
                 p.type.includes(this.filterVal.type);

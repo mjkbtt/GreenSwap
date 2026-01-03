@@ -52,33 +52,47 @@
     }
   </style>
 
-  <script
-    async
-    defer
-    src="https://maps.googleapis.com/maps/api/js?key=">
+  <!-- ✅ ЗӨВХӨН НЭГ Google Maps Script -->
+  <script>
+    async function loadGoogleMaps() {
+      try {
+        // Backend-аас API key авах
+        const response = await fetch('/config');
+        const config = await response.json();
+        
+        // API key шалгах
+        if (!config.googleMapsKey) {
+          console.error('❌ Google Maps API key олдсонгүй');
+          return;
+        }
+        
+        // Script үүсгэх
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        
+        // Load амжилттай болохыг хүлээх
+        script.onload = () => {
+          console.log('✅ Google Maps API амжилттай ачаалагдлаа');
+        };
+        
+        script.onerror = () => {
+          console.error('❌ Google Maps API ачаалахад алдаа гарлаа');
+        };
+        
+        document.head.appendChild(script);
+      } catch (err) {
+        console.error("❌ API Key ачаалахад алдаа:", err);
+      }
+    }
+
+    // Google Maps ачаалах
+    loadGoogleMaps();
   </script>
 
+  <!-- App болон компонентууд -->
   <script type="module" src="App.js"></script>
-
-<script>
-  async function loadGoogleMaps() {
-    try {
-      const response = await fetch('/config');
-      const config = await response.json();
-      
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-    } catch (err) {
-      console.error("API Key ачаалахад алдаа гарлаа:", err);
-    }
-  }
-
-  loadGoogleMaps();
-</script>
-
   <script type="module" src="components/cmp-header.js"></script>
   <script type="module" src="components/footer-h.js"></script>
   <script type="module" src="components/tseg-cmp.js"></script>

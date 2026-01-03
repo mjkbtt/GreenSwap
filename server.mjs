@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import db from './database/db.js';
 
-// 🔹 ENV эхэлж уншина
+// 🔹 ENV унших
 dotenv.config();
 
 const app = express();
@@ -22,12 +22,18 @@ app.use(express.static('frontend'));
 app.post('/api/register', (req, res) => {
   const { username, email, password } = req.body;
 
+  // Input validation
+  if (!username || !email || !password) {
+    return res.status(400).json({ error: 'Бүх талбарыг бөглөнө үү' });
+  }
+
   db.run(
     'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
     [username, email, password],
     function (err) {
       if (err) {
-        return res.status(400).json({ error: 'User already exists' });
+        console.error('Register error:', err);
+        return res.status(400).json({ error: 'Хэрэглэгч аль хэдийн бүртгэлтэй байна' });
       }
       res.json({
         id: this.lastID,
@@ -43,12 +49,20 @@ app.post('/api/register', (req, res) => {
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({ error: 'И-мэйл болон нууц үг шаардлагатай' });
+  }
+
   db.get(
     'SELECT id, username, email, green_points FROM users WHERE email = ? AND password = ?',
     [email, password],
     (err, user) => {
-      if (err || !user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
+      if (err) {
+        console.error('Login error:', err);
+        return res.status(500).json({ error: 'Серверийн алдаа' });
+      }
+      if (!user) {
+        return res.status(401).json({ error: 'И-мэйл эсвэл нууц үг буруу байна' });
       }
       res.json(user);
     }
@@ -64,8 +78,12 @@ app.get('/api/user/:id', (req, res) => {
     'SELECT id, username, email, green_points FROM users WHERE id = ?',
     [req.params.id],
     (err, user) => {
-      if (err || !user) {
-        return res.status(404).json({ error: 'User not found' });
+      if (err) {
+        console.error('Get user error:', err);
+        return res.status(500).json({ error: 'Серверийн алдаа' });
+      }
+      if (!user) {
+        return res.status(404).json({ error: 'Хэрэглэгч олдсонгүй' });
       }
       res.json(user);
     }
@@ -78,13 +96,48 @@ app.get('/api/user/:id', (req, res) => {
 
 app.get('/api/categories', (req, res) => {
   db.all('SELECT * FROM waste_categories', [], (err, categories) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error('Get categories error:', err);
+      return res.status(500).json({ error: err.message });
+    }
     res.json(categories);
   });
 });
 
+// ✅ ЗАСВАРЛАСАН: Database-аас бодит өгөгдөл татах
 app.get('/api/tseguud', (req, res) => {
-  res.json({ message: 'Tseguud API works' });
+  db.all(/*sql*/`SELECT 
+        id,
+        address,
+        location,
+        phone,
+        working_hours,
+        rating,
+        active_users,
+        total_collected_kg,
+        created_at,
+        name,
+        district,
+        type,
+        price_per_kg,
+        latitude  AS lat,
+        longitude AS lng
+     FROM collection_centers`,
+    [], (err, centers) => {
+    if (err) {
+      console.error('Get centers error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    
+    // Type-г array болгож өгөх (frontend-д хялбар байхын тулд)
+    const formattedCenters = centers.map(center => ({
+      ...center,
+      type: center.type ? center.type.split(',').map(t => t.trim()) : []
+    }));
+    
+    console.log('✅ Цэгүүд амжилттай илгээгдлээ:', formattedCenters.length);
+    res.json(formattedCenters);
+  });
 });
 
 // ======================
@@ -102,12 +155,25 @@ app.post('/api/recycle', (req, res) => {
     pickup_date
   } = req.body;
 
+  // Validation
+  if (!user_id || !waste_category_id || !weight_kg || !method) {
+    return res.status(400).json({ error: 'Шаардлагатай талбаруудыг бөглөнө үү' });
+  }
+
+  if (weight_kg <= 0) {
+    return res.status(400).json({ error: 'Жин 0-оос их байх ёстой' });
+  }
+
   db.get(
     'SELECT points_per_kg FROM waste_categories WHERE id = ?',
     [waste_category_id],
     (err, category) => {
-      if (err || !category) {
-        return res.status(400).json({ error: 'Invalid category' });
+      if (err) {
+        console.error('Get category error:', err);
+        return res.status(500).json({ error: 'Серверийн алдаа' });
+      }
+      if (!category) {
+        return res.status(400).json({ error: 'Хог хаягдлын төрөл олдсонгүй' });
       }
 
       const points_earned = Math.floor(weight_kg * category.points_per_kg);
@@ -129,12 +195,19 @@ app.post('/api/recycle', (req, res) => {
         ],
         function (err) {
           if (err) {
+            console.error('Submit recycle error:', err);
             return res.status(500).json({ error: err.message });
           }
 
+          // Update user points
           db.run(
             'UPDATE users SET green_points = green_points + ? WHERE id = ?',
-            [points_earned, user_id]
+            [points_earned, user_id],
+            (updateErr) => {
+              if (updateErr) {
+                console.error('Update points error:', updateErr);
+              }
+            }
           );
 
           res.json({
@@ -163,7 +236,10 @@ app.get('/api/user/:id/history', (req, res) => {
      ORDER BY rs.created_at DESC`,
     [req.params.id],
     (err, history) => {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) {
+        console.error('Get history error:', err);
+        return res.status(500).json({ error: err.message });
+      }
       res.json(history);
     }
   );
@@ -178,7 +254,10 @@ app.get('/api/products', (req, res) => {
     'SELECT * FROM products WHERE stock > 0',
     [],
     (err, products) => {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) {
+        console.error('Get products error:', err);
+        return res.status(500).json({ error: err.message });
+      }
       res.json(products);
     }
   );
@@ -187,15 +266,29 @@ app.get('/api/products', (req, res) => {
 app.post('/api/purchase', (req, res) => {
   const { user_id, product_id, quantity } = req.body;
 
+  // Validation
+  if (!user_id || !product_id || !quantity) {
+    return res.status(400).json({ error: 'Шаардлагатай талбаруудыг бөглөнө үү' });
+  }
+
+  if (quantity <= 0) {
+    return res.status(400).json({ error: 'Тоо ширхэг 0-оос их байх ёстой' });
+  }
+
   db.get(
     'SELECT * FROM products WHERE id = ?',
     [product_id],
     (err, product) => {
-      if (err || !product)
-        return res.status(404).json({ error: 'Product not found' });
-
-      if (product.stock < quantity)
-        return res.status(400).json({ error: 'Insufficient stock' });
+      if (err) {
+        console.error('Get product error:', err);
+        return res.status(500).json({ error: 'Серверийн алдаа' });
+      }
+      if (!product) {
+        return res.status(404).json({ error: 'Бүтээгдэхүүн олдсонгүй' });
+      }
+      if (product.stock < quantity) {
+        return res.status(400).json({ error: 'Үлдэгдэл хүрэлцэхгүй байна' });
+      }
 
       const total_points = product.price_points * quantity;
 
@@ -203,25 +296,36 @@ app.post('/api/purchase', (req, res) => {
         'SELECT green_points FROM users WHERE id = ?',
         [user_id],
         (err, user) => {
-          if (err || !user)
-            return res.status(404).json({ error: 'User not found' });
+          if (err) {
+            console.error('Get user error:', err);
+            return res.status(500).json({ error: 'Серверийн алдаа' });
+          }
+          if (!user) {
+            return res.status(404).json({ error: 'Хэрэглэгч олдсонгүй' });
+          }
+          if (user.green_points < total_points) {
+            return res.status(400).json({ error: 'Таны оноо хүрэлцэхгүй байна' });
+          }
 
-          if (user.green_points < total_points)
-            return res.status(400).json({ error: 'Insufficient points' });
-
+          // Create order
           db.run(
             `INSERT INTO orders
              (user_id, product_id, quantity, total_points, status)
              VALUES (?, ?, ?, ?, 'completed')`,
             [user_id, product_id, quantity, total_points],
             function (err) {
-              if (err)
+              if (err) {
+                console.error('Create order error:', err);
                 return res.status(500).json({ error: err.message });
+              }
 
+              // Deduct points
               db.run(
                 'UPDATE users SET green_points = green_points - ? WHERE id = ?',
                 [total_points, user_id]
               );
+
+              // Update stock
               db.run(
                 'UPDATE products SET stock = stock - ? WHERE id = ?',
                 [quantity, product_id]
@@ -249,7 +353,10 @@ app.get('/api/leaderboard', (req, res) => {
     'SELECT username, green_points FROM users ORDER BY green_points DESC LIMIT 10',
     [],
     (err, users) => {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) {
+        console.error('Get leaderboard error:', err);
+        return res.status(500).json({ error: err.message });
+      }
       res.json(users);
     }
   );
@@ -260,9 +367,31 @@ app.get('/api/leaderboard', (req, res) => {
 // ======================
 
 app.get('/config', (req, res) => {
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+  
+  if (!apiKey) {
+    console.error('❌ GOOGLE_MAPS_API_KEY .env файлд байхгүй байна!');
+    return res.status(500).json({ error: 'Google Maps API key тохируулагдаагүй байна' });
+  }
+  
   res.json({
-    googleMapsKey: process.env.GOOGLE_MAPS_API_KEY
+    googleMapsKey: apiKey
   });
+});
+
+// ======================
+// ERROR HANDLING
+// ======================
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'API endpoint олдсонгүй' });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('❌ Серверийн алдаа:', err);
+  res.status(500).json({ error: 'Серверийн дотоод алдаа' });
 });
 
 // ======================
@@ -270,12 +399,16 @@ app.get('/config', (req, res) => {
 // ======================
 
 app.listen(PORT, () => {
-  console.log(`🌱 GreenSwap server running on http://localhost:${PORT}`);
+  console.log(`🌱 GreenSwap server ажиллаж байна: http://localhost:${PORT}`);
+  console.log(`📍 API endpoint: http://localhost:${PORT}/api/...`);
+  console.log(`🗺️  Google Maps config: http://localhost:${PORT}/config`);
 });
 
+// Graceful shutdown
 process.on('SIGINT', () => {
+  console.log('\n🛑 Server-ийг зогсоож байна...');
   db.close(() => {
-    console.log('Database connection closed.');
+    console.log('✅ Database холболт хаагдлаа');
     process.exit(0);
   });
 });

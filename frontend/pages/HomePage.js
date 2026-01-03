@@ -105,7 +105,7 @@ export class HomePage {
 
   async fetchImpactData() {
     try {
-      const response = await fetch('http://localhost:3000/api/items/stats/summary');
+      const response = await fetch('/api/leaderboard');
       const stats = await response.json();
       
       this.impactData = {

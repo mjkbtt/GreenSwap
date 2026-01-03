@@ -183,7 +183,7 @@ export class AngilahPage {
 
   async fetchCategories() {
     try {
-      const response = await fetch('http://localhost:3000/api/categories');
+      const response = await fetch('/api/categories');
       this.categories = await response.json();
     } catch (error) {
       console.error('Error fetching categories:', error);
