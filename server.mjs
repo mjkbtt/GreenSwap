@@ -1,6 +1,3 @@
-// ======================
-// Лайбрари импортлох
-// ======================
 import express from 'express';           // Express framework-г ашиглана
 import bodyParser from 'body-parser';    // POST request-оос өгөгдөл авахад хэрэгтэй
 import dotenv from 'dotenv';             // .env файлыг уншихад хэрэгтэй
@@ -13,9 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;  // Хэрвээ .env файлд PORT байхгүй бол default 3000
 
-// ======================
-// Middleware тохиргоо
-// ======================
+
 // JSON request body-г parse хийх
 app.use(bodyParser.json());
 
@@ -25,15 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Static files-г serve хийх (frontend folder)
 app.use(express.static('frontend'));
 
-// ======================
-// AUTH: Хэрэглэгчийн бүртгэл
-// ======================
 
 // User register API
 app.post('/api/register', (req, res) => {
   const { username, email, password } = req.body;
 
-  // ✅ Input validation: бүх талбар бөглөгдсөн эсэхийг шалгах
+  //Input validation: бүх талбар бөглөгдсөн эсэхийг шалгах
   if (!username || !email || !password) {
     return res.status(400).json({ error: 'Бүх талбарыг бөглөнө үү' });
   }
@@ -58,13 +50,11 @@ app.post('/api/register', (req, res) => {
   );
 });
 
-// ======================
-// CENTER REGISTER: Хог цэгийн бүртгэл
-// ======================
+
 app.post('/api/center-register', (req, res) => {
   const { name, email, password, district, address, phone } = req.body;
 
-  // ✅ Input validation: шаардлагатай талбаруудыг шалгах
+  //Input validation: шаардлагатай талбаруудыг шалгах
   if (!name || !email || !password || !district || !address) {
     return res.status(400).json({ 
       error: 'Цэгийн нэр, имэйл, нууц үг, дүүрэг, хаяг шаардлагатай' 
@@ -118,13 +108,11 @@ app.post('/api/center-register', (req, res) => {
   });
 });
 
-// ======================
-// CENTER LOGIN: Цэгийн нэвтрэх
-// ======================
+
 app.post('/api/center-login', (req, res) => {
   const { email, password } = req.body;
 
-  // ✅ Бичиглэл шалгах
+  // Бичиглэл шалгах
   if (!email || !password) {
     return res.status(400).json({ error: 'Имэйл болон нууц үг шаардлагатай' });
   }

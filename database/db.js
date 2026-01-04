@@ -9,9 +9,9 @@ const db = new sqlite3.Database(
   join(__dirname, '..', 'greenswap.db'),
   (err) => {
     if (err) {
-      console.error('❌ Database холболт амжилтгүй:', err);
+      console.error('Database холболт амжилтгүй:', err);
     } else {
-      console.log('✅ SQLite database-д холбогдлоо');
+      console.log('SQLite database-д холбогдлоо');
       initializeDatabase();
     }
   }
@@ -101,6 +101,7 @@ function initializeDatabase() {
       FOREIGN KEY (user_id) REFERENCES users(id),
       FOREIGN KEY (product_id) REFERENCES products(id)
     )`);
+    insertSampleData();
   });
 }
 
@@ -228,7 +229,6 @@ function insertSampleData() {
   products.forEach(prod => insertProduct.run(prod));
   insertProduct.finalize();
 
-  console.log('✅ Sample data амжилттай орууллаа');
 }
 
 // Graceful shutdown
