@@ -1,20 +1,14 @@
+import './cmp-leaderboard.js';
 class CmpHeader extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
-    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    this.isDarkMode = false;
   }
 
   connectedCallback() {
     this.render();
     this.addEvents();
     this.applyTheme();
-    
-    // Apply dark mode class to header if needed
-    if (this.isDarkMode) {
-      const header = this.shadowRoot.querySelector('.header');
-      header.classList.add('dark-mode');
-    }
   }
 
   applyTheme() {
@@ -27,11 +21,10 @@ class CmpHeader extends HTMLElement {
 
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('darkMode', this.isDarkMode);
     this.applyTheme();
     
-    const themeBtn = this.shadowRoot.querySelector('.theme-toggle');
-    const header = this.shadowRoot.querySelector('.header');
+    const themeBtn = this.querySelector('.theme-toggle');
+    const header = this.querySelector('.header');
     
     if (this.isDarkMode) {
       themeBtn.classList.add('dark');
@@ -42,82 +35,53 @@ class CmpHeader extends HTMLElement {
     }
   }
 
-addEvents() {
-    const profileImg = this.shadowRoot.querySelector(".profile-img");
-    const menuBtn = this.shadowRoot.querySelector(".menu-btn");
-    const navLinks = this.shadowRoot.querySelector(".nav-links");
-    const themeToggle = this.shadowRoot.querySelector(".theme-toggle");
-    const trophyImg = this.shadowRoot.querySelector(".trophy-img");
-    const popup = this.shadowRoot.querySelector(".trophy-popup");
-    const closeBtn = this.shadowRoot.querySelector(".close-popup");
+  addEvents() {
+    const profileImg = this.querySelector(".profile-img");
+    const menuBtn = this.querySelector(".menu-btn");
+    const navLinks = this.querySelector(".nav-links");
+    const themeToggle = this.querySelector(".theme-toggle");
+    const trophyImg = this.querySelector(".trophy-img");
     
+    // Profile navigation
     profileImg.addEventListener("click", () => {
-      // localStorage-с мэдээлэл авах
-      const user = localStorage.getItem("user");
-      const center = localStorage.getItem("center");
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      const center = JSON.parse(localStorage.getItem("center") || "null");
 
-      // Center нэвтэрсэн эсэх шалгах
-      if (center) {
-        try {
-          const centerData = JSON.parse(center);
-          if (centerData && centerData.id) {
-            // Center нэвтэрсэн - Center Profile руу
-            console.log('🏢 Center profile руу шилжиж байна...');
-            window.location.hash = "#/center-profile";
-            return;
-          }
-        } catch (e) {
-          console.error('Center data parse error:', e);
-          localStorage.removeItem("center");
-        }
+      if (center?.id) {
+        console.log('🏢 Center profile руу шилжиж байна...');
+        window.location.hash = "#/center-profile";
+      } else if (user?.id) {
+        console.log('👤 User profile руу шилжиж байна...');
+        window.location.hash = "#/profile";
+      } else {
+        console.log('🔐 Login хуудас руу шилжиж байна...');
+        window.location.hash = "#/login";
       }
-
-      // User нэвтэрсэн эсэх шалгах
-      if (user) {
-        try {
-          const userData = JSON.parse(user);
-          if (userData && userData.id) {
-            // User нэвтэрсэн - User Profile руу
-            console.log('👤 User profile руу шилжиж байна...');
-            window.location.hash = "#/profile";
-            return;
-          }
-        } catch (e) {
-          console.error('User data parse error:', e);
-          localStorage.removeItem("user");
-        }
-      }
-
-      // Хэн ч нэвтрээгүй - Login хуудас руу
-      console.log('🔐 Login хуудас руу шилжиж байна...');
-      window.location.hash = "#/login";
     });
 
+    // Mobile menu toggle
     menuBtn.addEventListener("click", () => {
       navLinks.classList.toggle("active");
       menuBtn.classList.toggle("active");
     });
 
+    // Theme toggle
     themeToggle.addEventListener("click", () => {
       this.toggleTheme();
     });
 
-    trophyImg.addEventListener("click", async () => {
-      popup.classList.add("active");
-      await this.loadLeaderboard();
-    });
-
-    closeBtn.addEventListener("click", () => {
-      popup.classList.remove("active");
-    });
-
-    popup.addEventListener("click", (e) => {
-      if (e.target === popup) {
-        popup.classList.remove("active");
+    // Trophy click - Open leaderboard
+    trophyImg.addEventListener("click", () => {
+      const leaderboard = document.querySelector('cmp-leaderboard');
+      if (leaderboard) {
+        leaderboard.open();
+      } else {
+        console.error('cmp-leaderboard component олдсонгүй!');
       }
     });
 
-    const links = this.shadowRoot.querySelectorAll(".nav-links a");
+    // Close mobile menu when clicking nav links
+    const links = this.querySelectorAll(".nav-links a");
     links.forEach(link => {
       link.addEventListener("click", () => {
         navLinks.classList.remove("active");
@@ -126,661 +90,8 @@ addEvents() {
     });
   }
 
-  async loadLeaderboard() {
-      const container = this.shadowRoot.querySelector('.achievements-list');
-      
-      try {
-          const res = await fetch('/api/leaderboard');
-          if (!res.ok) throw new Error('Leaderboard load failed');
-
-          const data = await res.json();
-          this.renderLeaderboard(data);
-      } catch (err) {
-          console.error('Leaderboard error:', err);
-          
-          if (container) {
-              container.innerHTML = `<p style="color: #ff5252; text-align: center;">⚠️ Холболтын алдаа гарлаа</p>`;
-          }
-      }
-  }
-  renderLeaderboard(list) {
-    const container = this.shadowRoot.querySelector('.achievements-list');
-    if (!container) return;
-
-    if (!list || list.length === 0) {
-      container.innerHTML = `<p>Одоогоор мэдээлэл алга</p>`;
-      return;
-    }
-
-    container.innerHTML = list.map((u, index) => {
-      const rank = index + 1;
-
-      const medal =
-        rank === 1 ? '🥇' :
-        rank === 2 ? '🥈' :
-        rank === 3 ? '🥉' : rank;
-
-      const medalClass =
-        rank === 1 ? 'gold' :
-        rank === 2 ? 'silver' :
-        rank === 3 ? 'bronze' : '';
-
-      return `
-        <div class="achievement-item ${medalClass}">
-          <div class="achievement-left">
-            ${
-              rank <= 3
-                ? `<div class="achievement-icon">${medal}</div>`
-                : `<div class="achievement-rank">${medal}</div>`
-            }
-            <div class="achievement-info">
-              <h3>${u.username}</h3>
-              <p>${u.count ?? 0} хаягдал тушаасан</p>
-            </div>
-          </div>
-          <div class="achievement-score">
-            <div class="points">${u.points ?? 0}</div>
-            <div class="label">оноо</div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-
-
   render() {
-    
-    this.shadowRoot.innerHTML = /*html*/`
-      <style>
-        :host {
-          display: block;
-        }
-
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        .header {
-          background: white;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          border-bottom: 1px solid #e0e0e0;
-          position: sticky;
-          top: 0;
-          z-index: 1000;
-          transition: all 0.3s ease;
-        }
-
-        .header.dark-mode {
-          background: var(--white);
-          box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
-          border-bottom: 1px solid var(--gray-lighter);
-        }
-
-        .nav-bar {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          height: 70px;
-          padding: 0 40px;
-          max-width: 1400px;
-          margin: 0 auto;
-          gap: 20px;
-        }
-
-        .logo {
-          display: flex;
-          align-items: center;
-          flex-shrink: 0;
-        }
-
-        .logo img {
-          width: 80px;
-          height: auto;
-        }
-
-        .nav-links {
-          display: flex;
-          align-items: center;
-          flex: 1;
-          justify-content: center;
-          /* responsive spacing */
-          gap: clamp(20px, 4vw, 50px);
-        }
-
-        .nav-links a {
-          text-decoration: none;
-          color: var(--gray);
-          font-size: 16px;
-          font-weight: 500;
-          transition: color 0.3s;
-          white-space: nowrap;
-          position: relative;
-          padding-bottom: 5px;
-          margin: 0 30px;
-        }
-
-        /* Animated bottom border */
-        .nav-links a::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background-color: var(--green1);
-          transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-          width: 100%;
-        }
-
-        .header.dark-mode .nav-links a {
-          color: #ffffff;
-        }
-
-        .nav-links a:hover {
-          color: var(--green1);
-        }
-
-        .right-section {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          flex-shrink: 0;
-          margin-left: auto;
-        }
-
-        .theme-toggle {
-          width: 50px;
-          height: 26px;
-          background: #e0e0e0;
-          border: none;
-          border-radius: 13px;
-          position: relative;
-          cursor: pointer;
-          transition: background 0.3s;
-          flex-shrink: 0;
-        }
-
-        .theme-toggle::before {
-          content: '';
-          position: absolute;
-          width: 22px;
-          height: 22px;
-          border-radius: 50%;
-          background: white;
-          top: 2px;
-          left: 2px;
-          transition: transform 0.3s;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .theme-toggle.dark {
-          background: var(--green1);
-        }
-
-        .theme-toggle.dark::before {
-          transform: translateX(24px);
-        }
-
-        .theme-toggle:hover {
-          opacity: 0.8;
-        }
-
-        .search-bar {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          border: 1px solid var(--gray-lighter);
-          border-radius: 20px;
-          padding: 8px 16px;
-          background: var(--gray-lighter);
-          flex-shrink: 0;
-          transition: all 0.3s ease;
-        }
-
-        .header.dark-mode .search-bar {
-          background: #2a2a2a;
-          border: 1px solid #444444;
-        }
-
-        .search-bar input {
-          border: none;
-          outline: none;
-          background: transparent;
-          width: 200px;
-          font-size: 14px;
-          color: inherit;
-        }
-
-        .header.dark-mode .search-bar input {
-          color: #ffffff;
-        }
-
-        .search-bar input::placeholder {
-          color: var(--gray);
-        }
-
-        .header.dark-mode .search-bar input::placeholder {
-          color: #b0b0b0;
-        }
-        .trophy-img{
-          width: 35px;
-          height: 35px;
-          cursor: pointer;
-          transition: transform 0.3s;
-          flex-shrink: 0;
-        }
-        .trophy-img:hover {
-          transform: scale(1.1);
-        }
-        .profile-img {
-          width: 35px;
-          height: 35px;
-          border-radius: 50%;
-          cursor: pointer;
-          transition: transform 0.3s;
-          flex-shrink: 0;
-        }
-
-        .profile-img:hover {
-          transform: scale(1.1);
-        }
-
-        .menu-btn {
-          display: none;
-          flex-direction: column;
-          gap: 4px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 8px;
-          flex-shrink: 0;
-        }
-
-        .menu-btn span {
-          width: 25px;
-          height: 3px;
-          background-color: var(--green1);
-          border-radius: 2px;
-          transition: all 0.3s ease;
-        }
-
-        .menu-btn.active span:nth-child(1) {
-          transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .menu-btn.active span:nth-child(2) {
-          opacity: 0;
-        }
-
-        .menu-btn.active span:nth-child(3) {
-          transform: rotate(-45deg) translate(7px, -7px);
-        }
-
-        @media (max-width: 768px) {
-          .nav-bar {
-            padding: 0 20px;
-            height: 60px;
-          }
-
-          .logo img {
-            width: 60px;
-          }
-
-          .nav-links {
-            position: absolute;
-            top: 60px;
-            left: 0;
-            right: 0;
-            flex-direction: column;
-            background: white;
-            padding: 0;
-            gap: 0;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-          }
-
-          .header.dark-mode .nav-links {
-            background: #1a1a1a;
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-          }
-
-          .nav-links.active {
-            max-height: 400px;
-            opacity: 1;
-            padding: 20px 0;
-          }
-
-          .nav-links a {
-            padding: 15px 30px;
-            width: 100%;
-            text-align: left;
-          }
-
-          /* Remove bottom border animation on mobile */
-          .nav-links a::after {
-            display: none;
-          }
-
-          .nav-links a:hover {
-            background-color: var(--green-light);
-            color: var(--green-dark);
-            border: 1px solid var(--green-light);
-            border-radius: 15px;
-          }
-
-          .search-bar {
-            display: none;
-          }
-
-          .theme-toggle {
-            width: 45px;
-            height: 24px;
-          }
-
-          .theme-toggle::before {
-            width: 20px;
-            height: 20px;
-          }
-
-          .theme-toggle.dark::before {
-            transform: translateX(21px);
-          }
-
-          .menu-btn {
-            display: flex;
-          }
-
-          .profile-img {
-            width: 40px;
-            height: 40px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .nav-bar {
-            padding: 0 15px;
-            height: 55px;
-          }
-
-          .logo img {
-            width: 50px;
-          }
-
-          .nav-links {
-            top: 55px;
-          }
-
-          .profile-img {
-            width: 35px;
-            height: 35px;
-          }
-        }
-
-        /* Trophy Popup Styles */
-        .trophy-popup {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 2000;
-          opacity: 0;
-          visibility: hidden;
-          transition: all 0.3s ease;
-        }
-
-        .trophy-popup.active {
-          opacity: 1;
-          visibility: visible;
-        }
-
-        .popup-content {
-          background: white;
-          border-radius: 20px;
-          padding: 40px;
-          max-width: 500px;
-          width: 90%;
-          position: relative;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-          transform: scale(0.8);
-          transition: transform 0.3s ease;
-        }
-
-        .trophy-popup.active .popup-content {
-          transform: scale(1);
-        }
-
-        .header.dark-mode .popup-content {
-          background: #2a2a2a;
-          color: #ffffff;
-        }
-
-        .close-popup {
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          width: 35px;
-          height: 35px;
-          border: none;
-          background: #f0f0f0;
-          border-radius: 50%;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-          color: #666;
-          transition: all 0.3s ease;
-        }
-
-        .header.dark-mode .close-popup {
-          background: #3a3a3a;
-          color: #ffffff;
-        }
-
-        .close-popup:hover {
-          background: var(--green1);
-          color: white;
-          transform: rotate(90deg);
-        }
-
-        .popup-header {
-          text-align: left;
-          margin-bottom: 25px;
-          display: flex;
-          align-items: center;
-          gap: 15px;
-        }
-
-        .popup-header img {
-          width: 50px;
-          height: 50px;
-        }
-
-        .popup-header-text h2 {
-          color: #333;
-          font-size: 24px;
-          margin-bottom: 5px;
-          font-weight: 600;
-        }
-
-        .header.dark-mode .popup-header-text h2 {
-          color: #ffffff;
-        }
-
-        .popup-header-text p {
-          color: #666;
-          font-size: 14px;
-        }
-
-        .header.dark-mode .popup-header-text p {
-          color: #b0b0b0;
-        }
-
-        .achievements-list {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          margin-bottom: 20px;
-        }
-
-        .achievement-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 18px 20px;
-          background: #f8f8f8;
-          border-radius: 12px;
-          transition: all 0.3s ease;
-          border: 2px solid transparent;
-        }
-
-        .achievement-item.gold {
-          background: #fff9e6;
-          border-color: #ffd700;
-        }
-        .achievement-item.silver {
-          background: var(--gray-lighter);
-          border-color: #c0c0c0;
-        }
-
-        .achievement-item.bronze {
-          background: #fff4e6;
-          border-color: #cd7f32;
-        }
-
-        .header.dark-mode .achievement-item {
-          background: #3a3a3a;
-        }
-
-        .header.dark-mode .achievement-item.gold {
-          background: #3a3520;
-          border-color: #ffd700;
-        }
-
-        .header.dark-mode .achievement-item.bronze {
-          background: #3a2f20;
-          border-color: #cd7f32;
-        }
-
-        .achievement-left {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          flex: 1;
-        }
-
-        .achievement-icon {
-          font-size: 40px;
-          flex-shrink: 0;
-          width: 50px;
-          height: 50px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .achievement-rank {
-          font-size: 28px;
-          color: #999;
-          font-weight: 600;
-          width: 50px;
-          text-align: center;
-          flex-shrink: 0;
-        }
-
-        .achievement-info h3 {
-          font-size: 18px;
-          margin-bottom: 3px;
-          color: var(--black);
-          font-weight: 600;
-        }
-
-        .header.dark-mode .achievement-info h3 {
-          color: #ffffff;
-        }
-
-        .achievement-info p {
-          font-size: 13px;
-          color: #999;
-        }
-
-        .header.dark-mode .achievement-info p {
-          color: #b0b0b0;
-        }
-
-        .achievement-score {
-          text-align: right;
-          flex-shrink: 0;
-        }
-
-        .achievement-score .points {
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--green2);
-          margin-bottom: 3px;
-        }
-
-        .achievement-score .label {
-          font-size: 12px;
-          color: var(--green2);
-        }
-
-        .popup-footer {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 15px 20px;
-          background: #f0f7ff;
-          border-radius: 12px;
-          margin-top: 20px;
-        }
-
-        .header.dark-mode .popup-footer {
-          background: #2a3540;
-        }
-
-        .popup-footer-icon {
-          font-size: 24px;
-        }
-
-        .popup-footer-text {
-          font-size: 14px;
-          color: #666;
-        }
-
-        .header.dark-mode .popup-footer-text {
-          color: #b0b0b0;
-        }
-
-        @media (max-width: 768px) {
-          .popup-content {
-            padding: 30px 20px;
-          }
-
-          .popup-header h2 {
-            font-size: 24px;
-          }
-
-          .achievement-item {
-            padding: 12px;
-          }
-        }
-      </style>
-
+    this.innerHTML = /*html*/ `
       <header class="header">
         <div class="nav-bar">
           <div class="logo">
@@ -794,12 +105,13 @@ addEvents() {
           </nav>
 
           <div class="right-section">
-            <button class="theme-toggle ${this.isDarkMode ? 'dark' : ''}" aria-label="Toggle theme"></button>
+            <button class="theme-toggle" aria-label="Toggle theme"></button>
             <div class="search-bar">
               <img src="zurags/search.png" width="18" alt="Search">
               <input type="text" placeholder="Хайх">
             </div>
             <img src="zurags/trophy2.png" class="trophy-img" alt="Trophy">
+            <cmp-leaderboard></cmp-leaderboard>
             <img src="zurags/profile.png" class="profile-img" alt="Profile">
             <button class="menu-btn">
               <span></span>
@@ -809,29 +121,6 @@ addEvents() {
           </div>
         </div>
       </header>
-
-      <div class="trophy-popup">
-        <div class="popup-content">
-          <button class="close-popup">×</button>
-          
-          <div class="popup-header">
-            <img src="zurags/trophy2.png" alt="Trophy">
-            <div class="popup-header-text">
-              <h2>Тэргүүлэгчдийн самбар</h2>
-              <p>Дахин боловсруулалтад хамгийн их хувь нэмэр оруулсан хэрэглэгчид</p>
-            </div>
-          </div>
-
-          <div class="achievements-list">
-            <p>⏳ Ачааллаж байна...</p>
-          </div>
-
-          <div class="popup-footer">
-            <div class="popup-footer-icon">💡</div>
-            <div class="popup-footer-text">Санамж: Хаягдал тушаах бүрт та оноо цуглуулна</div>
-          </div>
-        </div>
-      </div>
     `;
   }
 }
