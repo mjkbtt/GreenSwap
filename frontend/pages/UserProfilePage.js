@@ -1,8 +1,6 @@
 // frontend/pages/UserProfilePage.js
 export class UserProfilePage {
   async render(container) {
-    container.innerHTML = `<div style="text-align:center; padding: 50px;">⏳ Ачааллаж байна...</div>`;
-
     try {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       if (!storedUser?.id) {
@@ -10,11 +8,22 @@ export class UserProfilePage {
         return;
       }
 
-      // API дуудалт
       const res = await fetch(`/api/user/${storedUser.id}`);
-      if (!res.ok) throw new Error('Хэрэглэгчийн мэдээлэл татаж чадсангүй');
+      
+      // ✅ Хэрэв сервер дээр хэрэглэгч олдохгүй бол (404)
+      if (res.status === 404) {
+        console.warn("Хэрэглэгч системд бүртгэлгүй байна. Logout хийж байна...");
+        localStorage.removeItem('user');
+        window.location.hash = '#/login';
+        return;
+      }
 
+      if (!res.ok) throw new Error('Мэдээлэл татаж чадсангүй');
+      
       const user = await res.json();
+
+      // Доорх HTML-д түүхийг харуулах (History map ашиглах)
+      // ...
 
       container.innerHTML = /*html*/`
         <div class="profile-page">

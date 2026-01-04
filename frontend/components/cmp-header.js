@@ -42,7 +42,7 @@ class CmpHeader extends HTMLElement {
     }
   }
 
-  addEvents() {
+addEvents() {
     const profileImg = this.shadowRoot.querySelector(".profile-img");
     const menuBtn = this.shadowRoot.querySelector(".menu-btn");
     const navLinks = this.shadowRoot.querySelector(".nav-links");
@@ -51,22 +51,48 @@ class CmpHeader extends HTMLElement {
     const popup = this.shadowRoot.querySelector(".trophy-popup");
     const closeBtn = this.shadowRoot.querySelector(".close-popup");
     
+    // ✅ PROFILE IMAGE CLICK - Login шалгалттай
     profileImg.addEventListener("click", () => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const center = JSON.parse(localStorage.getItem("center"));
+      // 1️⃣ localStorage-с мэдээлэл авах
+      const user = localStorage.getItem("user");
+      const center = localStorage.getItem("center");
 
+      // 2️⃣ Center нэвтэрсэн эсэх шалгах
       if (center) {
-        // 🏢 Хогийн цэг
-        window.location.hash = "#/center-profile";
-      } else if (user) {
-        // 👤 Энгийн хэрэглэгч
-        window.location.hash = "#/profile";
-      } else {
-        // 🔐 Login хийгээгүй
-        window.location.hash = "#/login";
+        try {
+          const centerData = JSON.parse(center);
+          if (centerData && centerData.id) {
+            // ✅ Center нэвтэрсэн - Center Profile руу
+            console.log('🏢 Center profile руу шилжиж байна...');
+            window.location.hash = "#/center-profile";
+            return;
+          }
+        } catch (e) {
+          console.error('Center data parse error:', e);
+          localStorage.removeItem("center");
+        }
       }
-    });
 
+      // 3️⃣ User нэвтэрсэн эсэх шалгах
+      if (user) {
+        try {
+          const userData = JSON.parse(user);
+          if (userData && userData.id) {
+            // ✅ User нэвтэрсэн - User Profile руу
+            console.log('👤 User profile руу шилжиж байна...');
+            window.location.hash = "#/profile";
+            return;
+          }
+        } catch (e) {
+          console.error('User data parse error:', e);
+          localStorage.removeItem("user");
+        }
+      }
+
+      // 4️⃣ Хэн ч нэвтрээгүй - Login хуудас руу
+      console.log('🔐 Login хуудас руу шилжиж байна...');
+      window.location.hash = "#/login";
+    });
 
     menuBtn.addEventListener("click", () => {
       navLinks.classList.toggle("active");
@@ -81,7 +107,6 @@ class CmpHeader extends HTMLElement {
       popup.classList.add("active");
       await this.loadLeaderboard();
     });
-
 
     closeBtn.addEventListener("click", () => {
       popup.classList.remove("active");
@@ -103,19 +128,23 @@ class CmpHeader extends HTMLElement {
   }
 
   async loadLeaderboard() {
-    try {
-      const res = await fetch('/api/leaderboard');
-      if (!res.ok) throw new Error('Leaderboard load failed');
-
-      const data = await res.json();
-      this.renderLeaderboard(data);
-    } catch (err) {
-      console.error('Leaderboard error:', err);
+      // 1️⃣ Эхлээд container-ийг shadowRoot-ээс олж зарлана
       const container = this.shadowRoot.querySelector('.achievements-list');
-      if (container) {
-        container.innerHTML = `<p>⚠️ Мэдээлэл ачаалж чадсангүй</p>`;
+      
+      try {
+          const res = await fetch('/api/leaderboard');
+          if (!res.ok) throw new Error('Leaderboard load failed');
+
+          const data = await res.json();
+          this.renderLeaderboard(data);
+      } catch (err) {
+          console.error('Leaderboard error:', err);
+          
+          // 2️⃣ Одоо container тодорхойлогдсон тул алдаа заахгүй
+          if (container) {
+              container.innerHTML = `<p style="color: #ff5252; text-align: center;">⚠️ Холболтын алдаа гарлаа</p>`;
+          }
       }
-    }
   }
   renderLeaderboard(list) {
     const container = this.shadowRoot.querySelector('.achievements-list');
@@ -164,6 +193,7 @@ class CmpHeader extends HTMLElement {
 
 
   render() {
+    
     this.shadowRoot.innerHTML = /*html*/`
       <style>
         :host {

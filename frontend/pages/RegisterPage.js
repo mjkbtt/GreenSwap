@@ -281,7 +281,6 @@ export class RegisterPage {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Validate passwords match
       if (form.password.value !== form.confirmPassword.value) {
         messageDiv.textContent = '✗ Нууц үг таарахгүй байна';
         messageDiv.className = 'message error';

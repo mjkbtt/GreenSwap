@@ -1,46 +1,48 @@
-// frontend/pages/CenterProfilePage.js
-// Center Profile Page (API based)
-
 export class CenterProfilePage {
   async render(container) {
     container.innerHTML = `<p style="padding:40px">⏳ Ачааллаж байна...</p>`;
 
     try {
-      // 1️⃣ LocalStorage-с center авах
+      // 1️⃣ LocalStorage-с нэвтэрсэн цэгийн мэдээлэл авах
       const storedCenter = JSON.parse(localStorage.getItem('center'));
       if (!storedCenter?.id) {
         window.location.hash = '#/center-login';
         return;
       }
 
-      // 2️⃣ API-аас бодит data татах
-      const res = await fetch(`/api/center/${storedCenter.id}`);
-      if (!res.ok) throw new Error('Цэгийн мэдээлэл олдсонгүй');
+      // 2️⃣ API-аас бүх цэгүүдийг татах
+      const res = await fetch(`/api/tseguud`);
+      if (!res.ok) throw new Error('Сервертэй холбогдоход алдаа гарлаа');
 
-      const center = await res.json();
+      const allCenters = await res.json();
 
-      // 3️⃣ Render
+      // 3️⃣ Зөвхөн өөрийн ID-тай тохирох цэгийг шүүж авах
+      const center = allCenters.find(c => c.id === storedCenter.id);
+
+      // ❌ Хэрэв тухайн ID-тай цэг жагсаалтанд байхгүй бол Login руу буцаах
+      if (!center) {
+        console.warn("Цэгийн мэдээлэл олдсонгүй, дахин нэвтэрнэ үү.");
+        localStorage.removeItem('center');
+        window.location.hash = '#/center-login';
+        return;
+      }
+
+      // 4️⃣ Render (Өгөгдөл баталгаатай олдсон үед)
       container.innerHTML = /*html*/`
         <div class="profile-page">
           <div class="profile-card">
-
-            <!-- Header -->
             <div class="profile-header">
               <div class="header-left">
                 <div class="avatar">🏢</div>
                 <div>
-                  <h2>${center.name}</h2>
-                  <p>${center.email}</p>
-                  <span class="badge">Дүүрэг: ${center.district}</span>
+                  <h2>${center.name || 'Нэр байхгүй'}</h2>
+                  <p>${center.email || 'Имэйл байхгүй'}</p>
+                  <span class="badge">Дүүрэг: ${center.district || '-'}</span>
                 </div>
               </div>
-
-              <button class="logout-btn" id="logoutBtn">
-                Гарах
-              </button>
+              <button class="logout-btn" id="logoutBtn">Гарах</button>
             </div>
 
-            <!-- Stats -->
             <div class="stats-grid">
               <div class="stat">
                 <h3>${center.total_collected_kg ?? 0} кг</h3>
@@ -56,39 +58,38 @@ export class CenterProfilePage {
               </div>
             </div>
 
-            <!-- Info -->
             <div class="info-section">
               <h3>ℹ️ Цэгийн мэдээлэл</h3>
               <ul>
-                <li><strong>Имэйл:</strong> ${center.email}</li>
-                <li><strong>Дүүрэг:</strong> ${center.district}</li>
-                <li><strong>Бүртгэгдсэн:</strong> ${new Date(center.created_at).toLocaleDateString()}</li>
+                <li><strong>Имэйл:</strong> ${center.email || '-'}</li>
+                <li><strong>Дүүрэг:</strong> ${center.district || '-'}</li>
+                <li><strong>Хаяг:</strong> ${center.location || '-'}</li>
+                <li><strong>Бүртгэгдсэн:</strong> ${center.created_at ? new Date(center.created_at).toLocaleDateString() : 'Мэдээлэлгүй'}</li>
               </ul>
             </div>
-
           </div>
         </div>
-
         ${this.styles()}
       `;
 
       this.addEvents(container);
 
     } catch (err) {
-      console.error(err);
-      container.innerHTML = `
-        <p style="color:red; padding:40px">
-          ⚠️ Алдаа гарлаа
-        </p>
-      `;
+      console.error("Profile Load Error:", err);
+      // Алдаа гарвал хэрэглэгчийг төөрөгдүүлэхгүйн тулд Login руу шилжүүлэх нь зөв
+      localStorage.removeItem('center');
+      window.location.hash = '#/center-login';
     }
   }
 
   addEvents(container) {
-    container.querySelector('#logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('center');
-      window.location.hash = '#/center-login';
-    });
+    const logoutBtn = container.querySelector('#logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('center');
+        window.location.hash = '#/center-login';
+      });
+    }
   }
 
   styles() {

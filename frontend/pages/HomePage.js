@@ -106,6 +106,9 @@ export class HomePage {
   async fetchImpactData() {
     try {
       const response = await fetch('/api/leaderboard');
+      if(!response.ok) {
+        throw new Error(`Сервер алдаа өглөө: ${res.status}`);
+      }
       const stats = await response.json();
       
       this.impactData = {

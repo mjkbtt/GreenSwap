@@ -33,6 +33,8 @@ function initializeDatabase() {
     db.run(`CREATE TABLE IF NOT EXISTS collection_centers (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
+      email TEXT UNIQUE,
+      password TEXT,
       address TEXT NOT NULL,
       district TEXT,
       location TEXT,
@@ -99,9 +101,6 @@ function initializeDatabase() {
       FOREIGN KEY (user_id) REFERENCES users(id),
       FOREIGN KEY (product_id) REFERENCES products(id)
     )`);
-
-    // Sample data оруулах
-    insertSampleData();
   });
 }
 

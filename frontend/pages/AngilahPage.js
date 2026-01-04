@@ -1,6 +1,3 @@
-// frontend/pages/AngilahPage.js
-// Хаягдлыг ангилах - Waste sorting guide
-
 export class AngilahPage {
   constructor() {
     this.categories = [];
@@ -11,157 +8,108 @@ export class AngilahPage {
     
     container.innerHTML = /*html*/`
       <div class="guide-page">
-          <div class="action-btns">
-                    <section class="action-buttons ">
-                        <a href="#/tseguud" class="action-btn" data-link>
-                            <img src="zurags/map.png" alt="">
-                            <span>Цэгүүд</span>
-                        </a>
-                        <a href="#/tushaah" class="action-btn" data-link>
-                            <img src="zurags/recycle-2.png" alt="">
-                            <span>Тушаах</span>
-                        </a>
-                        <a href="#/angilah" class="action-btn" data-link>
-                            <img src="zurags/waste.png" alt="">
-                            <span>Хаягдлыг ангилах</span>
-                        </a>
-                    </section>
+        <div class="action-btns">
+          <section class="action-buttons">
+            <a href="#/tseguud" class="action-btn" data-link>
+              <img src="zurags/map.png" alt="">
+              <span>Цэгүүд</span>
+            </a>
+            <a href="#/tushaah" class="action-btn" data-link>
+              <img src="zurags/recycle-2.png" alt="">
+              <span>Тушаах</span>
+            </a>
+            <a href="#/angilah" class="action-btn" data-link>
+              <img src="zurags/waste.png" alt="">
+              <span>Хаягдлыг ангилах</span>
+            </a>
+          </section>
+        </div>
+
+        <div class="angilah-info">
+          <div class="guide-hero">
+            <h1>Хаягдлыг зөв ангилах заавар</h1>
+            <img src="zurags/haygdal.jpg" alt="waste sorting bg">
           </div>
-          <div class="angilah-info">
-            <div class="guide-hero">
-              <h1>Хаягдлыг зөв ангилах заавар</h1>
-              <img src="zurags/haygdal.jpg" alt="waste sorting bg">
-            </div>
 
-            <div class="category-grid">
-              ${this.renderCategoryCards()}
-            </div>
-
-            <div class="expandable-sections">
-              <h2 class="section-title">Дэлгэрэнгүй мэдээлэл</h2>
-              ${this.renderExpandableSections()}
-            </div>
-
-            <div class="bottom-message">
-              <div class="bottom-icon">🌍</div>
-              <h3>Хамтдаа байгаль орчноо хамгаалъя!</h3>
-            </div>
+          <div class="category-grid">
+            ${this.renderCategoryCards()}
           </div>
         </div>
 
-      <style>
-        .guide-page {
-          max-width: 1000px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-        .action-btns{
-          margin-top:10px;
-        }
-        .guide-hero {
-          display: flex;
-          position: relative;
-          height: 300px;
-          overflow: hidden;
-          text-align: center;
-          padding: 40px 20px;
-          background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
-          border-radius: 24px;
-          margin-bottom: 40px;
-          justify-content: center; 
-          align-items: center;
-        }
+        <div class="bottom-message">
+          <div class="bottom-icon">🌍</div>
+          <h3>Хамтдаа байгаль орчноо хамгаалъя!</h3>
+        </div>
+      </div>
 
-        .guide-hero h1 {
-          position: absolute;
-          margin: 0;
-          top: 5px;
-          font-size: 40px;
-          font-weight: 700;
-          color: white;
-          z-index: 2;
-          text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+      <style>
+        .guide-page { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .action-btns { margin-top: 10px; }
+        
+        .guide-hero {
+          display: flex; position: relative; height: 300px; overflow: hidden;
+          text-align: center; padding: 40px 20px; border-radius: 24px;
+          margin-bottom: 40px; justify-content: center; align-items: center;
+          background: #c8e6c9;
         }
-        .guide-hero img{
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          object-fit: cover;
-          z-index: 1;
-          max-width: 100%;
-          height: auto;
-          border-radius: 12px;
-        }
+        .guide-hero h1 { position: absolute; top: 20px; font-size: 40px; color: white; z-index: 2; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .guide-hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
         .category-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 16px;
-          margin-bottom: 60px;
+          gap: 20px;
         }
-        .angilah-info {
-          margin-top: 30px;
-        }
+
+        /* Картны загвар */
         .category-card {
-          background: var(--white);
-          padding: 24px;
+          background: white;
           border-radius: 16px;
+          overflow: hidden;
           cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          border: 1px solid var(--gray-lighter);
-          color: var(--black);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+          border: 1px solid #eee;
+          display: flex;
+          flex-direction: column;
         }
 
-        .category-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
-        }
-
-        .category-icon {
-          font-size: 40px;
-          margin-bottom: 12px;
-        }
-        .expandable-sections {
-          color: var(--black);
-        }
-
-        .expandable-item {
-          background: var(--white);
-          border-radius: 12px;
-          margin-bottom: 12px;
-          overflow: hidden;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          border: 1px solid var(--gray-lighter);
-          color: var(--black);
-        }
-
-        .expandable-header {
+        .card-main-info {
+          padding: 24px;
           display: flex;
           align-items: center;
-          padding: 20px;
-          cursor: pointer;
+          gap: 15px;
         }
 
-        .expandable-header:hover {
-          background: var(--white);
-        }
+        .category-icon { font-size: 40px; }
+        .category-name { font-size: 20px; font-weight: 600; color: #333; }
 
-        .expandable-content {
+        /* Дэлгэрэнгүй хэсэг (нуугдсан) */
+        .card-details {
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.3s ease;
-          padding: 0 20px;
+          transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+          background: #f9f9f9;
+          padding: 0 24px;
         }
 
-        .expandable-item.active .expandable-content {
-          max-height: 800px;
-          padding: 0 20px 20px 20px;
+        /* Карт идэвхтэй үед */
+        .category-card.active {
+          grid-column: span 2; /* Бүтэн мөр эзэлнэ */
+          border-color: #4CAF50;
         }
 
-        .bottom-message {
+        .category-card.active .card-details {
+          max-height: 1000px;
+          padding: 20px 24px;
+          border-top: 1px solid #eee;
+        }
+
+        .detail-section { margin-bottom: 15px; }
+        .detail-title { font-weight: bold; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .do { color: #2e7d32; }
+        .dont { color: #d32f2f; }
+         .bottom-message {
           text-align: center;
           padding: 60px 20px;
           color: var(--black);
@@ -170,10 +118,13 @@ export class AngilahPage {
         .bottom-icon {
           font-size: 64px;
         }
+
+        
         @media (max-width: 768px) {
-          .guide-hero {
-            height: 150px;
-          }
+          .category-grid { grid-template-columns: 1fr; }
+          .category-card.active { grid-column: span 1; }
+          .guide-hero { height: 180px; }
+          .guide-hero h1 { font-size: 24px; }
         }
       </style>
     `;
@@ -181,46 +132,67 @@ export class AngilahPage {
     this.addEventListeners(container);
   }
 
+  getDefaultCategories() {
+    return [
+      { 
+        id: 1, name: 'Хуванцар', icon: '♻️', 
+        do: 'Савлагааны хуванцар лонх (PET), Хуванцар сав (HDPE), Хуванцар уут, Хатуу хуванцар сав',
+        dont: 'Бохирдсон хуванцар, Хальс, уут, Төрөл бүрийн гялгарнуур, Хэт жижиг хэлтэрхийнүүд',
+        tip: 'Хуванцар савыг угааж, хатааж хаяна. Таг, шошгыг авна.'
+      },
+      { 
+        id: 2, name: 'Цаас', icon: '📄', 
+        do: 'Бичгийн цаас, Картон хайрцаг, Сонин, Сэтгүүл',
+        dont: 'Тостой цаас, Ариун цэврийн цаас, Лаажуулсан цаас',
+        tip: 'Цаасыг үрчийлгэхгүй, хавтгай болгож тушаана.'
+      },
+      { 
+        id: 3, name: 'Шил', icon: '🍾', 
+        do: 'Ундааны шил, Хүнсний шилэн сав, Эмийн шил',
+        dont: 'Цонхны шил, Хагархай шил, Толь',
+        tip: 'Шилэн савны тагийг заавал авч тушаана.'
+      },
+      { 
+        id: 4, name: 'Төмөр', icon: '🔧', 
+        do: 'Лааз, Төмөр таг, Хөнгөн цагаан сав',
+        dont: 'Будагны лааз, Химийн бодистой сав',
+        tip: 'Лаазыг доторхыг нь цэвэрлэж, хавтгай болгоно.'
+      }
+    ];
+  }
+
   async fetchCategories() {
     try {
       const response = await fetch('/api/categories');
-      this.categories = await response.json();
+      const data = await response.json();
+      // Хэрэв API-аас өгөгдөл ирвэл default-той нэгтгэх эсвэл шууд ашиглах
+      this.categories = data.length > 0 ? data : this.getDefaultCategories();
     } catch (error) {
-      console.error('Error fetching categories:', error);
       this.categories = this.getDefaultCategories();
     }
-  }
-
-  getDefaultCategories() {
-    return [
-      { id: 1, name: 'Хуванцар', icon: '♻️', description: 'Дахин боловсруулж болохоор хуванцар' },
-      { id: 2, name: 'Цаас', icon: '📄', description: 'Дахин боловсруулж болохоор цаас' },
-      { id: 3, name: 'Шил', icon: '🍾', description: 'Дахин боловсруулж болохоор шил' },
-      { id: 4, name: 'Төмөр', icon: '🔧', description: 'Дахин боловсруулж болохоор төмөр' },
-      { id: 5, name: 'Органик', icon: '🌱', description: 'Бордоо болгож болохоор органик' }
-    ];
   }
 
   renderCategoryCards() {
     return this.categories.map(cat => /*html*/`
       <div class="category-card" data-category-id="${cat.id}">
-        <div class="category-icon">${cat.icon}</div>
-        <div class="category-name">${cat.name}</div>
-        <div class="category-desc">${cat.description}</div>
-      </div>
-    `).join('');
-  }
-
-  renderExpandableSections() {
-    return this.categories.map(cat => /*html*/`
-      <div class="expandable-item" id="section-${cat.id}">
-        <div class="expandable-header">
-          <span style="font-size: 32px; margin-right: 16px;">${cat.icon}</span>
-          <span style="flex: 1; font-size: 18px; font-weight: 600;">${cat.name}</span>
-          <span style="font-size: 24px;">▼</span>
+        <div class="card-main-info">
+          <div class="category-icon">${cat.icon}</div>
+          <div class="category-name">${cat.name}</div>
         </div>
-        <div class="expandable-content">
-          <p>Дэлгэрэнгүй мэдээлэл ${cat.name} талаар...</p>
+        
+        <div class="card-details">
+          <div class="detail-section">
+            <div class="detail-title do">✅ Хүлээн авдаг:</div>
+            <p>${cat.do || 'Мэдээлэл алга'}</p>
+          </div>
+          <div class="detail-section">
+            <div class="detail-title dont">❌ Хүлээн авахгүй:</div>
+            <p>${cat.dont || 'Мэдээлэл алга'}</p>
+          </div>
+          <div class="detail-section" style="background: #e3f2fd; padding: 10px; border-radius: 8px;">
+            <div class="detail-title" style="color: #1976d2;">ℹ️ Зөвлөмж:</div>
+            <p>${cat.tip || 'Цэвэрхэн тушаана уу.'}</p>
+          </div>
         </div>
       </div>
     `).join('');
@@ -228,22 +200,12 @@ export class AngilahPage {
 
   addEventListeners(container) {
     container.querySelectorAll('.category-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const categoryId = card.dataset.categoryId;
-        const section = container.querySelector(`#section-${categoryId}`);
-        section.scrollIntoView({ behavior: 'smooth' });
-        setTimeout(() => {
-          if (!section.classList.contains('active')) {
-            section.querySelector('.expandable-header').click();
-          }
-        }, 500);
-      });
-    });
-
-    container.querySelectorAll('.expandable-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const item = header.parentElement;
-        item.classList.toggle('active');
+      card.addEventListener('click', (e) => {
+        container.querySelectorAll('.category-card').forEach(c => {
+          if (c !== card) c.classList.remove('active');
+        });
+        
+        card.classList.toggle('active');
       });
     });
   }

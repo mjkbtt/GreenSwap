@@ -1,23 +1,23 @@
 // frontend/pages/CenterLoginPage.js
-// Цэг нэвтрэх
+// Center Login Page (User Login адил загвар)
 
 export class CenterLoginPage {
   async render(container) {
     container.innerHTML = /*html*/`
-      <div class="auth-page center">
+      <div class="auth-page">
         <div class="auth-container">
           <div class="auth-header">
-            <img src="zurags/industry.png">
-            <h1>Хогийн цэг нэвтрэх</h1>
-            <p>Цэгийн бүртгэлээр нэвтэрнэ үү</p>
+            <div class="logo">🏢</div>
+            <h1>Цэг нэвтрэх</h1>
+            <p>Дахин боловсруулах цэгийн систем</p>
           </div>
 
           <form class="auth-form" id="centerLoginForm">
             <div class="form-group">
-              <label for="centerEmail">Цэгийн имэйл</label>
+              <label for="email">Имэйл хаяг *</label>
               <input 
                 type="email" 
-                id="centerEmail" 
+                id="email" 
                 name="email" 
                 required 
                 placeholder="center@greenswap.mn"
@@ -25,86 +25,48 @@ export class CenterLoginPage {
             </div>
 
             <div class="form-group">
-              <label for="centerPassword">Нууц үг</label>
+              <label for="password">Нууц үг *</label>
               <input 
                 type="password" 
-                id="centerPassword" 
+                id="password" 
                 name="password" 
                 required 
                 placeholder="••••••••"
               >
             </div>
 
-            <div class="form-options">
-              <label class="checkbox-label">
-                <input type="checkbox" name="remember">
-                <span>Намайг сана</span>
-              </label>
-            </div>
-
-            <button type="submit" class="auth-button center-button">
+            <button type="submit" class="auth-button">
               Нэвтрэх
             </button>
           </form>
 
           <div class="auth-footer">
-            <p>Цэг бүртгүүлэх үү? <a href="#/center-register" data-link>Цэг бүртгүүлэх</a></p>
-            <p class="center-link">
+            <p>Шинэ цэг үүсгэх үү? <a href="#/center-register" data-link>Бүртгүүлэх</a></p>
+            <p class="switch-mode">
               <a href="#/login" data-link>👤 Хэрэглэгчээр нэвтрэх</a>
             </p>
           </div>
 
           <div class="message" id="message" style="display: none;"></div>
         </div>
-
-        <!-- Info Panel -->
-        <div class="info-panel">
-          <h2>Цэгийн бүртгэлийн давуу тал</h2>
-          <ul class="benefits-list">
-            <li>
-              <span class="benefit-icon">📊</span>
-              <div>
-                <strong>Статистик мэдээлэл</strong>
-                <p>Өдөр тутмын хүлээн авсан хог хаягдлын тайлан</p>
-              </div>
-            </li>
-            <li>
-              <span class="benefit-icon">🚚</span>
-              <div>
-                <strong>Pickup захиалга</strong>
-                <p>Хэрэглэгчдийн pickup захиалгыг удирдах</p>
-              </div>
-            </li>
-            <li>
-              <span class="benefit-icon">💰</span>
-              <div>
-                <strong>Орлогын тайлан</strong>
-                <p>Санхүүгийн тайлан, мэдээлэл</p>
-              </div>
-            </li>
-            <li>
-              <span class="benefit-icon">👥</span>
-              <div>
-                <strong>Хэрэглэгчид удирдах</strong>
-                <p>Бүртгэлтэй хэрэглэгчдийн мэдээлэл</p>
-              </div>
-            </li>
-          </ul>
-        </div>
       </div>
 
       <style>
-        .auth-page.center {
-          display: grid;
-          grid-template-columns: 450px 1fr;
-          gap: 40px;
-          padding: 40px;
+        .auth-page {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .auth-container {
           background: white;
           border-radius: 24px;
           padding: 48px;
+          width: 100%;
+          max-width: 450px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
@@ -112,26 +74,26 @@ export class CenterLoginPage {
           text-align: center;
           margin-bottom: 32px;
         }
-        .auth-header img {
-          width: 100px;
-          height: 100px;
+
+        .logo {
+          font-size: 64px;
+          margin-bottom: 16px;
         }
 
         .auth-header h1 {
           font-size: 28px;
           font-weight: 700;
-          color: var(--green-dark);
+          color: #1e293b;
           margin-bottom: 8px;
         }
 
         .auth-header p {
-          color: #666;
+          color: #64748b;
           font-size: 14px;
         }
 
         .form-group {
           margin-bottom: 20px;
-          margin-right: 30px;
         }
 
         .form-group label {
@@ -148,46 +110,45 @@ export class CenterLoginPage {
           border: 2px solid #e5e7eb;
           border-radius: 8px;
           font-size: 14px;
+          transition: border-color 0.2s;
+          box-sizing: border-box;
         }
 
         .form-group input:focus {
           outline: none;
-          border-color: var(--yellow);
+          border-color: #667eea;
         }
 
-        .form-options {
-          margin-bottom: 24px;
-        }
-
-        .checkbox-label {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-          font-size: 14px;
-        }
-
-        .center-button {
-          background: var(--yellow);
+        .auth-button {
           width: 100%;
           padding: 14px;
+          background: #667eea;
           color: white;
           border: none;
           border-radius: 8px;
           font-size: 16px;
           font-weight: 600;
           cursor: pointer;
+          transition: all 0.2s;
+          margin-top: 8px;
         }
 
-        .center-button:hover {
-          background: var(--green-light);
-          color: var(--green-dark);
+        .auth-button:hover {
+          background: #5a67d8;
+          transform: translateY(-2px);
+        }
+
+        .auth-button:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+          transform: none;
         }
 
         .auth-footer {
           margin-top: 24px;
           text-align: center;
           font-size: 14px;
+          color: #64748b;
         }
 
         .auth-footer p {
@@ -195,68 +156,19 @@ export class CenterLoginPage {
         }
 
         .auth-footer a {
-          color: var(--green-dark);
+          color: #667eea;
           text-decoration: none;
           font-weight: 600;
         }
 
-        .center-link {
-          margin-top: 16px;
+        .auth-footer a:hover {
+          text-decoration: underline;
+        }
+
+        .switch-mode {
           padding-top: 16px;
-          border-top: 1px solid var(--gray-lighter);
-        }
-
-       .info-panel {
-          border-radius: 24px;
-          padding-left: 32px;
-          padding-bottom: 10px;
-          padding-top: 10px;
-          backdrop-filter: blur(10px);
-          background: var(--green-light);
-          height: 500px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between; 
-          box-sizing: border-box;
-        } 
-
-        .info-panel h2 {
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--green-dark);
-          margin-bottom: 32px;
-        }
-
-        .benefits-list {
-          list-style: none;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-
-        .benefits-list li {
-          display: flex;
-          gap: 16px;
-        }
-
-        .benefit-icon {
-          font-size: 32px;
-          flex-shrink: 0;
-        }
-
-        .benefits-list strong {
-          display: block;
-          font-size: 16px;
-          font-weight: 700;
-          color: var(--gray);
-          margin-bottom: 4px;
-        }
-
-        .benefits-list p {
-          font-size: 14px;
-          color: var(--gray);
-          line-height: 1.6;
+          border-top: 1px solid #e5e7eb;
+          margin-top: 16px;
         }
 
         .message {
@@ -268,22 +180,18 @@ export class CenterLoginPage {
         }
 
         .message.success {
-          background: var(--gray-lighter);
-          color: var(--green1);
+          background: #d1fae5;
+          color: #065f46;
         }
 
         .message.error {
-          background: #f8d7da;
-          color: #721c24;
+          background: #fee2e2;
+          color: #991b1b;
         }
 
-        @media (max-width: 1024px) {
-          .auth-page.center {
-            grid-template-columns: 1fr;
-          }
-
-          .info-panel {
-            display: none;
+        @media (max-width: 480px) {
+          .auth-container {
+            padding: 32px 24px;
           }
         }
       </style>
@@ -299,38 +207,36 @@ export class CenterLoginPage {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const credentials = {
+      const loginData = {
         email: form.email.value,
-        password: form.password.value,
-        role: 'center' // Important: specify center role
+        password: form.password.value
       };
 
       try {
         const response = await fetch('/api/center-login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(credentials)
+          body: JSON.stringify(loginData)
         });
 
         const data = await response.json();
 
         if (response.ok) {
-          // localStorage.setItem('token', data.token);
-          localStorage.setItem('center', JSON.stringify(data));
-
           messageDiv.textContent = '✓ Амжилттай нэвтэрлээ!';
           messageDiv.className = 'message success';
           messageDiv.style.display = 'block';
 
-          // Redirect to center dashboard
+          // Save center data to localStorage
+          localStorage.setItem('center', JSON.stringify(data));
+          
           setTimeout(() => {
             window.location.hash = '#/center-profile';
           }, 1000);
         } else {
-          throw new Error(data.message || 'Нэвтрэх амжилтгүй');
+          throw new Error(data.error || 'Нэвтрэх амжилтгүй');
         }
       } catch (error) {
-        console.error('Center login error:', error);
+        console.error('Login error:', error);
         messageDiv.textContent = '✗ ' + error.message;
         messageDiv.className = 'message error';
         messageDiv.style.display = 'block';

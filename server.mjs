@@ -48,33 +48,61 @@ app.post('/api/register', (req, res) => {
 // CENTER REGISTER
 // ======================
 app.post('/api/center-register', (req, res) => {
-  const { name, email, password, district } = req.body;
+  const { name, email, password, district, address, phone } = req.body;
 
-  if (!name || !email || !password || !district) {
-    return res.status(400).json({ error: 'Бүх талбарыг бөглөнө үү' });
+  // ✅ Validation
+  if (!name || !email || !password || !district || !address) {
+    return res.status(400).json({ 
+      error: 'Цэгийн нэр, имэйл, нууц үг, дүүрэг, хаяг шаардлагатай' 
+    });
   }
 
-  db.run(
-    `INSERT INTO collection_centers 
-     (name, email, password, district, latitude, longitude) 
-     VALUES (?, ?, ?, ?, 0, 0)`,
-    [name, email, password, district],
-    function (err) {
-      if (err) {
-        console.error('Center register error:', err);
-        return res.status(400).json({ error: 'Цэг аль хэдийн бүртгэлтэй байна' });
-      }
+  console.log('📝 Center registration attempt:', { name, email, district, address });
 
-      res.json({
-        id: this.lastID,
-        name,
-        email,
-        district
-      });
+  // Check if center already exists
+  db.get('SELECT id FROM collection_centers WHERE email = ?', [email], (err, existing) => {
+    if (err) {
+      console.error('❌ Check center error:', err);
+      return res.status(500).json({ error: 'Серверийн алдаа' });
     }
-  );
-});
+    
+    if (existing) {
+      return res.status(400).json({ error: 'Энэ имэйл аль хэдийн бүртгэлтэй байна' });
+    }
 
+    // ✅ Insert new center with all required fields
+    db.run(
+      `INSERT INTO collection_centers 
+       (name, email, password, district, address, phone, latitude, longitude, 
+        working_hours, type, location, total_collected_kg, active_users, rating) 
+       VALUES (?, ?, ?, ?, ?, ?, 47.9186, 106.9178, '09:00-18:00', 'Plastic,Paper,Metal', ?, 0, 0, 5.0)`,
+      [name, email, password, district, address, phone || '', `${district} - ${address}`],
+      function (err) {
+        if (err) {
+          console.error('❌ Center register error:', err);
+          return res.status(500).json({ error: 'Бүртгэл амжилтгүй: ' + err.message });
+        }
+
+        console.log('✅ Center registered successfully, ID:', this.lastID);
+
+        // ✅ Profile-д шаардлагатай бүх мэдээлэл буцаах
+        res.json({
+          id: this.lastID,
+          name,
+          email,
+          district,
+          address,
+          phone: phone || '',
+          total_collected_kg: 0,
+          active_users: 0,
+          rating: 5.0,
+          created_at: new Date().toISOString(),
+          message: 'Амжилттай бүртгэгдлээ'
+        });
+      }
+    );
+  });
+});
 // ======================
 // CENTER LOGIN
 // ======================
@@ -215,125 +243,18 @@ app.get('/api/tseguud', (req, res) => {
       return res.status(500).json({ error: err.message });
     }
     
-    // Type-г array болгож өгөх (frontend-д хялбар байхын тулд)
     const formattedCenters = centers.map(center => ({
       ...center,
       type: center.type ? center.type.split(',').map(t => t.trim()) : []
     }));
     
-    console.log('✅ Цэгүүд амжилттай илгээгдлээ:', formattedCenters.length);
     res.json(formattedCenters);
   });
 });
 
-// ======================
-// RECYCLE
-// ======================
 
-app.post('/api/recycle', (req, res) => {
-  const {
-    user_id,
-    waste_category_id,
-    weight_kg,
-    method,
-    collection_center_id,
-    pickup_address,
-    pickup_date
-  } = req.body;
 
-  // Validation
-  if (!user_id || !waste_category_id || !weight_kg || !method) {
-    return res.status(400).json({ error: 'Шаардлагатай талбаруудыг бөглөнө үү' });
-  }
 
-  if (weight_kg <= 0) {
-    return res.status(400).json({ error: 'Жин 0-оос их байх ёстой' });
-  }
-
-  db.get(
-    'SELECT points_per_kg FROM waste_categories WHERE id = ?',
-    [waste_category_id],
-    (err, category) => {
-      if (err) {
-        console.error('Get category error:', err);
-        return res.status(500).json({ error: 'Серверийн алдаа' });
-      }
-      if (!category) {
-        return res.status(400).json({ error: 'Хог хаягдлын төрөл олдсонгүй' });
-      }
-
-      const points_earned = Math.floor(weight_kg * category.points_per_kg);
-
-      db.run(
-        `INSERT INTO recycling_submissions
-         (user_id, waste_category_id, weight_kg, method, collection_center_id,
-          pickup_address, pickup_date, points_earned, status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'completed')`,
-        [
-          user_id,
-          waste_category_id,
-          weight_kg,
-          method,
-          collection_center_id,
-          pickup_address,
-          pickup_date,
-          points_earned
-        ],
-        function (err) {
-          if (err) {
-            console.error('Submit recycle error:', err);
-            return res.status(500).json({ error: err.message });
-          }
-
-          // Update user points
-          db.run(
-            'UPDATE users SET green_points = green_points + ? WHERE id = ?',
-            [points_earned, user_id],
-            (updateErr) => {
-              if (updateErr) {
-                console.error('Update points error:', updateErr);
-              }
-            }
-          );
-
-          res.json({
-            id: this.lastID,
-            points_earned,
-            status: 'completed'
-          });
-        }
-      );
-    }
-  );
-});
-
-// ======================
-// HISTORY
-// ======================
-
-app.get('/api/user/:id/history', (req, res) => {
-  db.all(
-    `SELECT rs.*, wc.name AS category_name, wc.icon,
-            cc.name AS center_name
-     FROM recycling_submissions rs
-     LEFT JOIN waste_categories wc ON rs.waste_category_id = wc.id
-     LEFT JOIN collection_centers cc ON rs.collection_center_id = cc.id
-     WHERE rs.user_id = ?
-     ORDER BY rs.created_at DESC`,
-    [req.params.id],
-    (err, history) => {
-      if (err) {
-        console.error('Get history error:', err);
-        return res.status(500).json({ error: err.message });
-      }
-      res.json(history);
-    }
-  );
-});
-
-// ======================
-// PRODUCTS
-// ======================
 
 app.get('/api/products', (req, res) => {
   db.all(
@@ -349,86 +270,7 @@ app.get('/api/products', (req, res) => {
   );
 });
 
-app.post('/api/purchase', (req, res) => {
-  const { user_id, product_id, quantity } = req.body;
 
-  // Validation
-  if (!user_id || !product_id || !quantity) {
-    return res.status(400).json({ error: 'Шаардлагатай талбаруудыг бөглөнө үү' });
-  }
-
-  if (quantity <= 0) {
-    return res.status(400).json({ error: 'Тоо ширхэг 0-оос их байх ёстой' });
-  }
-
-  db.get(
-    'SELECT * FROM products WHERE id = ?',
-    [product_id],
-    (err, product) => {
-      if (err) {
-        console.error('Get product error:', err);
-        return res.status(500).json({ error: 'Серверийн алдаа' });
-      }
-      if (!product) {
-        return res.status(404).json({ error: 'Бүтээгдэхүүн олдсонгүй' });
-      }
-      if (product.stock < quantity) {
-        return res.status(400).json({ error: 'Үлдэгдэл хүрэлцэхгүй байна' });
-      }
-
-      const total_points = product.price_points * quantity;
-
-      db.get(
-        'SELECT green_points FROM users WHERE id = ?',
-        [user_id],
-        (err, user) => {
-          if (err) {
-            console.error('Get user error:', err);
-            return res.status(500).json({ error: 'Серверийн алдаа' });
-          }
-          if (!user) {
-            return res.status(404).json({ error: 'Хэрэглэгч олдсонгүй' });
-          }
-          if (user.green_points < total_points) {
-            return res.status(400).json({ error: 'Таны оноо хүрэлцэхгүй байна' });
-          }
-
-          // Create order
-          db.run(
-            `INSERT INTO orders
-             (user_id, product_id, quantity, total_points, status)
-             VALUES (?, ?, ?, ?, 'completed')`,
-            [user_id, product_id, quantity, total_points],
-            function (err) {
-              if (err) {
-                console.error('Create order error:', err);
-                return res.status(500).json({ error: err.message });
-              }
-
-              // Deduct points
-              db.run(
-                'UPDATE users SET green_points = green_points - ? WHERE id = ?',
-                [total_points, user_id]
-              );
-
-              // Update stock
-              db.run(
-                'UPDATE products SET stock = stock - ? WHERE id = ?',
-                [quantity, product_id]
-              );
-
-              res.json({
-                order_id: this.lastID,
-                total_points,
-                status: 'completed'
-              });
-            }
-          );
-        }
-      );
-    }
-  );
-});
 
 // ======================
 // LEADERBOARD API
@@ -438,8 +280,7 @@ app.get('/api/leaderboard', (req, res) => {
     `
     SELECT
       username,
-      green_points AS points,
-      total_collected_count AS count
+      green_points AS points
     FROM users
     ORDER BY green_points DESC
     LIMIT 5
@@ -464,7 +305,7 @@ app.get('/config', (req, res) => {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
   
   if (!apiKey) {
-    console.error('❌ GOOGLE_MAPS_API_KEY .env файлд байхгүй байна!');
+    console.error('GOOGLE_MAPS_API_KEY .env файлд байхгүй байна!');
     return res.status(500).json({ error: 'Google Maps API key тохируулагдаагүй байна' });
   }
   
@@ -472,10 +313,6 @@ app.get('/config', (req, res) => {
     googleMapsKey: apiKey
   });
 });
-
-// ======================
-// ERROR HANDLING
-// ======================
 
 // 404 Handler
 app.use((req, res) => {
@@ -493,16 +330,15 @@ app.use((err, req, res, next) => {
 // ======================
 
 app.listen(PORT, () => {
-  console.log(`🌱 GreenSwap server ажиллаж байна: http://localhost:${PORT}`);
-  console.log(`📍 API endpoint: http://localhost:${PORT}/api/...`);
-  console.log(`🗺️  Google Maps config: http://localhost:${PORT}/config`);
+  console.log(`GreenSwap server ажиллаж байна: http://localhost:${PORT}`);
+
 });
 
 // Graceful shutdown
 process.on('SIGINT', () => {
-  console.log('\n🛑 Server-ийг зогсоож байна...');
+  console.log('\nServer-ийг зогсоож байна...');
   db.close(() => {
-    console.log('✅ Database холболт хаагдлаа');
+    console.log('Database холболт хаагдлаа');
     process.exit(0);
   });
 });

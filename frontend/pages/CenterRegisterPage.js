@@ -11,7 +11,7 @@ export class CenterRegisterPage {
 
           <form class="auth-form" id="centerRegisterForm">
             <div class="form-group">
-              <label for="centerName">Цэгийн нэр</label>
+              <label for="centerName">Цэгийн нэр *</label>
               <input
                 type="text"
                 id="centerName"
@@ -22,7 +22,7 @@ export class CenterRegisterPage {
             </div>
 
             <div class="form-group">
-              <label for="centerEmail">Цэгийн имэйл</label>
+              <label for="centerEmail">Цэгийн имэйл *</label>
               <input
                 type="email"
                 id="centerEmail"
@@ -33,18 +33,54 @@ export class CenterRegisterPage {
             </div>
 
             <div class="form-group">
-              <label for="centerPassword">Нууц үг</label>
+              <label for="centerDistrict">Дүүрэг *</label>
+              <select id="centerDistrict" name="district" required>
+                <option value="">Сонгох</option>
+                <option value="СБД">Сүхбаатар дүүрэг (СБД)</option>
+                <option value="БЗД">Баянзүрх дүүрэг (БЗД)</option>
+                <option value="ЧД">Чингэлтэй дүүрэг (ЧД)</option>
+                <option value="ХУД">Хан-Уул дүүрэг (ХУД)</option>
+                <option value="СХД">Сонгинохайрхан дүүрэг (СХД)</option>
+                <option value="БГД">Баянгол дүүрэг (БГД)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="centerAddress">Хаяг *</label>
+              <input
+                type="text"
+                id="centerAddress"
+                name="address"
+                required
+                placeholder="1-р хороо, 5-р байр"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="centerPhone">Утасны дугаар</label>
+              <input
+                type="tel"
+                id="centerPhone"
+                name="phone"
+                placeholder="+976 7000-1234"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="centerPassword">Нууц үг *</label>
               <input
                 type="password"
                 id="centerPassword"
                 name="password"
                 required
                 placeholder="••••••••"
+                minlength="6"
               >
+              <small class="hint">Хамгийн багадаа 6 тэмдэгт</small>
             </div>
 
             <div class="form-group">
-              <label for="centerConfirm">Нууц үг давтах</label>
+              <label for="centerConfirm">Нууц үг давтах *</label>
               <input
                 type="password"
                 id="centerConfirm"
@@ -54,15 +90,11 @@ export class CenterRegisterPage {
               >
             </div>
 
-            <div class="form-group">
-              <label for="centerDistrict">Дүүрэг</label>
-              <select id="centerDistrict" required>
-                <option value="">Сонгох</option>
-                <option value="СБД">СБД</option>
-                <option value="БГД">БГД</option>
-                <option value="ХУД">ХУД</option>
-                <option value="БЗД">БЗД</option>
-              </select>
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="terms" required>
+                <span>Би үйлчилгээний нөхцөлтэй танилцсан</span>
+              </label>
             </div>
 
             <button type="submit" class="auth-button center-button">
@@ -126,6 +158,7 @@ export class CenterRegisterPage {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Password match validation
       if (form.password.value !== form.confirm.value) {
         messageDiv.textContent = '✗ Нууц үг таарахгүй байна';
         messageDiv.className = 'message error';
@@ -133,16 +166,21 @@ export class CenterRegisterPage {
         return;
       }
 
+      // ✅ ЗАСВАРЛАСАН: Бүх шаардлагатай өгөгдөл цуглуулах
       const payload = {
         name: form.name.value,
         email: form.email.value,
+        district: form.district.value,      // ✅ name="district" ашигласан
+        address: form.address.value,        // ✅ address нэмсэн
+        phone: form.phone.value || '',      // ✅ optional
         password: form.password.value,
-        district: form.centerDistrict.value,
         role: 'center'
       };
 
+      console.log('📤 Илгээж буй өгөгдөл:', payload);
+
       try {
-        const response = await fetch('http://localhost:3000/api/center-register', {
+        const response = await fetch('/api/center-register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -151,7 +189,7 @@ export class CenterRegisterPage {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || 'Бүртгэл амжилтгүй');
+          throw new Error(data.error || 'Бүртгэл амжилтгүй');
         }
 
         messageDiv.textContent = '✓ Амжилттай бүртгэгдлээ! Нэвтэрч байна...';
@@ -160,10 +198,10 @@ export class CenterRegisterPage {
 
         setTimeout(() => {
           window.location.hash = '#/center-login';
-        }, 1200);
+        }, 1500);
 
       } catch (err) {
-        console.error('Center register error:', err);
+        console.error('❌ Center register error:', err);
         messageDiv.textContent = '✗ ' + err.message;
         messageDiv.className = 'message error';
         messageDiv.style.display = 'block';
@@ -172,100 +210,242 @@ export class CenterRegisterPage {
   }
 
   sharedStyles() {
-    return  /*css*/`
+    return /*css*/`
       .auth-page.center {
         display: grid;
-        grid-template-columns: 450px 1fr;
+        grid-template-columns: 500px 1fr;
         gap: 40px;
         padding: 40px;
+        min-height: 100vh;
       }
+      
       .auth-container {
         background: white;
         border-radius: 24px;
-        padding: 48px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        max-height: 95vh;
+        overflow-y: auto;
       }
-      .auth-header { text-align: center; margin-bottom: 32px; }
-      .auth-header img{
-        width: 100px;
-        height: 100px;
+      
+      .auth-header { 
+        text-align: center; 
+        margin-bottom: 32px; 
       }
-      .auth-header h1 { color: var(--green-dark); }
+      
+      .auth-header img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 16px;
+      }
+      
+      .auth-header h1 { 
+        color: #1e293b;
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      .auth-header p {
+        color: #64748b;
+        font-size: 14px;
+      }
+      
       .form-group { 
-        margin-bottom: 18px; 
-        margin-right: 20px;
+        margin-bottom: 18px;
       }
+      
       label { 
-          font-weight: 600; 
-          font-size: 14px; 
-          margin-bottom: 6px; 
-          display:block; 
-        }
+        font-weight: 600; 
+        font-size: 14px; 
+        margin-bottom: 6px; 
+        display: block;
+        color: #333;
+      }
+      
       input, select {
-          width: 100%;
-          padding: 12px;
-          border-radius: 8px;
-          border: 2px solid #e5e7eb;
-          font-size: 16px; 
-          outline: none;
-          transition: border-color 0.2s;
-          background-color: white; 
-          box-sizing: border-box; /* Padding болон Border-ийг элементийн нийт өндөр, өргөн дотор багтааж тооцно. */
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 2px solid #e5e7eb;
+        font-size: 14px; 
+        outline: none;
+        transition: border-color 0.2s;
+        background-color: white; 
+        box-sizing: border-box;
       }
 
       select {
-          appearance: none; /* Браузерын өөрийнх нь cумыг арилгана */
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          
-          /* Шинэ сум нэмэх (SVG ашиглан) */
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: right 12px center;
-          background-size: 16px;
-          padding-right: 40px; 
-          cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 40px; 
+        cursor: pointer;
       }
 
       input:focus, select:focus {
-          border-color: var(--yellow);
-          box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
-}
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .hint {
+        display: block;
+        font-size: 12px;
+        color: #999;
+        margin-top: 4px;
+      }
+
+      .checkbox-group {
+        margin: 20px 0;
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #64748b;
+      }
+
+      .checkbox-label input {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        cursor: pointer;
+      }
+      
       .center-button {
-        width: calc(100% - 20px);
+        width: 100%;
         height: 48px;
-        background: var(--yellow);
-        padding:0 14px;
-        color:white;
-        border:none;
-        border-radius:8px;
-        font-weight:600;
-        box-sizing: border-box; 
-        margin: 0 auto;
-    
-    cursor: pointer;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
       }
+      
       .center-button:hover {
-        color: var(--green-dark);
-        background: var(--green-light);
+        background: #5a67d8;
+        transform: translateY(-2px);
       }
-      .auth-footer { text-align:center; margin-top:20px; }
-      .auth-footer a { color: var(--green-dark); font-weight:600; text-decoration:none; }
+
+      .center-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      
+      .auth-footer { 
+        text-align: center; 
+        margin-top: 20px;
+        font-size: 14px;
+      }
+
+      .auth-footer p {
+        margin: 8px 0;
+        color: #64748b;
+      }
+      
+      .auth-footer a { 
+        color: #667eea;
+        font-weight: 600; 
+        text-decoration: none; 
+      }
+
+      .auth-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .center-link {
+        padding-top: 12px;
+        margin-top: 12px;
+        border-top: 1px solid #e5e7eb;
+      }
+      
       .info-panel {
-        border-radius:24px;
-        padding:48px;
-        background: var(--green-light);
-        height: 40%;
+        border-radius: 24px;
+        padding: 48px;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
-      .benefits-list { list-style:none; padding:0; display:flex; flex-direction:column; gap:24px; }
-      .benefits-list li { display:flex; gap:16px; }
-      .benefit-icon { font-size:32px; }
-      .message { margin-top:16px; padding:12px; border-radius:8px; text-align:center; }
-      .message.success { background:#d4edda; color:#155724; }
-      .message.error { background:#f8d7da; color:#721c24; }
-      @media(max-width:1024px){
-        .auth-page.center{grid-template-columns:1fr}
-        .info-panel{display:none}
+
+      .info-panel h2 {
+        font-size: 28px;
+        color: #166534;
+        margin-bottom: 32px;
+      }
+      
+      .benefits-list { 
+        list-style: none; 
+        padding: 0; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 28px; 
+      }
+      
+      .benefits-list li { 
+        display: flex; 
+        gap: 16px;
+        align-items: flex-start;
+      }
+      
+      .benefit-icon { 
+        font-size: 40px;
+        flex-shrink: 0;
+      }
+
+      .benefits-list strong {
+        display: block;
+        font-size: 18px;
+        color: #166534;
+        margin-bottom: 4px;
+      }
+
+      .benefits-list p {
+        font-size: 14px;
+        color: #64748b;
+        margin: 0;
+      }
+      
+      .message { 
+        margin-top: 16px; 
+        padding: 12px; 
+        border-radius: 8px; 
+        text-align: center;
+        font-size: 14px;
+      }
+      
+      .message.success { 
+        background: #d1fae5; 
+        color: #065f46; 
+      }
+      
+      .message.error { 
+        background: #fee2e2; 
+        color: #991b1b; 
+      }
+      
+      @media(max-width: 1024px) {
+        .auth-page.center {
+          grid-template-columns: 1fr;
+          padding: 20px;
+        }
+        
+        .info-panel {
+          display: none;
+        }
+
+        .auth-container {
+          max-height: none;
+        }
       }
     `;
   }
