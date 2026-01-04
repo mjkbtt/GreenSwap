@@ -73,7 +73,7 @@ export class LoginPage {
       <style>
         .auth-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: var(--background);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -81,12 +81,13 @@ export class LoginPage {
         }
 
         .auth-container {
-          background: white;
+          background: var(--white);
           border-radius: 24px;
           padding: 48px;
           width: 100%;
           max-width: 450px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+          border: 1px solid var(--gray-lighter);
         }
 
         .auth-header {

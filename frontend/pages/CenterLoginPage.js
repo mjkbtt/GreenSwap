@@ -7,7 +7,7 @@ export class CenterLoginPage {
       <div class="auth-page">
         <div class="auth-container">
           <div class="auth-header">
-            <div class="logo">🏢</div>
+            <img src="zurags/industry.webp" alt="Logo" class="logo">
             <h1>Цэг нэвтрэх</h1>
             <p>Дахин боловсруулах цэгийн систем</p>
           </div>
@@ -58,21 +58,30 @@ export class CenterLoginPage {
           align-items: center;
           justify-content: center;
           padding: 20px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: var(--background);
         }
 
         .auth-container {
-          background: white;
+          background: var(--white);
           border-radius: 24px;
           padding: 48px;
           width: 100%;
           max-width: 450px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+          position: relative;
         }
 
         .auth-header {
           text-align: center;
-          margin-bottom: 32px;
+          margin-bottom: 20px;
+        }
+        .auth-header img{
+          width: 64px;
+          height: 64px;
+          position: absolute;
+          left: 40%;
+          top: 5px;
+
         }
 
         .logo {
@@ -84,7 +93,7 @@ export class CenterLoginPage {
           font-size: 28px;
           font-weight: 700;
           color: #1e293b;
-          margin-bottom: 8px;
+          margin-bottom: 2px;
         }
 
         .auth-header p {

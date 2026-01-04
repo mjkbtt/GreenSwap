@@ -1,32 +1,44 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import db from './database/db.js';
+// ======================
+// Лайбрари импортлох
+// ======================
+import express from 'express';           // Express framework-г ашиглана
+import bodyParser from 'body-parser';    // POST request-оос өгөгдөл авахад хэрэгтэй
+import dotenv from 'dotenv';             // .env файлыг уншихад хэрэгтэй
+import db from './database/db.js';       // Database холболт (SQLite эсвэл өөр) 
 
-// 🔹 ENV унших
+// .env файл-аас орчны хувьсагчуудыг унших
 dotenv.config();
 
+// Express апп initialize
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  // Хэрвээ .env файлд PORT байхгүй бол default 3000
 
-// 🔹 Middleware
+// ======================
+// Middleware тохиргоо
+// ======================
+// JSON request body-г parse хийх
 app.use(bodyParser.json());
+
+// URL encoded request body-г parse хийх (form data)
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Static files-г serve хийх (frontend folder)
 app.use(express.static('frontend'));
 
 // ======================
-// AUTH
+// AUTH: Хэрэглэгчийн бүртгэл
 // ======================
 
-// Register
+// User register API
 app.post('/api/register', (req, res) => {
   const { username, email, password } = req.body;
 
-  // Input validation
+  // ✅ Input validation: бүх талбар бөглөгдсөн эсэхийг шалгах
   if (!username || !email || !password) {
     return res.status(400).json({ error: 'Бүх талбарыг бөглөнө үү' });
   }
 
+  // Хэрэглэгчийг database-д нэмэх
   db.run(
     'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
     [username, email, password],
@@ -35,22 +47,24 @@ app.post('/api/register', (req, res) => {
         console.error('Register error:', err);
         return res.status(400).json({ error: 'Хэрэглэгч аль хэдийн бүртгэлтэй байна' });
       }
+      // Амжилттай бүртгэл
       res.json({
-        id: this.lastID,
+        id: this.lastID,  // Шинээр нэмэгдсэн хэрэглэгчийн ID
         username,
         email,
-        green_points: 0
+        green_points: 0  // Эхэндээ оноо 0
       });
     }
   );
 });
+
 // ======================
-// CENTER REGISTER
+// CENTER REGISTER: Хог цэгийн бүртгэл
 // ======================
 app.post('/api/center-register', (req, res) => {
   const { name, email, password, district, address, phone } = req.body;
 
-  // ✅ Validation
+  // ✅ Input validation: шаардлагатай талбаруудыг шалгах
   if (!name || !email || !password || !district || !address) {
     return res.status(400).json({ 
       error: 'Цэгийн нэр, имэйл, нууц үг, дүүрэг, хаяг шаардлагатай' 
@@ -59,7 +73,7 @@ app.post('/api/center-register', (req, res) => {
 
   console.log('📝 Center registration attempt:', { name, email, district, address });
 
-  // Check if center already exists
+  // Шалгах: имэйл аль хэдийн бүртгэлтэй эсэх
   db.get('SELECT id FROM collection_centers WHERE email = ?', [email], (err, existing) => {
     if (err) {
       console.error('❌ Check center error:', err);
@@ -70,7 +84,7 @@ app.post('/api/center-register', (req, res) => {
       return res.status(400).json({ error: 'Энэ имэйл аль хэдийн бүртгэлтэй байна' });
     }
 
-    // Insert new center with all required fields
+    // Шинэ цэгийг database-д нэмэх
     db.run(
       `INSERT INTO collection_centers 
        (name, email, password, district, address, phone, latitude, longitude, 
@@ -85,7 +99,7 @@ app.post('/api/center-register', (req, res) => {
 
         console.log('✅ Center registered successfully, ID:', this.lastID);
 
-        // ✅ Profile-д шаардлагатай бүх мэдээлэл буцаах
+        // ✅ Profile-д шаардлагатай бүх мэдээллийг буцаах
         res.json({
           id: this.lastID,
           name,
@@ -103,16 +117,19 @@ app.post('/api/center-register', (req, res) => {
     );
   });
 });
+
 // ======================
-// CENTER LOGIN
+// CENTER LOGIN: Цэгийн нэвтрэх
 // ======================
 app.post('/api/center-login', (req, res) => {
   const { email, password } = req.body;
 
+  // ✅ Бичиглэл шалгах
   if (!email || !password) {
     return res.status(400).json({ error: 'Имэйл болон нууц үг шаардлагатай' });
   }
 
+  // Database-аас email/password тохирч буй цэгийг авах
   db.get(
     `SELECT id, name, email, district,
             total_collected_kg, active_users, rating
@@ -134,7 +151,7 @@ app.post('/api/center-login', (req, res) => {
 });
 
 // ======================
-// CENTER PROFILE
+// CENTER PROFILE: Цэгийн мэдээлэл авах
 // ======================
 app.get('/api/center/:id', (req, res) => {
   db.get(
@@ -158,8 +175,9 @@ app.get('/api/center/:id', (req, res) => {
   );
 });
 
-
-// Login
+// ======================
+// USER LOGIN
+// ======================
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -184,9 +202,8 @@ app.post('/api/login', (req, res) => {
 });
 
 // ======================
-// USERS
+// USERS: Хэрэглэгчийн мэдээлэл авах
 // ======================
-
 app.get('/api/user/:id', (req, res) => {
   db.get(
     'SELECT id, username, email, green_points FROM users WHERE id = ?',
@@ -205,9 +222,8 @@ app.get('/api/user/:id', (req, res) => {
 });
 
 // ======================
-// DATA
+// DATA: Waste categories авах
 // ======================
-
 app.get('/api/categories', (req, res) => {
   db.all('SELECT * FROM waste_categories', [], (err, categories) => {
     if (err) {
@@ -218,22 +234,14 @@ app.get('/api/categories', (req, res) => {
   });
 });
 
-// ЗАСВАРЛАСАН: Database-аас бодит өгөгдөл татах
+// ======================
+// DATA: Collection centers (Tseguud) авах
+// ======================
 app.get('/api/tseguud', (req, res) => {
   db.all(/*sql*/`SELECT 
-        id,
-        address,
-        location,
-        phone,
-        working_hours,
-        rating,
-        active_users,
-        total_collected_kg,
-        created_at,
-        name,
-        district,
-        type,
-        price_per_kg,
+        id, address, location, phone, working_hours, rating,
+        active_users, total_collected_kg, created_at, name,
+        district, type, price_per_kg,
         latitude  AS lat,
         longitude AS lng
      FROM collection_centers`,
@@ -243,6 +251,7 @@ app.get('/api/tseguud', (req, res) => {
       return res.status(500).json({ error: err.message });
     }
     
+    // type-г массив болгон хувиргах
     const formattedCenters = centers.map(center => ({
       ...center,
       type: center.type ? center.type.split(',').map(t => t.trim()) : []
@@ -252,10 +261,9 @@ app.get('/api/tseguud', (req, res) => {
   });
 });
 
-
-
-
-
+// ======================
+// DATA: Products авах
+// ======================
 app.get('/api/products', (req, res) => {
   db.all(
     'SELECT * FROM products WHERE stock > 0',
@@ -270,21 +278,15 @@ app.get('/api/products', (req, res) => {
   );
 });
 
-
-
 // ======================
-// LEADERBOARD API
+// LEADERBOARD API: Top 5 хэрэглэгч
 // ======================
 app.get('/api/leaderboard', (req, res) => {
   db.all(
-    `
-    SELECT
-      username,
-      green_points AS points
-    FROM users
-    ORDER BY green_points DESC
-    LIMIT 5
-    `,
+    `SELECT username, green_points AS points
+     FROM users
+     ORDER BY green_points DESC
+     LIMIT 5`,
     [],
     (err, rows) => {
       if (err) {
@@ -296,11 +298,9 @@ app.get('/api/leaderboard', (req, res) => {
   );
 });
 
-
 // ======================
-// CONFIG (Google Maps)
+// CONFIG: Google Maps API Key
 // ======================
-
 app.get('/config', (req, res) => {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
   
@@ -314,27 +314,31 @@ app.get('/config', (req, res) => {
   });
 });
 
+// ======================
 // 404 Handler
+// ======================
 app.use((req, res) => {
   res.status(404).json({ error: 'API endpoint олдсонгүй' });
 });
 
+// ======================
 // Global Error Handler
+// ======================
 app.use((err, req, res, next) => {
   console.error('❌ Серверийн алдаа:', err);
   res.status(500).json({ error: 'Серверийн дотоод алдаа' });
 });
 
 // ======================
-// SERVER
+// SERVER START
 // ======================
-
 app.listen(PORT, () => {
   console.log(`GreenSwap server ажиллаж байна: http://localhost:${PORT}`);
-
 });
 
-// Graceful shutdown
+// ======================
+// Graceful shutdown: Ctrl+C дарвал database хааж серверийг зогсоох
+// ======================
 process.on('SIGINT', () => {
   console.log('\nServer-ийг зогсоож байна...');
   db.close(() => {

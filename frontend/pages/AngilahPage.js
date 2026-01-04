@@ -52,7 +52,7 @@ export class AngilahPage {
           margin-bottom: 40px; justify-content: center; align-items: center;
           background: #c8e6c9;
         }
-        .guide-hero h1 { position: absolute; top: 20px; font-size: 40px; color: white; z-index: 2; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .guide-hero h1 { position: absolute; top: 180px; font-size: 40px; color: white; z-index: 2; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
         .guide-hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
         .category-grid {
@@ -96,7 +96,7 @@ export class AngilahPage {
         /* Карт идэвхтэй үед */
         .category-card.active {
           grid-column: span 2; /* Бүтэн мөр эзэлнэ */
-          border-color: #4CAF50;
+          border-color: var(--green2);
         }
 
         .category-card.active .card-details {

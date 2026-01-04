@@ -100,10 +100,12 @@ export class ContactPage {
               <h3>Биднийг дагаарай</h3>
               <div class="social-links">
                 <a href="https://facebook.com" class="social-link facebook">
-                  <span>📘</span> Facebook
+                  <img src="zurags/fb.webp" alt="Facebook">
+                  <span></span> Facebook
                 </a>
                 <a href="https://instagram.com" class="social-link instagram">
-                  <span>📷</span> Instagram
+                  <img src="zurags/instagram.webp" alt="Instagram">
+                  <span></span> Instagram
                 </a>
               </div>
             </div>
@@ -309,6 +311,10 @@ export class ContactPage {
           display: flex;
           flex-direction: column;
           gap: 12px;
+        }
+        .social-links img{
+          width: 30px;
+          height: 30px;
         }
 
         .social-link {

@@ -51,9 +51,9 @@
 
 /* Header Container */
 .header {
-  background: white;
+  background: var(--white);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--gray-lighter);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -295,7 +295,7 @@
 }
 
 .popup-content {
-  background: white;
+  background: var(--white);
   border-radius: 20px;
   padding: 40px;
   max-width: 500px;
@@ -324,14 +324,14 @@
   width: 35px;
   height: 35px;
   border: none;
-  background: #f0f0f0;
+  background: var(--white);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: #666;
+  color: var(--gray);
   transition: all 0.3s ease;
 }
 
@@ -372,7 +372,7 @@
 }
 
 .popup-header-text p {
-  color: #666;
+  color: var(--gray);
   font-size: 14px;
 }
 
@@ -393,24 +393,24 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 20px;
-  background: #f8f8f8;
+  background: var(--gray-lighter);
   border-radius: 12px;
   transition: all 0.3s ease;
   border: 2px solid transparent;
 }
 
 .achievement-item.gold {
-  background: #fff9e6;
-  border-color: #ffd700;
+  background: var(--yellow-light);
+  border-color: var(--yellow);
 }
 
 .achievement-item.silver {
   background: var(--gray-lighter);
-  border-color: #c0c0c0;
+  border-color: var(--gray);
 }
 
 .achievement-item.bronze {
-  background: #fff4e6;
+  background: var(--yellow-light);
   border-color: #cd7f32;
 }
 
@@ -452,7 +452,7 @@
 
 .achievement-rank {
   font-size: 28px;
-  color: #999;
+  color: var(--gray);
   font-weight: 600;
   width: 50px;
   text-align: center;
@@ -522,6 +522,9 @@
 
 .header.dark-mode .popup-footer-text {
   color: #b0b0b0;
+}
+.guide-hero h1{
+  color: red;
 }
 
 
