@@ -105,17 +105,21 @@ export class HomePage {
 
   async fetchImpactData() {
     try {
-      const response = await fetch('/api/leaderboard');
+      const response = await fetch('/api/users');
       if(!response.ok) {
-        throw new Error(`Сервер алдаа өглөө: ${res.status}`);
+        throw new Error(`Сервер алдаа өглөө: ${response.status}`);
       }
+      
       const stats = await response.json();
       
+      const collectedCount = Number(stats.collected) || 0;
+      const totalUsers = Number(stats.total) || 0;
+      
       this.impactData = {
-        waste: (stats.collected * 8).toFixed(0),        // kg per item average
-        water: (stats.collected * 20).toFixed(0),       // liters saved
-        users: stats.total,                              // total items as proxy
-        co2: (stats.collected * 0.2).toFixed(0)         // kg CO2 reduced
+        waste: (collectedCount * 8).toFixed(0),
+        water: (collectedCount * 20).toFixed(0),
+        users: totalUsers,
+        co2: (collectedCount * 0.2).toFixed(1) // CO2 дээр бутархай харуулбал зүгээр байдаг
       };
     } catch (error) {
       console.error('Error fetching impact data:', error);
