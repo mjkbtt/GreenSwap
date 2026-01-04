@@ -1,101 +1,111 @@
 <!DOCTYPE html>
 <html lang="mn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GreenSwap</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GreenSwap - Өнөөдрийн дахин боловсруулалт, Маргаашийн ирээдүй</title>
+    
+    <meta name="description" content="GreenSwap бол хог хаягдлыг ангилах, дахивар авах цэгүүдийг олох, байгаль орчинд үзүүлж буй нөлөөллөө хянах нэгдсэн систем юм.">
+    <meta name="keywords" content="GreenSwap, дахин боловсруулах, хог хаягдал ангилах, дахивар авах цэг, Монгол">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="css/backPic.webp" fetchpriority="high">
+    <link rel="icon" href="zurags/logo.webp" type="image/webp" />
 
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="icon" href="zurags/logo.png" type="image/png" />
+    <!-- Optimized main.css: Preload for async loading -->
+    <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/main.css"></noscript>
 
-  <link href="https://fonts.googleapis.com/css2?family=Georama:wght@400;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-</head>
+    <!-- Optimized Google Fonts: Combined into one, preload for async loading -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Georama:wght@400;700&family=Nunito:wght@400;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Georama:wght@400;700&family=Nunito:wght@400;700;800&display=swap"></noscript>
+  </head>
 
-<body>
-  <cmp-header></cmp-header>
+  <body>
+    <cmp-header></cmp-header>
 
-  <main id="app-content">
-    <div class="loading-screen">
-      <div class="loader">♻️</div>
-      <p>Ачааллаж байна...</p>
-    </div>
-  </main>
+    <main id="app-content">
+      <div class="loading-screen">
+        <div class="loader">♻️</div>
+        <p>Ачааллаж байна...</p>
+      </div>
+    </main>
 
-  <footer-h></footer-h>
+    <footer-h></footer-h>
 
-  <style>
-    .loading-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 400px;
-      padding: 60px 20px;
-    }
-
-    .loader {
-      font-size: 64px;
-      animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-screen p {
-      margin-top: 20px;
-      font-size: 16px;
-      color: #666;
-    }
-  </style>
-
-  <script>
-    async function loadGoogleMaps() {
-      try {
-        // Backend-аас API key авах
-        const response = await fetch('/config');
-        const config = await response.json();
-        
-        // API key шалгах
-        if (!config.googleMapsKey) {
-          console.error('❌ Google Maps API key олдсонгүй');
-          return;
-        }
-        
-        // Script үүсгэх
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places`;
-        script.async = true;
-        script.defer = true;
-        
-        // Load амжилттай болохыг хүлээх
-        script.onload = () => {
-          console.log('✅ Google Maps API амжилттай ачаалагдлаа');
-        };
-        
-        script.onerror = () => {
-          console.error('❌ Google Maps API ачаалахад алдаа гарлаа');
-        };
-        
-        document.head.appendChild(script);
-      } catch (err) {
-        console.error("❌ API Key ачаалахад алдаа:", err);
+    <style>
+      .loading-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        padding: 60px 20px;
       }
-    }
 
-    // Google Maps ачаалах
-    loadGoogleMaps();
-  </script>
+      .loader {
+        font-size: 64px;
+        animation: spin 2s linear infinite;
+      }
 
-  <!-- App болон компонентууд -->
-  <script type="module" src="App.js"></script>
-  <script type="module" src="components/cmp-header.js"></script>
-  <script type="module" src="components/footer-h.js"></script>
-  <script type="module" src="components/tseg-cmp.js"></script>
-  <script type="module" src="components/search-waste.js"></script>
-  <script type="module" src="components/gs-ad-card.js"></script>
-  <script type="module" src="components/gs-impact-card.js"></script>
-</body>
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      .loading-screen p {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #666;
+      }
+    </style>
+
+    <script>
+      async function loadGoogleMaps() {
+        try {
+          // Backend-аас API key авах
+          const response = await fetch('/config');
+          const config = await response.json();
+          
+          // API key шалгах
+          if (!config.googleMapsKey) {
+            console.error('❌ Google Maps API key олдсонгүй');
+            return;
+          }
+          
+          // Script үүсгэх
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places`;
+          script.async = true;
+          script.defer = true;
+          
+          // Load амжилттай болохыг хүлээх
+          script.onload = () => {
+            console.log('✅ Google Maps API амжилттай ачаалагдлаа');
+          };
+          
+          script.onerror = () => {
+            console.error('❌ Google Maps API ачаалахад алдаа гарлаа');
+          };
+          
+          document.head.appendChild(script);
+        } catch (err) {
+          console.error("❌ API Key ачаалахад алдаа:", err);
+        }
+      }
+
+      // Google Maps ачаалах
+      loadGoogleMaps();
+    </script>
+
+    <!-- App болон компонентууд -->
+    <script type="module" src="App.js"></script>
+    <script type="module" src="components/cmp-header.js"></script>
+    <script type="module" src="components/footer-h.js"></script>
+    <script type="module" src="components/tseg-cmp.js"></script>
+    <script type="module" src="components/search-waste.js"></script>
+    <script type="module" src="components/gs-ad-card.js"></script>
+    <script type="module" src="components/gs-impact-card.js"></script>
+  </body>
 </html>

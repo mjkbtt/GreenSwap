@@ -95,7 +95,7 @@ class CmpHeader extends HTMLElement {
       <header class="header">
         <div class="nav-bar">
           <div class="logo">
-            <img src="zurags/logo.png" alt="Logo">
+            <img src="zurags/logo.webp" alt="Logo">
           </div>
 
           <nav class="nav-links">
@@ -107,12 +107,12 @@ class CmpHeader extends HTMLElement {
           <div class="right-section">
             <button class="theme-toggle" aria-label="Toggle theme"></button>
             <div class="search-bar">
-              <img src="zurags/search.png" width="18" alt="Search">
+              <img src="zurags/search.webp" width="18" alt="Search">
               <input type="text" placeholder="Хайх">
             </div>
-            <img src="zurags/trophy2.png" class="trophy-img" alt="Trophy">
+            <img src="zurags/trophy2.webp" class="trophy-img" alt="Trophy">
             <cmp-leaderboard></cmp-leaderboard>
-            <img src="zurags/profile.png" class="profile-img" alt="Profile">
+            <img src="zurags/profile.webp" class="profile-img" alt="Profile">
             <button class="menu-btn">
               <span></span>
               <span></span>

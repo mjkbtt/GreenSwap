@@ -4,7 +4,7 @@ export class CenterRegisterPage {
       <div class="auth-page center">
         <div class="auth-container">
           <div class="auth-header">
-            <img src="zurags/industry.png">
+            <img src="zurags/industry.webp">
             <h1>Хог цэгийн бүртгэл</h1>
             <p>Дахин боловсруулах цэгээ бүртгүүлнэ үү</p>
           </div>

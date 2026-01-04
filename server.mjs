@@ -70,7 +70,7 @@ app.post('/api/center-register', (req, res) => {
       return res.status(400).json({ error: 'Энэ имэйл аль хэдийн бүртгэлтэй байна' });
     }
 
-    // ✅ Insert new center with all required fields
+    // Insert new center with all required fields
     db.run(
       `INSERT INTO collection_centers 
        (name, email, password, district, address, phone, latitude, longitude, 
@@ -218,7 +218,7 @@ app.get('/api/categories', (req, res) => {
   });
 });
 
-// ✅ ЗАСВАРЛАСАН: Database-аас бодит өгөгдөл татах
+// ЗАСВАРЛАСАН: Database-аас бодит өгөгдөл татах
 app.get('/api/tseguud', (req, res) => {
   db.all(/*sql*/`SELECT 
         id,

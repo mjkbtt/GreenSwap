@@ -10,15 +10,15 @@ export class HomePage {
       <main class="hero-section">
         <section class="action-buttons ">
           <a href="#/tseguud" class="action-btn" data-link>
-            <img src="zurags/map.png" alt="">
+            <img src="zurags/map.webp" alt="">
             <span>Цэгүүд</span>
           </a>
           <a href="#/tushaah" class="action-btn" data-link>
-            <img src="zurags/recycle-2.png" alt="">
+            <img src="zurags/recycle-2.webp" alt="">
             <span>Тушаах</span>
           </a>
           <a href="#/angilah" class="action-btn" data-link>
-            <img src="zurags/waste.png" alt="">
+            <img src="zurags/waste.webp" alt="">
             <span>Хаягдлыг ангилах</span>
           </a>
         </section>
@@ -31,31 +31,31 @@ export class HomePage {
 
       <div class="cards-container">
         <gs-ad-card 
-          img="ad-pic2.png"
+          img="ad-pic2.webp"
           ttl="Хоосон шил саваа яахаа мэдэхгүй байна уу?">
         </gs-ad-card>
 
         <gs-ad-card 
-          img="Crumpled Paper Bag Character.png"
+          img="Crumpled Paper Bag Character.webp"
           ttl="Таны халаасанд арай базсан цаас байгаа юм биш биз?">
         </gs-ad-card>
 
         <gs-ad-card 
-          img="ad-pics.png"
+          img="ad-pics.webp"
           ttl="Энд тэндгүй л хуванцар...">
         </gs-ad-card>
       </div>
 
       <article class="eco-card">
         <div class="eco-icon">
-          <img src="zurags/delguur-ad.png" alt="">
+          <img src="zurags/delguur-ad.webp" alt="">
         </div>
         <div class="eco-text">
           <h3>Хаягдлаа өг - Оноогоо цуглуул - Эко бүтээгдэхүүнээ ав</h3>
           <p>Та дахин боловсруулагдах хаягдлаа тушааснаар оноо цуглуулах боломжтой бөгөөд 
               түүнийгээ ашиглан манай эко дэлгүүрээс бүтээгдэхүүн авах боломжтой</p>
           <button class="eco-btn" onclick="alert('Дэлгүүр удахгүй нээгдэнэ!')">
-            Дэлгүүр <img src="zurags/store.png" alt="eco delguur icon">
+            Дэлгүүр <img src="zurags/store.webp" alt="eco delguur icon">
           </button>
         </div>
       </article>
@@ -105,7 +105,7 @@ export class HomePage {
 
   async fetchImpactData() {
     try {
-      const response = await fetch('/api/users');
+      const response = await fetch('/api/leaderboard');
       if(!response.ok) {
         throw new Error(`Сервер алдаа өглөө: ${response.status}`);
       }
@@ -141,25 +141,25 @@ export class HomePage {
       <gs-impact-card 
         ttl="+${this.impactData.waste}кг" 
         inf="Хаягдал цуглуулсан" 
-        img="zurags/recycling-truck.png">
+        img="zurags/recycling-truck.webp">
       </gs-impact-card>
       
       <gs-impact-card 
         ttl="+${this.impactData.water}л" 
         inf="Ус хэмнэсэн" 
-        img="zurags/recycling-water.png">
+        img="zurags/recycling-water.webp">
       </gs-impact-card>
       
       <gs-impact-card 
         ttl="+${this.impactData.users}" 
         inf="Идэвхитэй хэрэглэгчид" 
-        img="zurags/group.png">
+        img="zurags/group.webp">
       </gs-impact-card>
       
       <gs-impact-card 
         ttl="+${this.impactData.co2}кг" 
         inf="Ялгарлыг бууруулсан" 
-        img="zurags/co2-2.png">
+        img="zurags/co2-2.webp">
       </gs-impact-card>
     `;
   }

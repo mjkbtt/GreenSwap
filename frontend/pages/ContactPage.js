@@ -56,7 +56,7 @@ export class ContactPage {
             <div class="info-cards">
               <div class="info-card">
               <div class="info-icon">
-                  <img src="zurags/location.png" alt="Location">
+                  <img src="zurags/location.webp" alt="Location">
                 </div>
                 <div class="info-content">
                   <h3>Хаяг:</h3>
@@ -66,7 +66,7 @@ export class ContactPage {
 
               <div class="info-card">
                 <div class="info-icon">
-                  <img src="zurags/telephone.png" alt="Phone">
+                  <img src="zurags/telephone.webp" alt="Phone">
                 </div>
                 <div class="info-content">
                   <h3>Утас:</h3>
@@ -76,7 +76,7 @@ export class ContactPage {
 
               <div class="info-card">
                 <div class="info-icon">
-                  <img src="zurags/email.png" alt="Email">
+                  <img src="zurags/email.webp" alt="Email">
                 </div>
                 <div class="info-content">
                   <h3>Имэйл:</h3>
@@ -86,7 +86,7 @@ export class ContactPage {
 
               <div class="info-card">
                 <div class="info-icon">
-                  <img src="zurags/time.png" alt="Clock">
+                  <img src="zurags/time.webp" alt="Clock">
                 </div>
                 <div class="info-content">
                   <h3>Ажлын цаг:</h3>

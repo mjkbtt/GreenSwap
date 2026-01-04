@@ -6,7 +6,7 @@ export class BidniiTuhai {
     container.innerHTML = /*html*/`
       <div class="about-page">
         <div class="about-hero">
-          <img src="zurags/about-us2.png">
+          <img src="zurags/about-us2.webp">
         </div>
         <div class="about-content">
           <section class="mission-section">
@@ -26,7 +26,7 @@ export class BidniiTuhai {
           <div class="features-grid">
             <div class="features-column">
               <div class="feature-section green">
-                <img src="zurags/target.png">
+                <img src="zurags/target.webp">
                 <h3>Бидний эрхэм зорилго</h3>
                 <ul class="feature-list">
                   <li>Дахин боловсруулалтын мэдлэг, соёлыг түгээх</li>
@@ -37,7 +37,7 @@ export class BidniiTuhai {
               </div>
 
               <div class="feature-section">
-                <img src="zurags/community.png">
+                <img src="zurags/community.webp">
                 <h4>Бидний хамт олон</h4>
                 <p class="team-description">
                   Эко Монгол төслийг байгаль орчны мэргэжилтнүүд, програм хангамжийн инженерүүд, 
@@ -49,7 +49,7 @@ export class BidniiTuhai {
 
             <div class="features-column">
               <div class="feature-section blue">
-                <img src="zurags/unet.png">
+                <img src="zurags/unet.webp">
                 <h3>Бидний үнэт зүйлс</h3>
                 <ul class="feature-list">
                   <li>Байгаль орчны эрэмлэх</li>
@@ -60,7 +60,7 @@ export class BidniiTuhai {
               </div>
 
               <div class="feature-section yellow">
-                <img src="zurags/star.png">
+                <img src="zurags/star.webp">
                 <h3>Бидний мөрөөдөл</h3>
                 <p>Манай зорилго бол Монгол улсыг цэвэр, ногоон орон болгоод цаашид төслө орголсон орны 
                 жишиг байх явдал.</p>
@@ -70,7 +70,7 @@ export class BidniiTuhai {
 
           <section class="impact-banner">
             <div class="impact-content">
-              <img src="zurags/ecological.png">
+              <img src="zurags/ecological.webp">
               <h2>Та бидэнтэй нэгдээрэй</h2>
               <p>
                 Дахин боловсруулалтыг дэмжиж, байгаль орчныг хамгаалахад хувь нэмрээ оруулцгаая.

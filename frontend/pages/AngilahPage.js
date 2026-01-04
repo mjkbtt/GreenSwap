@@ -11,15 +11,15 @@ export class AngilahPage {
         <div class="action-btns">
           <section class="action-buttons">
             <a href="#/tseguud" class="action-btn" data-link>
-              <img src="zurags/map.png" alt="">
+              <img src="zurags/map.webp" alt="">
               <span>Цэгүүд</span>
             </a>
             <a href="#/tushaah" class="action-btn" data-link>
-              <img src="zurags/recycle-2.png" alt="">
+              <img src="zurags/recycle-2.webp" alt="">
               <span>Тушаах</span>
             </a>
             <a href="#/angilah" class="action-btn" data-link>
-              <img src="zurags/waste.png" alt="">
+              <img src="zurags/waste.webp" alt="">
               <span>Хаягдлыг ангилах</span>
             </a>
           </section>
@@ -28,7 +28,7 @@ export class AngilahPage {
         <div class="angilah-info">
           <div class="guide-hero">
             <h1>Хаягдлыг зөв ангилах заавар</h1>
-            <img src="zurags/haygdal.jpg" alt="waste sorting bg">
+            <img src="zurags/haygdal.webp" alt="waste sorting bg">
           </div>
 
           <div class="category-grid">

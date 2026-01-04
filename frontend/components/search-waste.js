@@ -338,15 +338,15 @@ class SearchWaste extends HTMLElement {
             <div class="action-btns">
                     <section class="action-buttons ">
                         <a href="#/tseguud" class="action-btn" data-link>
-                            <img src="zurags/map.png" alt="">
+                            <img src="zurags/map.webp" alt="">
                             <span>Цэгүүд</span>
                         </a>
                         <a href="#/tushaah" class="action-btn" data-link>
-                            <img src="zurags/recycle-2.png" alt="">
+                            <img src="zurags/recycle-2.webp" alt="">
                             <span>Тушаах</span>
                         </a>
                         <a href="#/angilah" class="action-btn" data-link>
-                            <img src="zurags/waste.png" alt="">
+                            <img src="zurags/waste.webp" alt="">
                             <span>Хаягдлыг ангилах</span>
                         </a>
                     </section>

@@ -147,7 +147,7 @@ class CmpLeaderboard extends HTMLElement {
           <button class="close-popup">×</button>
           
           <div class="popup-header">
-            <img src="zurags/trophy2.png" alt="Trophy">
+            <img src="zurags/trophy2.webp" alt="Trophy">
             <div class="popup-header-text">
               <h2>Тэргүүлэгчдийн самбар</h2>
               <p>Дахин боловсруулалтад хамгийн их хувь нэмэр оруулсан хэрэглэгчид</p>
