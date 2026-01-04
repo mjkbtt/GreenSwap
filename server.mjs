@@ -61,7 +61,7 @@ app.post('/api/center-register', (req, res) => {
     });
   }
 
-  console.log('📝 Center registration attempt:', { name, email, district, address });
+  console.log('Center registration attempt:', { name, email, district, address });
 
   // Шалгах: имэйл аль хэдийн бүртгэлтэй эсэх
   db.get('SELECT id FROM collection_centers WHERE email = ?', [email], (err, existing) => {
@@ -87,9 +87,9 @@ app.post('/api/center-register', (req, res) => {
           return res.status(500).json({ error: 'Бүртгэл амжилтгүй: ' + err.message });
         }
 
-        console.log('✅ Center registered successfully, ID:', this.lastID);
+        console.log('Center registered successfully, ID:', this.lastID);
 
-        // ✅ Profile-д шаардлагатай бүх мэдээллийг буцаах
+        // Profile-д шаардлагатай бүх мэдээллийг буцаах
         res.json({
           id: this.lastID,
           name,
@@ -138,9 +138,7 @@ app.post('/api/center-login', (req, res) => {
   );
 });
 
-// ======================
 // CENTER PROFILE: Цэгийн мэдээлэл авах
-// ======================
 app.get('/api/center/:id', (req, res) => {
   db.get(
     `SELECT id, name, email, district,
@@ -163,9 +161,7 @@ app.get('/api/center/:id', (req, res) => {
   );
 });
 
-// ======================
 // USER LOGIN
-// ======================
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -189,9 +185,7 @@ app.post('/api/login', (req, res) => {
   );
 });
 
-// ======================
 // USERS: Хэрэглэгчийн мэдээлэл авах
-// ======================
 app.get('/api/user/:id', (req, res) => {
   db.get(
     'SELECT id, username, email, green_points FROM users WHERE id = ?',
@@ -209,9 +203,7 @@ app.get('/api/user/:id', (req, res) => {
   );
 });
 
-// ======================
 // DATA: Waste categories авах
-// ======================
 app.get('/api/categories', (req, res) => {
   db.all('SELECT * FROM waste_categories', [], (err, categories) => {
     if (err) {
@@ -222,9 +214,7 @@ app.get('/api/categories', (req, res) => {
   });
 });
 
-// ======================
 // DATA: Collection centers (Tseguud) авах
-// ======================
 app.get('/api/tseguud', (req, res) => {
   db.all(/*sql*/`SELECT 
         id, address, location, phone, working_hours, rating,
@@ -249,9 +239,7 @@ app.get('/api/tseguud', (req, res) => {
   });
 });
 
-// ======================
 // DATA: Products авах
-// ======================
 app.get('/api/products', (req, res) => {
   db.all(
     'SELECT * FROM products WHERE stock > 0',
@@ -266,9 +254,7 @@ app.get('/api/products', (req, res) => {
   );
 });
 
-// ======================
 // LEADERBOARD API: Top 5 хэрэглэгч
-// ======================
 app.get('/api/leaderboard', (req, res) => {
   db.all(
     `SELECT username, green_points AS points
@@ -286,9 +272,7 @@ app.get('/api/leaderboard', (req, res) => {
   );
 });
 
-// ======================
 // CONFIG: Google Maps API Key
-// ======================
 app.get('/config', (req, res) => {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
   
@@ -302,31 +286,23 @@ app.get('/config', (req, res) => {
   });
 });
 
-// ======================
 // 404 Handler
-// ======================
 app.use((req, res) => {
   res.status(404).json({ error: 'API endpoint олдсонгүй' });
 });
 
-// ======================
 // Global Error Handler
-// ======================
 app.use((err, req, res, next) => {
   console.error('❌ Серверийн алдаа:', err);
   res.status(500).json({ error: 'Серверийн дотоод алдаа' });
 });
 
-// ======================
 // SERVER START
-// ======================
 app.listen(PORT, () => {
   console.log(`GreenSwap server ажиллаж байна: http://localhost:${PORT}`);
 });
 
-// ======================
 // Graceful shutdown: Ctrl+C дарвал database хааж серверийг зогсоох
-// ======================
 process.on('SIGINT', () => {
   console.log('\nServer-ийг зогсоож байна...');
   db.close(() => {
