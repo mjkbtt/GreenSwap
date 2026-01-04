@@ -51,18 +51,17 @@ addEvents() {
     const popup = this.shadowRoot.querySelector(".trophy-popup");
     const closeBtn = this.shadowRoot.querySelector(".close-popup");
     
-    // ✅ PROFILE IMAGE CLICK - Login шалгалттай
     profileImg.addEventListener("click", () => {
-      // 1️⃣ localStorage-с мэдээлэл авах
+      // localStorage-с мэдээлэл авах
       const user = localStorage.getItem("user");
       const center = localStorage.getItem("center");
 
-      // 2️⃣ Center нэвтэрсэн эсэх шалгах
+      // Center нэвтэрсэн эсэх шалгах
       if (center) {
         try {
           const centerData = JSON.parse(center);
           if (centerData && centerData.id) {
-            // ✅ Center нэвтэрсэн - Center Profile руу
+            // Center нэвтэрсэн - Center Profile руу
             console.log('🏢 Center profile руу шилжиж байна...');
             window.location.hash = "#/center-profile";
             return;
@@ -73,12 +72,12 @@ addEvents() {
         }
       }
 
-      // 3️⃣ User нэвтэрсэн эсэх шалгах
+      // User нэвтэрсэн эсэх шалгах
       if (user) {
         try {
           const userData = JSON.parse(user);
           if (userData && userData.id) {
-            // ✅ User нэвтэрсэн - User Profile руу
+            // User нэвтэрсэн - User Profile руу
             console.log('👤 User profile руу шилжиж байна...');
             window.location.hash = "#/profile";
             return;
@@ -89,7 +88,7 @@ addEvents() {
         }
       }
 
-      // 4️⃣ Хэн ч нэвтрээгүй - Login хуудас руу
+      // Хэн ч нэвтрээгүй - Login хуудас руу
       console.log('🔐 Login хуудас руу шилжиж байна...');
       window.location.hash = "#/login";
     });
@@ -128,7 +127,6 @@ addEvents() {
   }
 
   async loadLeaderboard() {
-      // 1️⃣ Эхлээд container-ийг shadowRoot-ээс олж зарлана
       const container = this.shadowRoot.querySelector('.achievements-list');
       
       try {
@@ -140,7 +138,6 @@ addEvents() {
       } catch (err) {
           console.error('Leaderboard error:', err);
           
-          // 2️⃣ Одоо container тодорхойлогдсон тул алдаа заахгүй
           if (container) {
               container.innerHTML = `<p style="color: #ff5252; text-align: center;">⚠️ Холболтын алдаа гарлаа</p>`;
           }

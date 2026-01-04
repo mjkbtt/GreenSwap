@@ -99,14 +99,11 @@ export class ContactPage {
             <div class="social-section">
               <h3>Биднийг дагаарай</h3>
               <div class="social-links">
-                <a href="#" class="social-link facebook">
+                <a href="https://facebook.com" class="social-link facebook">
                   <span>📘</span> Facebook
                 </a>
-                <a href="#" class="social-link instagram">
+                <a href="https://instagram.com" class="social-link instagram">
                   <span>📷</span> Instagram
-                </a>
-                <a href="#" class="social-link twitter">
-                  <span>🐦</span> Twitter
                 </a>
               </div>
             </div>
