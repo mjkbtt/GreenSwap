@@ -306,7 +306,7 @@ export class CenterLoginPage {
       };
 
       try {
-        const response = await fetch('http://localhost:3000/api/center-login', {
+        const response = await fetch('/api/center-login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(credentials)
@@ -315,8 +315,8 @@ export class CenterLoginPage {
         const data = await response.json();
 
         if (response.ok) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('center', JSON.stringify(data.center));
+          // localStorage.setItem('token', data.token);
+          localStorage.setItem('center', JSON.stringify(data));
 
           messageDiv.textContent = '✓ Амжилттай нэвтэрлээ!';
           messageDiv.className = 'message success';
@@ -324,7 +324,7 @@ export class CenterLoginPage {
 
           // Redirect to center dashboard
           setTimeout(() => {
-            window.location.hash = '#/center-dashboard';
+            window.location.hash = '#/center-profile';
           }, 1000);
         } else {
           throw new Error(data.message || 'Нэвтрэх амжилтгүй');

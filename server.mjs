@@ -44,6 +44,92 @@ app.post('/api/register', (req, res) => {
     }
   );
 });
+// ======================
+// CENTER REGISTER
+// ======================
+app.post('/api/center-register', (req, res) => {
+  const { name, email, password, district } = req.body;
+
+  if (!name || !email || !password || !district) {
+    return res.status(400).json({ error: 'Бүх талбарыг бөглөнө үү' });
+  }
+
+  db.run(
+    `INSERT INTO collection_centers 
+     (name, email, password, district, latitude, longitude) 
+     VALUES (?, ?, ?, ?, 0, 0)`,
+    [name, email, password, district],
+    function (err) {
+      if (err) {
+        console.error('Center register error:', err);
+        return res.status(400).json({ error: 'Цэг аль хэдийн бүртгэлтэй байна' });
+      }
+
+      res.json({
+        id: this.lastID,
+        name,
+        email,
+        district
+      });
+    }
+  );
+});
+
+// ======================
+// CENTER LOGIN
+// ======================
+app.post('/api/center-login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Имэйл болон нууц үг шаардлагатай' });
+  }
+
+  db.get(
+    `SELECT id, name, email, district,
+            total_collected_kg, active_users, rating
+     FROM collection_centers
+     WHERE email = ? AND password = ?`,
+    [email, password],
+    (err, center) => {
+      if (err) {
+        console.error('Center login error:', err);
+        return res.status(500).json({ error: 'Серверийн алдаа' });
+      }
+      if (!center) {
+        return res.status(401).json({ error: 'Имэйл эсвэл нууц үг буруу' });
+      }
+
+      res.json(center);
+    }
+  );
+});
+
+// ======================
+// CENTER PROFILE
+// ======================
+app.get('/api/center/:id', (req, res) => {
+  db.get(
+    `SELECT id, name, email, district,
+            total_collected_kg, active_users, rating,
+            created_at
+     FROM collection_centers
+     WHERE id = ?`,
+    [req.params.id],
+    (err, center) => {
+      if (err) {
+        console.error('Get center error:', err);
+        return res.status(500).json({ error: 'Серверийн алдаа' });
+      }
+      if (!center) {
+        return res.status(404).json({ error: 'Цэг олдсонгүй' });
+      }
+
+      res.json(center);
+    }
+  );
+});
+
 
 // Login
 app.post('/api/login', (req, res) => {
@@ -345,22 +431,30 @@ app.post('/api/purchase', (req, res) => {
 });
 
 // ======================
-// LEADERBOARD
+// LEADERBOARD API
 // ======================
-
 app.get('/api/leaderboard', (req, res) => {
   db.all(
-    'SELECT username, green_points FROM users ORDER BY green_points DESC LIMIT 10',
+    `
+    SELECT
+      username,
+      green_points AS points,
+      total_collected_count AS count
+    FROM users
+    ORDER BY green_points DESC
+    LIMIT 5
+    `,
     [],
-    (err, users) => {
+    (err, rows) => {
       if (err) {
-        console.error('Get leaderboard error:', err);
-        return res.status(500).json({ error: err.message });
+        console.error(err);
+        return res.status(500).json({ error: 'Server error' });
       }
-      res.json(users);
+      res.json(rows);
     }
   );
 });
+
 
 // ======================
 // CONFIG (Google Maps)

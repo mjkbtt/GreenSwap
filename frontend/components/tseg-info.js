@@ -13,8 +13,11 @@ class TsegInfo extends HTMLElement {
   render() {
     const styles = /*html*/`
       <style>
+        * {
+          box-sizing: border-box;
+        }
         .tseg-detail-card, .stats-card {
-          background: var(--white); border-radius: 20px; padding: 30px;
+          background: var(--white); border-radius: 20px; padding: 30px; margin-right: 30px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--gray-lighter); color: var(--black);
         }
         .tseg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }

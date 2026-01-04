@@ -43,6 +43,7 @@ class CmpHeader extends HTMLElement {
   }
 
   addEvents() {
+    const profileImg = this.shadowRoot.querySelector(".profile-img");
     const menuBtn = this.shadowRoot.querySelector(".menu-btn");
     const navLinks = this.shadowRoot.querySelector(".nav-links");
     const themeToggle = this.shadowRoot.querySelector(".theme-toggle");
@@ -50,6 +51,23 @@ class CmpHeader extends HTMLElement {
     const popup = this.shadowRoot.querySelector(".trophy-popup");
     const closeBtn = this.shadowRoot.querySelector(".close-popup");
     
+    profileImg.addEventListener("click", () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const center = JSON.parse(localStorage.getItem("center"));
+
+      if (center) {
+        // 🏢 Хогийн цэг
+        window.location.hash = "#/center-profile";
+      } else if (user) {
+        // 👤 Энгийн хэрэглэгч
+        window.location.hash = "#/profile";
+      } else {
+        // 🔐 Login хийгээгүй
+        window.location.hash = "#/login";
+      }
+    });
+
+
     menuBtn.addEventListener("click", () => {
       navLinks.classList.toggle("active");
       menuBtn.classList.toggle("active");
@@ -59,9 +77,11 @@ class CmpHeader extends HTMLElement {
       this.toggleTheme();
     });
 
-    trophyImg.addEventListener("click", () => {
+    trophyImg.addEventListener("click", async () => {
       popup.classList.add("active");
+      await this.loadLeaderboard();
     });
+
 
     closeBtn.addEventListener("click", () => {
       popup.classList.remove("active");
@@ -81,6 +101,67 @@ class CmpHeader extends HTMLElement {
       });
     });
   }
+
+  async loadLeaderboard() {
+    try {
+      const res = await fetch('/api/leaderboard');
+      if (!res.ok) throw new Error('Leaderboard load failed');
+
+      const data = await res.json();
+      this.renderLeaderboard(data);
+    } catch (err) {
+      console.error('Leaderboard error:', err);
+      const container = this.shadowRoot.querySelector('.achievements-list');
+      if (container) {
+        container.innerHTML = `<p>⚠️ Мэдээлэл ачаалж чадсангүй</p>`;
+      }
+    }
+  }
+  renderLeaderboard(list) {
+    const container = this.shadowRoot.querySelector('.achievements-list');
+    if (!container) return;
+
+    if (!list || list.length === 0) {
+      container.innerHTML = `<p>Одоогоор мэдээлэл алга</p>`;
+      return;
+    }
+
+    container.innerHTML = list.map((u, index) => {
+      const rank = index + 1;
+
+      const medal =
+        rank === 1 ? '🥇' :
+        rank === 2 ? '🥈' :
+        rank === 3 ? '🥉' : rank;
+
+      const medalClass =
+        rank === 1 ? 'gold' :
+        rank === 2 ? 'silver' :
+        rank === 3 ? 'bronze' : '';
+
+      return `
+        <div class="achievement-item ${medalClass}">
+          <div class="achievement-left">
+            ${
+              rank <= 3
+                ? `<div class="achievement-icon">${medal}</div>`
+                : `<div class="achievement-rank">${medal}</div>`
+            }
+            <div class="achievement-info">
+              <h3>${u.username}</h3>
+              <p>${u.count ?? 0} хаягдал тушаасан</p>
+            </div>
+          </div>
+          <div class="achievement-score">
+            <div class="points">${u.points ?? 0}</div>
+            <div class="label">оноо</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+
 
   render() {
     this.shadowRoot.innerHTML = /*html*/`
@@ -702,7 +783,6 @@ class CmpHeader extends HTMLElement {
         </div>
       </header>
 
-      <!-- Trophy Popup -->
       <div class="trophy-popup">
         <div class="popup-content">
           <button class="close-popup">×</button>
@@ -716,75 +796,7 @@ class CmpHeader extends HTMLElement {
           </div>
 
           <div class="achievements-list">
-            <div class="achievement-item gold">
-              <div class="achievement-left">
-                <div class="achievement-icon">🥇</div>
-                <div class="achievement-info">
-                  <h3>Болд</h3>
-                  <p>47 хаягдал тушаасан</p>
-                </div>
-              </div>
-              <div class="achievement-score">
-                <div class="points">2,850</div>
-                <div class="label">оноо</div>
-              </div>
-            </div>
-
-            <div class="achievement-item silver">
-              <div class="achievement-left">
-                <div class="achievement-icon">🥈</div>
-                <div class="achievement-info">
-                  <h3>Сарантуяа</h3>
-                  <p>42 хаягдал тушаасан</p>
-                </div>
-              </div>
-              <div class="achievement-score">
-                <div class="points">2,640</div>
-                <div class="label">оноо</div>
-              </div>
-            </div>
-
-            <div class="achievement-item bronze">
-              <div class="achievement-left">
-                <div class="achievement-icon">🥉</div>
-                <div class="achievement-info">
-                  <h3>Ганболд</h3>
-                  <p>39 хаягдал тушаасан</p>
-                </div>
-              </div>
-              <div class="achievement-score">
-                <div class="points">2,420</div>
-                <div class="label">оноо</div>
-              </div>
-            </div>
-
-            <div class="achievement-item">
-              <div class="achievement-left">
-                <div class="achievement-rank">4</div>
-                <div class="achievement-info">
-                  <h3>Үүганбаяр</h3>
-                  <p>35 хаягдал тушаасан</p>
-                </div>
-              </div>
-              <div class="achievement-score">
-                <div class="points">2,180</div>
-                <div class="label">оноо</div>
-              </div>
-            </div>
-
-            <div class="achievement-item">
-              <div class="achievement-left">
-                <div class="achievement-rank">5</div>
-                <div class="achievement-info">
-                  <h3>Нарантуяа</h3>
-                  <p>32 хаягдал тушаасан</p>
-                </div>
-              </div>
-              <div class="achievement-score">
-                <div class="points">1,950</div>
-                <div class="label">оноо</div>
-              </div>
-            </div>
+            <p>⏳ Ачааллаж байна...</p>
           </div>
 
           <div class="popup-footer">

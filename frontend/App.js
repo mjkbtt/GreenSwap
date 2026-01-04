@@ -8,6 +8,8 @@ import { LoginPage } from './pages/LoginPage.js';
 import { RegisterPage } from './pages/RegisterPage.js';
 import { CenterLoginPage } from './pages/CenterLoginPage.js';
 import { CenterRegisterPage } from './pages/CenterRegisterPage.js';
+import { UserProfilePage } from './pages/UserProfilePage.js';
+import { CenterProfilePage } from './pages/CenterProfilePage.js';
 
 class App {
   constructor() {
@@ -24,6 +26,8 @@ class App {
       '/register': RegisterPage,
       '/center-login': CenterLoginPage,
       '/center-register': CenterRegisterPage,
+      '/profile': UserProfilePage,
+      '/center-profile': CenterProfilePage,
     };
 
     this.init();

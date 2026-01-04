@@ -312,7 +312,7 @@ export class LoginPage {
       };
 
       try {
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(credentials)
@@ -322,8 +322,9 @@ export class LoginPage {
 
         if (response.ok) {
           // Save token
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
+          // localStorage.setItem('token', data.token);
+          // localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('user', JSON.stringify(data));
 
           messageDiv.textContent = '✓ Амжилттай нэвтэрлээ!';
           messageDiv.className = 'message success';

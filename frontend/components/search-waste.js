@@ -297,11 +297,12 @@ class SearchWaste extends HTMLElement {
                 border: 1px solid var(--gray-lighter);
             }
             .item {
-                background: #e8fbe8;
+                background: var(--yellow-light);
                 padding: 10px;
-                border-left: 4px solid #2ecc71;
+                border-left: 4px solid var(--yellow);
                 border-radius: 6px;
                 margin-bottom: 8px;
+                color: var(--black);
             }
          
             @media (max-width: 768px) {
